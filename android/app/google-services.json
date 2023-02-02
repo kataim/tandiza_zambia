@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "585527337466",
+    "project_id": "tandiza-2ce48",
+    "storage_bucket": "tandiza-2ce48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585527337466:android:ea1d7336ccb576ccab0443",
+        "android_client_info": {
+          "package_name": "com.tandizazambiafinance.tandiza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585527337466-vecpidpbtrk401spb5p4g2v33ii8hncq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tandizazambiafinance.tandiza",
+            "certificate_hash": "6a1350096b0d0e615f2a3dce543d4e303161ce06"
+          }
+        },
+        {
+          "client_id": "585527337466-307se0t77avo6odluegvv8sbj1ce4vhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm-ExyHkUWzRpC9UDZfRiplMK5H0jSmwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585527337466-307se0t77avo6odluegvv8sbj1ce4vhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
