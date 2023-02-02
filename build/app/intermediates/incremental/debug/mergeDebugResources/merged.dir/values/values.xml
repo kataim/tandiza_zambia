@@ -90,6 +90,13 @@
     <item name="text2" type="id"/>
     <item name="title" type="id"/>
     <integer name="status_bar_notification_info_maxnum">999</integer>
+    <string name="default_web_client_id" translatable="false">585527337466-307se0t77avo6odluegvv8sbj1ce4vhe.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">585527337466</string>
+    <string name="google_api_key" translatable="false">AIzaSyDm-ExyHkUWzRpC9UDZfRiplMK5H0jSmwo</string>
+    <string name="google_app_id" translatable="false">1:585527337466:android:ea1d7336ccb576ccab0443</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDm-ExyHkUWzRpC9UDZfRiplMK5H0jSmwo</string>
+    <string name="google_storage_bucket" translatable="false">tandiza-2ce48.appspot.com</string>
+    <string name="project_id" translatable="false">tandiza-2ce48</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         

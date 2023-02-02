@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/registration_screen.dart';
 import 'package:tandiza/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
             secondary: kSecondaryColour,
           )),
       home: const WelcomeScreen(),
+      routes: {
+        RegistrationScreen.id : (context) => RegistrationScreen()
+      },
     );
   }
 }

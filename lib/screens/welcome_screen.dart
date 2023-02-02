@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/registration_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
           Spacer(),
           ElevatedButton(
             onPressed: () {
-
+              Navigator.pushNamed(context, RegistrationScreen.id);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryColour,
