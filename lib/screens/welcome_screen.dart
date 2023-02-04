@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/existing_client_registration_screen.dart';
 import 'package:tandiza/screens/registration_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
@@ -24,6 +25,29 @@ class WelcomeScreen extends StatelessWidget {
           Spacer(),
           ElevatedButton(
             onPressed: () {
+              Navigator.pushNamed(context, ExistingClientRegistrationScreen.id);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kSecondaryColour,
+              fixedSize: const Size(252, 56),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            child: const Text(
+              "Tandiza Client",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: "Texta Alt",
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          ElevatedButton(
+            onPressed: () {
               Navigator.pushNamed(context, RegistrationScreen.id);
             },
             style: ElevatedButton.styleFrom(
@@ -34,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             child: const Text(
-              "Get started",
+              "New Client",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

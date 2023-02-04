@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/existing_client_registration_screen.dart';
 import 'package:tandiza/screens/registration_screen.dart';
 import 'package:tandiza/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
+                textStyle: TextStyle(color: Colors.white),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   backgroundColor: kSecondaryColour,
@@ -29,7 +31,8 @@ class MyApp extends StatelessWidget {
           )),
       home: const WelcomeScreen(),
       routes: {
-        RegistrationScreen.id : (context) => RegistrationScreen()
+        RegistrationScreen.id : (context) => RegistrationScreen(),
+        ExistingClientRegistrationScreen.id: (context) => ExistingClientRegistrationScreen()
       },
     );
   }

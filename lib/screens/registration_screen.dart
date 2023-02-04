@@ -23,9 +23,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           appBar: AppBar(
             elevation: 0,
             centerTitle: true,
-            title: Text('Application Form',
-                style:
-                TextStyle(color: Theme.of(context).primaryColorDark)),
+            title: Text('New Client Sign Up'),
           ),
           resizeToAvoidBottomInset: true,
           body: Stepper(
@@ -38,13 +36,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   children: [
                     Expanded(child: ElevatedButton(
                       onPressed: controlsDetails.onStepContinue,
-                      child: Text(isLastStep ? 'Confirm' : 'Continue',),
+                      child: Text(isLastStep ? 'Confirm' : 'Continue', style: TextStyle(color: kWhiteColour, fontSize: 18,
+                      fontWeight: FontWeight.w500),),
                     )),
                     const SizedBox(height: 15,),
                     if(currentStep != 0)
                       Expanded(child: TextButton(
                         onPressed: controlsDetails.onStepCancel,
-                        child: Text('Cancel',),
+                        child: Text('Cancel',style: TextStyle( fontSize: 18,
+                            fontWeight: FontWeight.w500)),
                       )),
                   ],
                 ),
