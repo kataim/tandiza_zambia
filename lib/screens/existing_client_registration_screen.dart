@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../utilities/settings.dart';
 import '../widgets/upload_documents_widget.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import 'home_screen.dart';
+
 
 class ExistingClientRegistrationScreen extends StatefulWidget {
   ExistingClientRegistrationScreen({Key? key}) : super(key: key);
@@ -15,6 +19,7 @@ class ExistingClientRegistrationScreen extends StatefulWidget {
 class _ExistingClientRegistrationScreenState
     extends State<ExistingClientRegistrationScreen> {
   int currentStep = 0;
+  bool _isChecked = false;
   final Validation _validation = Validation();
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
@@ -22,6 +27,19 @@ class _ExistingClientRegistrationScreenState
   late String phoneIsoCode;
   bool visible = false;
   String confirmedNumber = '';
+  DateTime firstDate = DateTime(1940, 01, 01);
+  DateTime lastDate = DateTime(2004, 1, 1);
+  DateTime initialDate = DateTime(1986, 1, 1);
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _clientNumberController = TextEditingController();
+  final TextEditingController _nrcNumberController1 = TextEditingController();
+  final TextEditingController _nrcNumberController2 = TextEditingController();
+  final TextEditingController _nrcNumberController3 = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
+
 
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -29,6 +47,13 @@ class _ExistingClientRegistrationScreenState
       phoneNumber = internationalizedPhoneNumber;
       phoneIsoCode = isoCode;
     });
+  }
+
+  Future<DateTime?> pickDate() async {
+    return showDatePicker(context: context,
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate);
   }
 
   void onValidPhoneNumber(
@@ -84,11 +109,6 @@ class _ExistingClientRegistrationScreenState
             ),
           );
         },
-        onStepTapped: (step) {
-          setState(() {
-            currentStep = step;
-          });
-        },
         onStepCancel: () {
           if (currentStep != 0) {
             setState(() {
@@ -100,8 +120,9 @@ class _ExistingClientRegistrationScreenState
           final isLastStep =
               currentStep == getSteps(currentStep, context).length - 1;
 
-          if (isLastStep && _formKeyTandiza.currentState!.validate()) {
+          if (isLastStep && _formKeyTandiza.currentState!.validate() && _isChecked) {
             //TODO register the user and navigate to the dashboard
+            Navigator.pushNamed(context, HomeScreen.id);
           } else {
             setState(() {
               currentStep = currentStep + 1;
@@ -127,6 +148,7 @@ class _ExistingClientRegistrationScreenState
             child: Column(
               children: [
                 TextFormField(
+                  controller: _firstNameController,
                   validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
@@ -145,6 +167,7 @@ class _ExistingClientRegistrationScreenState
                   height: 15,
                 ),
                 TextFormField(
+                  controller: _lastNameController,
                   validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
@@ -188,6 +211,7 @@ class _ExistingClientRegistrationScreenState
             child: Column(
               children: [
                 TextFormField(
+                  controller: _clientNumberController,
                   validator: null,
                   //_validateName,
                   onChanged: (value) {},
@@ -210,6 +234,7 @@ class _ExistingClientRegistrationScreenState
                     Expanded(
                       flex: 3,
                       child: TextFormField(
+                        controller: _nrcNumberController1,
                         textInputAction: TextInputAction.next,
                         maxLength: 6,
                         validator: null,
@@ -231,6 +256,7 @@ class _ExistingClientRegistrationScreenState
                     Expanded(
                       flex: 1,
                       child: TextFormField(
+                        controller: _nrcNumberController2,
                         maxLength: 2,
                         validator: null,
                         //_validateName,
@@ -248,6 +274,7 @@ class _ExistingClientRegistrationScreenState
                     Expanded(
                       flex: 1,
                       child: TextFormField(
+                        controller: _nrcNumberController3,
                         maxLength: 1,
                         validator: null,
                         //_validateName,
@@ -267,9 +294,21 @@ class _ExistingClientRegistrationScreenState
                   height: 15,
                 ),
                 TextFormField(
+                  controller: _dateOfBirthController,
                   validator: null,
                   //_validateName,
                   onChanged: (value) {},
+                  onTap: () async {
+                    final dateSelected = await pickDate();
+
+                    if(dateSelected == null) return;
+
+                    setState(() {
+                      _dateOfBirthController.text = DateFormat('d MMM y')
+                          .format(dateSelected);
+                    });
+
+                  },
                   textCapitalization: TextCapitalization.words,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
@@ -288,7 +327,19 @@ class _ExistingClientRegistrationScreenState
           state: currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,
           title: const Text('Complete'),
-          content: const UploadDocuments())
+          content: ListTile(
+            title: Text('Terms & Conditions'),
+            subtitle: Text('I agree to Tandiza Finance Terms. Information provided is correct'),
+            isThreeLine: true,
+            leading: Checkbox(
+              value: _isChecked,
+              onChanged: (value) {
+                setState(() {
+                  _isChecked = value!;
+                });
+              },
+            ),
+          ))
       /*Step(
           state : currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,

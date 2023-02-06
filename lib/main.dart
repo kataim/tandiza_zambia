@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tandiza/screens/existing_client_registration_screen.dart';
+import 'package:tandiza/screens/home_screen.dart';
 import 'package:tandiza/screens/registration_screen.dart';
 import 'package:tandiza/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
       home: const WelcomeScreen(),
       routes: {
         RegistrationScreen.id : (context) => RegistrationScreen(),
-        ExistingClientRegistrationScreen.id: (context) => ExistingClientRegistrationScreen()
+        ExistingClientRegistrationScreen.id: (context) => ExistingClientRegistrationScreen(),
+        HomeScreen.id: (context) => HomeScreen()
       },
     );
   }
