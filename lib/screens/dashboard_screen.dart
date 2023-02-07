@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/profile_screen.dart';
+import 'package:tandiza/screens/profile_setup_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
 class DashBoard extends StatelessWidget {
@@ -107,7 +109,7 @@ class DashBoard extends StatelessWidget {
                          const Text('Services',
                          style: TextStyle(
                            color: kBackgroundColour,
-                           fontSize: 20
+                           fontSize: 16
                          ),
                          ),
                         const SizedBox(height: 15,),
@@ -117,20 +119,26 @@ class DashBoard extends StatelessWidget {
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
-                                   Container(
-                                     width: 180.0,
-                                     height: 80.0,
-                                     child: Card(
-                                       color: Color.fromARGB(255, 224, 243, 224),
-                                       child: Padding(
-                                         padding: const EdgeInsets.all(10.0),
-                                         child: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: const [
-                                                Icon(Icons.person),
-                                                SizedBox(height: 4.0,),
-                                                Text('Personal info')
-                                           ],
+                                   InkWell(
+                                    onTap: (){
+                                      //navigate to the profile page
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSetup()));
+                                    },
+                                     child: Container(
+                                       width: 180.0,
+                                       height: 80.0,
+                                       child: Card(
+                                         color: Color.fromARGB(255, 224, 243, 224),
+                                         child: Padding(
+                                           padding: const EdgeInsets.all(10.0),
+                                           child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: const [
+                                                  Icon(Icons.person),
+                                                  SizedBox(height: 4.0,),
+                                                  Text('Personal info')
+                                             ],
+                                           ),
                                          ),
                                        ),
                                      ),
