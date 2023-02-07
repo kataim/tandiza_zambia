@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tandiza/screens/existing_client_registration_screen.dart';
-import 'package:tandiza/screens/registration_screen.dart';
+import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
+
+import 'existing_client_registration_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

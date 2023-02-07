@@ -9,7 +9,12 @@ final String firstName;
   final List loans;
   final List applications;
 
-  ClientFinancials({required this.result,required this.clientId, required this.firstName, required this.surname,required this.nrcNumber, required this.dateOfBirth, required this.loans, required this.applications});
+  ClientFinancials({required this.result,
+    required this.clientId, required this.firstName,
+    required this.surname,required this.nrcNumber,
+    required this.dateOfBirth,
+    required this.loans,
+    required this.applications});
 
 Map<String, dynamic> toJson() => {
   "result": result,

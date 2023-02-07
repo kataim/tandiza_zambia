@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tandiza/screens/profile_screen.dart';
 import 'package:tandiza/screens/profile_setup_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
