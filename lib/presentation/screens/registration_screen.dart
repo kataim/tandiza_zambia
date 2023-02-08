@@ -2,9 +2,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:tandiza/widgets/upload_documents_widget.dart';
 
-import '../utilities/settings.dart';
-import '../widgets/upload_documents_widget.dart';
+import '../../utilities/settings.dart';
 
 class RegistrationScreen extends StatefulWidget {
   RegistrationScreen({Key? key}) : super(key: key);

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tandiza/screens/dashboard_screen.dart';
-import 'package:tandiza/screens/profile_screen.dart';
-import 'package:tandiza/screens/transaction_screen.dart';
-import 'package:tandiza/screens/wallet_screen.dart';
+import 'package:tandiza/presentation/screens/dashboard_screen.dart';
+import 'package:tandiza/presentation/screens/profile_screen.dart';
+import 'package:tandiza/presentation/screens/transaction_screen.dart';
+import 'package:tandiza/presentation/screens/wallet_screen.dart';
 
-import '../utilities/settings.dart';
+import '../../utilities/settings.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

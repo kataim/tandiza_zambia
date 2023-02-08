@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tandiza/screens/existing_client_registration_screen.dart';
-import 'package:tandiza/screens/home_screen.dart';
-import 'package:tandiza/screens/registration_screen.dart';
-import 'package:tandiza/screens/welcome_screen.dart';
+import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
+import 'package:tandiza/presentation/screens/home_screen.dart';
+import 'package:tandiza/presentation/screens/registration_screen.dart';
+import 'package:tandiza/presentation/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
 void main() {

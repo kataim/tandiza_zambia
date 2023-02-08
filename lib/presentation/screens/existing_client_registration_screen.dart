@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../utilities/settings.dart';
-import '../widgets/upload_documents_widget.dart';
+import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import 'home_screen.dart';
@@ -78,7 +77,6 @@ class _ExistingClientRegistrationScreenState
             (BuildContext context, ControlsDetails controlsDetails) {
           final isLastStep =
               currentStep == getSteps(currentStep, context).length - 1;
-
           return Container(
             margin: const EdgeInsets.only(top: 50),
             child: Row(
