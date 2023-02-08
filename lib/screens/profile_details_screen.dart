@@ -13,9 +13,14 @@ class ProfileDetails extends StatefulWidget {
 class _ProfileDetailsState extends State<ProfileDetails> {
   int _currentStep = 0;
   late String phoneNumber;
+  late String phoneIsoCode;
   DateTime firstDate = DateTime(1940, 01, 01);
   DateTime lastDate = DateTime(2004, 1, 1);
   DateTime initialDate = DateTime(1986, 1, 1);
+
+  final Validation _validation = Validation();
+  final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
 
   //personal details 1 controllers
   final TextEditingController _firstName1Controller = TextEditingController();
@@ -45,6 +50,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         lastDate: lastDate);
   }
 
+  void onPhoneNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phoneNumber = internationalizedPhoneNumber;
+      phoneIsoCode = isoCode;
+    });
+  }
+
  /*  @override
   void dispose() {
     // TODO: implement dispose
@@ -67,6 +80,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     _city2Controller.dispose();
   }
  */
+final contractList = ["permanent", "TemporalContract","PartTime"];
+String _selectedContract = "permanent";
+
+final contractPeriodList = ["6 Months", "8 Months", "1 Year", "2 Year", "3 Year", "4 Year","5 years"];
+String _selectedPeriod = "6 Months";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +99,52 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   currentStep: _currentStep,
                   type: StepperType.horizontal,
                   physics: const ScrollPhysics(),
+                  controlsBuilder: (context, onStepContinue){
+                    return Row(
+                       children: [
+                        ElevatedButton(
+                          onPressed: (() {
+                           if (_currentStep != 2) {
+                                  setState(() {
+                                    _currentStep += 1;
+                                  });
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                        }),
+                         child: Text(_currentStep != 2 ? 'Continue' : 'Submit',
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                             color: kWhiteColour,
+                            fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                        )
+                         ),
+                         const SizedBox(width: 15,),
+                        ElevatedButton(onPressed: (() {
+                           setState(() {
+                          _currentStep -= 1;
+                        });
+                        }),
+                         child: Text(_currentStep != 0 ? 'Back' : 'Back',
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                             color: kWhiteColour,
+                            fontSize: 15,
+                        fontWeight: FontWeight.w500
+                        ),
+                        )
+                         ),
+
+                       ],
+                    );
+                  },
                   onStepTapped: ((int index) {
                     setState(() {
                       _currentStep = index;
                     });
                   }),
+                  
 
                   onStepCancel: (){
                     if(_currentStep != 0){
@@ -94,8 +154,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       });
                     }
                   },
+
+                  
+
        
-                  onStepContinue: () {
+                 /*  onStepContinue: () {
                       if(_currentStep != 2){
                         setState(() {
                           _currentStep += 1;
@@ -106,18 +169,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                      
                   
                       
-                  },
+                  }, */
                   
-                  
-
-                  
-       
                   steps: [
                     Step(title: Text('Profile 1'), content: Column(
                        children: [
                         TextFormField(
                   controller: _firstName1Controller,
-                  //validator: _validation.validateName,
+                  validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
@@ -136,7 +195,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 ),
                 TextFormField(
                   controller: _lastName1Controller,
-                  //validator: _validation.validateName,
+                  validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
@@ -236,7 +295,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       controller: _plotNumber1Controller,
                         textInputAction: TextInputAction.next,
                         maxLength: 8,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
@@ -257,7 +316,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       child: TextFormField(
                         controller:  _location1Controller,
                         maxLength: 50,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
@@ -279,7 +338,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         controller: _city1Controller,
                         textInputAction: TextInputAction.next,
                         maxLength: 100,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
@@ -503,6 +562,76 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         color: Theme.of(context).primaryColorDark,
                       )),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                DropdownButtonFormField(
+                  isExpanded: true,
+                  decoration: kTextFieldDecoration.copyWith(
+                      labelText: 'Contract Type',
+                      prefixIcon: Icon(
+                        Icons.work_outline,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                  value:_selectedContract,
+                  items: contractList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Center(child: Text(value))
+                    );
+                }).toList(), 
+                onChanged: (String? newValue){
+                      setState(() {
+                        _selectedContract = newValue!;
+                      });
+                }),
+                  const SizedBox(
+                              height: 15,
+                            ),
+                     DropdownButtonFormField(
+                                isExpanded: true,
+                                
+                                decoration: kTextFieldDecoration.copyWith(
+                                    labelText: 'Contract Duration',
+                                    prefixIcon: Icon(
+                                      Icons.lock_clock,
+                                      color: Theme.of(context).primaryColorDark,
+                                    )),
+                                value: _selectedPeriod,
+                                items: contractPeriodList
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(child: Text(value)));
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _selectedPeriod = newValue!;
+                                  });
+                                }),
+                      const SizedBox(
+                              height: 15,
+                            ),
+                                TextFormField(
+                  //controller: _lastName2Controller,
+                  //validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Current Monthly earnings',
+                      prefixIcon: Icon(
+                        Icons.money,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                              height: 15,
+                            ),
                       ],
                     ),
                     isActive: _currentStep >= 2,
