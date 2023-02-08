@@ -14,9 +14,14 @@ class ProfileDetails extends StatefulWidget {
 class _ProfileDetailsState extends State<ProfileDetails> {
   int _currentStep = 0;
   late String phoneNumber;
+  late String phoneIsoCode;
   DateTime firstDate = DateTime(1940, 01, 01);
   DateTime lastDate = DateTime(2004, 1, 1);
   DateTime initialDate = DateTime(1986, 1, 1);
+
+  final Validation _validation = Validation();
+  final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
 
   //personal details 1 controllers
   final TextEditingController _firstName1Controller = TextEditingController();
@@ -44,6 +49,14 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         initialDate: initialDate,
         firstDate: firstDate,
         lastDate: lastDate);
+  }
+
+  void onPhoneNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phoneNumber = internationalizedPhoneNumber;
+      phoneIsoCode = isoCode;
+    });
   }
 
  /*  @override
@@ -118,7 +131,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                        children: [
                         TextFormField(
                   controller: _firstName1Controller,
-                  //validator: _validation.validateName,
+                  validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
@@ -137,7 +150,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 ),
                 TextFormField(
                   controller: _lastName1Controller,
-                  //validator: _validation.validateName,
+                  validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
@@ -237,7 +250,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       controller: _plotNumber1Controller,
                         textInputAction: TextInputAction.next,
                         maxLength: 8,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
@@ -258,7 +271,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       child: TextFormField(
                         controller:  _location1Controller,
                         maxLength: 50,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
@@ -280,7 +293,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         controller: _city1Controller,
                         textInputAction: TextInputAction.next,
                         maxLength: 100,
-                        validator: null,
+                        validator: _validation.validateName,
                         //_validateName,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
