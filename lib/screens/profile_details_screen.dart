@@ -80,6 +80,12 @@ class _ProfileDetailsState extends State<ProfileDetails> {
     _city2Controller.dispose();
   }
  */
+final contractList = ["permanent", "TemporalContract","PartTime"];
+String _selectedContract = "permanent";
+
+final contractPeriodList = ["6 Months", "8 Months", "1 Year", "2 Year", "3 Year", "4 Year","5 years"];
+String _selectedPeriod = "6 Months";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,11 +99,52 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                   currentStep: _currentStep,
                   type: StepperType.horizontal,
                   physics: const ScrollPhysics(),
+                  controlsBuilder: (context, onStepContinue){
+                    return Row(
+                       children: [
+                        ElevatedButton(
+                          onPressed: (() {
+                           if (_currentStep != 2) {
+                                  setState(() {
+                                    _currentStep += 1;
+                                  });
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                        }),
+                         child: Text(_currentStep != 2 ? 'Continue' : 'Submit',
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                             color: kWhiteColour,
+                            fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                        )
+                         ),
+                         const SizedBox(width: 15,),
+                        ElevatedButton(onPressed: (() {
+                           setState(() {
+                          _currentStep -= 1;
+                        });
+                        }),
+                         child: Text(_currentStep != 0 ? 'Back' : 'Back',
+                          // ignore: prefer_const_constructors
+                          style: TextStyle(
+                             color: kWhiteColour,
+                            fontSize: 15,
+                        fontWeight: FontWeight.w500
+                        ),
+                        )
+                         ),
+
+                       ],
+                    );
+                  },
                   onStepTapped: ((int index) {
                     setState(() {
                       _currentStep = index;
                     });
                   }),
+                  
 
                   onStepCancel: (){
                     if(_currentStep != 0){
@@ -107,8 +154,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       });
                     }
                   },
+
+                  
+
        
-                  onStepContinue: () {
+                 /*  onStepContinue: () {
                       if(_currentStep != 2){
                         setState(() {
                           _currentStep += 1;
@@ -119,12 +169,8 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                      
                   
                       
-                  },
+                  }, */
                   
-                  
-
-                  
-       
                   steps: [
                     Step(title: Text('Profile 1'), content: Column(
                        children: [
@@ -516,6 +562,76 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         color: Theme.of(context).primaryColorDark,
                       )),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                DropdownButtonFormField(
+                  isExpanded: true,
+                  decoration: kTextFieldDecoration.copyWith(
+                      labelText: 'Contract Type',
+                      prefixIcon: Icon(
+                        Icons.work_outline,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                  value:_selectedContract,
+                  items: contractList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Center(child: Text(value))
+                    );
+                }).toList(), 
+                onChanged: (String? newValue){
+                      setState(() {
+                        _selectedContract = newValue!;
+                      });
+                }),
+                  const SizedBox(
+                              height: 15,
+                            ),
+                     DropdownButtonFormField(
+                                isExpanded: true,
+                                
+                                decoration: kTextFieldDecoration.copyWith(
+                                    labelText: 'Contract Duration',
+                                    prefixIcon: Icon(
+                                      Icons.lock_clock,
+                                      color: Theme.of(context).primaryColorDark,
+                                    )),
+                                value: _selectedPeriod,
+                                items: contractPeriodList
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(child: Text(value)));
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _selectedPeriod = newValue!;
+                                  });
+                                }),
+                      const SizedBox(
+                              height: 15,
+                            ),
+                                TextFormField(
+                  //controller: _lastName2Controller,
+                  //validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Current Monthly earnings',
+                      prefixIcon: Icon(
+                        Icons.money,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                              height: 15,
+                            ),
                       ],
                     ),
                     isActive: _currentStep >= 2,

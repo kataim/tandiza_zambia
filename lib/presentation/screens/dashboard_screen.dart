@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/loan_application.dart';
+import 'package:tandiza/screens/profile_details_screen.dart';
 import 'package:tandiza/screens/profile_setup_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
+
+import '../../widgets/upload_documents_widget.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({Key? key}) : super(key: key);
@@ -118,10 +122,10 @@ class DashBoard extends StatelessWidget {
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
-                                   InkWell(
+                                   GestureDetector(
                                     onTap: (){
                                       //navigate to the profile page
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileSetup()));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
                                     },
                                      child: Container(
                                        width: 180.0,
@@ -166,38 +170,48 @@ class DashBoard extends StatelessWidget {
                                Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
-                                   Container(
-                                     width: 180.0,
-                                     height: 80.0,
-                                     child: Card(
-                                       color: Color.fromARGB(255, 238, 175, 175),
-                                       child: Padding(
-                                         padding: const EdgeInsets.all(10.0),
-                                         child: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: const [
-                                                Icon(Icons.handshake),
-                                                SizedBox(height: 4.0,),
-                                                Text('Apply Loan')
-                                           ],
+                                   GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoanApplication()));
+                                    },
+                                     child: Container(
+                                       width: 180.0,
+                                       height: 80.0,
+                                       child: Card(
+                                         color: Color.fromARGB(255, 238, 175, 175),
+                                         child: Padding(
+                                           padding: const EdgeInsets.all(10.0),
+                                           child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: const [
+                                                  Icon(Icons.handshake),
+                                                  SizedBox(height: 4.0,),
+                                                  Text('Apply Loan')
+                                             ],
+                                           ),
                                          ),
                                        ),
                                      ),
                                    ),
-                                   Container(
-                                     width: 180.0,
-                                     height: 80.0,
-                                     child: Card(
-                                       color: Color.fromRGBO(250, 252, 249, 0.46),
-                                       child: Padding(
-                                         padding: const EdgeInsets.all(10.0),
-                                         child: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: const [
-                                                Icon(Icons.picture_as_pdf_rounded),
-                                                SizedBox(height: 4.0,),
-                                                Text('Loan Statements')
-                                           ],
+                                   GestureDetector(
+                                    onTap: (){
+                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => const UploadDocuments()));
+                                    },
+                                     child: Container(
+                                       width: 180.0,
+                                       height: 80.0,
+                                       child: Card(
+                                         color: Color.fromRGBO(250, 252, 249, 0.46),
+                                         child: Padding(
+                                           padding: const EdgeInsets.all(10.0),
+                                           child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: const [
+                                                  Icon(Icons.picture_as_pdf_rounded),
+                                                  SizedBox(height: 4.0,),
+                                                  Text('Loan Statements')
+                                             ],
+                                           ),
                                          ),
                                        ),
                                      ),
@@ -205,7 +219,7 @@ class DashBoard extends StatelessWidget {
                                  ],
                                ),
                                const SizedBox(height: 15.0,),
-                               Row(
+                               /* Row(
                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                  children: [
                                    Container(
@@ -227,7 +241,7 @@ class DashBoard extends StatelessWidget {
                                      ),
                                    ),
                                  ],
-                               )
+                               ) */
                              ],
                            ),
                          )
