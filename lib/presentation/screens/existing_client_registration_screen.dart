@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tandiza/application/get_user.dart';
+import 'package:tandiza/presentation/application/provider.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -23,6 +26,7 @@ class _ExistingClientRegistrationScreenState
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
   late String phoneNumber;
+  late UserServiceProvider _userServiceProvider;
   late String phoneIsoCode;
   bool visible = false;
   String confirmedNumber = '';
@@ -39,7 +43,16 @@ class _ExistingClientRegistrationScreenState
   final TextEditingController _nrcNumberController3 = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
 
+  @override
+  void initState() {
+    _userServiceProvider = Provider.of<UserServiceProvider>(context, listen: false);
+    _userServiceProvider.getClientData();
+    super.initState();
+  }
 
+  Future<void> getClientData () async {
+    _userServiceProvider.getClientData();
+  }
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
     setState(() {
@@ -65,6 +78,7 @@ class _ExistingClientRegistrationScreenState
 
   @override
   Widget build(BuildContext context) {
+    final tandiza = Provider.of<UserServiceProvider>(context).tandizaClient;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -120,6 +134,8 @@ class _ExistingClientRegistrationScreenState
 
           if (isLastStep && _formKeyTandiza.currentState!.validate() && _isChecked) {
             //TODO register the user and navigate to the dashboard
+            getClientData();
+            print(tandiza?.firstName);
             Navigator.pushNamed(context, HomeScreen.id);
           } else {
             setState(() {

@@ -1,37 +1,42 @@
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 
 class TandizaClientModel extends TandizaClient{
-  final String clientId;
-  final String firstName;
-  final String surname;
-  final String nrcNumber;
-  final String dateOfBirth;
+  final int ? clientId;
+  final String ? firstName;
+  final String ? surname;
+  final String ? nrcNumber;
+  final String ? dateOfBirth;
+  final String ? result;
+
 
   TandizaClientModel({ required this.clientId,
-    required this.firstName,
-    required this.surname,
-    required this.nrcNumber,
-    required this.dateOfBirth}) :
+    this.firstName,
+    this.result,
+    this.surname,
+    this.nrcNumber,
+    this.dateOfBirth}) :
         super(clientId: clientId,
-          firstName: firstName, surname: surname, nrcNumber: nrcNumber, dateOfBirth: dateOfBirth);
+          firstName: firstName, result: result, surname: surname, nrcNumber: nrcNumber, dateOfBirth: dateOfBirth);
 
   factory TandizaClientModel.fromJson(Map<String, dynamic> json){
 
     return TandizaClientModel(
-        clientId: json['clientId'],
-        firstName: json['firstName'],
+        clientId: json['client_id'],
+        result: json['result'],
+        firstName: json['firstnames'],
         surname: json['surname'],
-        nrcNumber: json['nrcNumber'],
-        dateOfBirth: json['dateOfBirth']);
+        nrcNumber: json['nrcnumber'],
+        dateOfBirth: json['date_of_birth']);
   }
 
   Map<String, dynamic> toJson () {
     return {
-      clientId : 'clientId',
-      firstName : 'firstName',
-      surname : 'surname',
-      nrcNumber : 'nrcNumber',
-      dateOfBirth : 'dateOfBirth'
+      'client_id' : clientId,
+      'firstName' : firstName,
+      'surname' : surname,
+      'result' : result,
+      'nrcNumber' : nrcNumber,
+      'dateOfBirth' : dateOfBirth
     };
   }
 }

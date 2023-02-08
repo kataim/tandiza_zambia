@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tandiza/application/get_user.dart';
+import 'package:tandiza/datalayer/datasources/remote_data_provider.dart';
+import 'package:tandiza/datalayer/repository/user_repository.dart';
+import 'package:tandiza/presentation/application/provider.dart';
 import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
@@ -6,7 +11,13 @@ import 'package:tandiza/presentation/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context){
+          return UserServiceProvider(getUserFacade: GetUserFacade(userRepository: UserRepository(remoteDataProvider: RemoteDataProvider())));
+        })
+      ],
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

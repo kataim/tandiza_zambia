@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 
 class RemoteDataProvider {
   Future<TandizaClientModel?> getUser () async {
-    String url = 'https://nek-runaloan.calidad.co.za/tdzapi/client?nrcnumber=437657/67/1';
+    String url = 'https://nek-runaloan.calidad.co.za/tdzapi/client?nrcnumber=8310028195084';
       final response = await http.get(Uri.parse(url), headers: {
-        HttpHeaders.authorizationHeader : 'Tandiza210Rocks1964',
-        HttpHeaders.acceptHeader : 'application/json',
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json',
+        'Authorisation' : 'Tandiza210Rocks1964',
         'Tenant' : 'TDZ'
       });
 

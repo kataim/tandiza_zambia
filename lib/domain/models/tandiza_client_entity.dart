@@ -1,14 +1,18 @@
-class TandizaClient {
- final String clientId;
-  final String firstName;
-  final String surname;
-  final String nrcNumber;
-  final String dateOfBirth;
 
-  TandizaClient({ required this.clientId,
-   required this.firstName,
-   required this.surname,
-   required this.nrcNumber,
-   required this.dateOfBirth});
+
+class TandizaClient {
+  final int ? clientId;
+  final String ? firstName;
+  final String ? surname;
+  final String ? nrcNumber;
+  final String ? dateOfBirth;
+  final String ? result;
+
+  TandizaClient({required this.clientId,
+   this.firstName,
+   this.surname,
+   this.nrcNumber,
+   this.dateOfBirth,
+   this.result});
 
 }
