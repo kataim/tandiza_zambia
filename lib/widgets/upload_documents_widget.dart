@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../utilities/settings.dart';
 
 class UploadDocuments extends StatelessWidget {
@@ -39,7 +38,7 @@ class UploadDocuments extends StatelessWidget {
                               ),
                               const Divider(thickness: 0.5,),
                               ListTile(
-                                leading: const Icon(Icons.image_outlined),
+                                leading: const  Icon(Icons.image_outlined),
                                 title: const Text('Photo Library'),
                                 onTap: () {
                                   Navigator.pop(context);
