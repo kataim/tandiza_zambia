@@ -1,11 +1,11 @@
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 
-class FirebaseUser extends TandizaClient {
+class FirebaseUserEntity extends TandizaClient {
 
   final String ? uid;
   final String ? phoneNumber;
 
-  FirebaseUser({this.phoneNumber, this.uid, clientId,
+  FirebaseUserEntity({this.phoneNumber, this.uid, clientId,
     firstName,
     surname,
     nrcNumber,

@@ -26,12 +26,18 @@ class Repository implements IRepository {
   }
 
   @override
-  Future<FirebaseUserModel?> signInWithPhone(String phoneNumber, BuildContext context) async {
+  Future<FirebaseUserEntity?> signInWithPhone(String phoneNumber, BuildContext context) async {
     try{
-      final FirebaseUserModel ? firebaseUser = await firebaseAuthApi.signInWithPhone(phoneNumber, context);
+      final FirebaseUserEntity ? firebaseUser = await firebaseAuthApi.signInWithPhone(phoneNumber, context);
       return firebaseUser;
     }catch(e){
       print(e);
     }
+  }
+
+  @override
+  Stream<FirebaseUserEntity?> authStateChanges() {
+    // TODO: implement authStateChanges
+    throw UnimplementedError();
   }
 }

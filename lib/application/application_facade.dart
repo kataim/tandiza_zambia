@@ -17,7 +17,13 @@ class ApplicationFacade implements IUserInterface{
   }
 
   @override
-  Future<FirebaseUserModel?> signInWithPhone(String phoneNumber, BuildContext context) async {
+  Future<FirebaseUserEntity?> signInWithPhone(String phoneNumber, BuildContext context) async {
     return userRepository.signInWithPhone(phoneNumber, context);
+  }
+
+  @override
+  Stream<FirebaseUserEntity?> authStateChanges() {
+    // TODO: implement authStateChanges
+    return userRepository.authStateChanges();
   }
 }
