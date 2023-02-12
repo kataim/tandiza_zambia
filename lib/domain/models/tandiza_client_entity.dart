@@ -8,7 +8,7 @@ class TandizaClient {
   final String ? dateOfBirth;
   final String ? result;
 
-  TandizaClient({required this.clientId,
+  TandizaClient({this.clientId,
    this.firstName,
    this.surname,
    this.nrcNumber,

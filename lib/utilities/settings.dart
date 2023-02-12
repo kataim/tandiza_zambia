@@ -69,6 +69,30 @@ class Validation  {
     }
   }
 
+  String ? validateNrc1(String ? arg){
+    if (arg!.length < 6) {
+      return 'Number is too short';
+    } else {
+      return null;
+    }
+  }
+
+  String ? validateNrc2(String ? arg){
+    if (arg!.length < 2) {
+      return 'Number is too short';
+    } else {
+      return null;
+    }
+  }
+
+  String ? validateNrc3(String ? arg){
+    if (arg!.isEmpty) {
+      return 'Number is too short';
+    } else {
+      return null;
+    }
+  }
+
   String ? validatePassword(String ? arg) {
     if (arg!.length < 6) {
       return 'Password is too short';

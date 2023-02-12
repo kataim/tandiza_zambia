@@ -1,20 +1,13 @@
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 
 class TandizaClientModel extends TandizaClient{
-  final int ? clientId;
-  final String ? firstName;
-  final String ? surname;
-  final String ? nrcNumber;
-  final String ? dateOfBirth;
-  final String ? result;
 
-
-  TandizaClientModel({ required this.clientId,
-    this.firstName,
-    this.result,
-    this.surname,
-    this.nrcNumber,
-    this.dateOfBirth}) :
+  TandizaClientModel({ clientId,
+    firstName,
+    result,
+    surname,
+    nrcNumber,
+    dateOfBirth}) :
         super(clientId: clientId,
           firstName: firstName, result: result, surname: surname, nrcNumber: nrcNumber, dateOfBirth: dateOfBirth);
 

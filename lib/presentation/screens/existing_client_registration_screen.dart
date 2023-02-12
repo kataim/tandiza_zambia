@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:tandiza/application/get_user.dart';
-import 'package:tandiza/presentation/application/provider.dart';
+import 'package:tandiza/domain/models/tandiza_client_entity.dart';
+import 'package:tandiza/presentation/application/service_provider.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import 'home_screen.dart';
 
 
 class ExistingClientRegistrationScreen extends StatefulWidget {
-  ExistingClientRegistrationScreen({Key? key}) : super(key: key);
+  const ExistingClientRegistrationScreen({Key? key}) : super(key: key);
   static const String id = 'existing_client_registration_screen';
 
   @override
@@ -22,11 +20,12 @@ class _ExistingClientRegistrationScreenState
     extends State<ExistingClientRegistrationScreen> {
   int currentStep = 0;
   bool _isChecked = false;
+  late String nrcnumber;
   final Validation _validation = Validation();
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
   late String phoneNumber;
-  late UserServiceProvider _userServiceProvider;
+  late ServiceProvider _serviceProvider;
   late String phoneIsoCode;
   bool visible = false;
   String confirmedNumber = '';
@@ -35,9 +34,7 @@ class _ExistingClientRegistrationScreenState
   DateTime initialDate = DateTime(1986, 1, 1);
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _clientNumberController = TextEditingController();
   final TextEditingController _nrcNumberController1 = TextEditingController();
   final TextEditingController _nrcNumberController2 = TextEditingController();
   final TextEditingController _nrcNumberController3 = TextEditingController();
@@ -45,13 +42,15 @@ class _ExistingClientRegistrationScreenState
 
   @override
   void initState() {
-    _userServiceProvider = Provider.of<UserServiceProvider>(context, listen: false);
-    _userServiceProvider.getClientData();
     super.initState();
   }
 
-  Future<void> getClientData () async {
-    _userServiceProvider.getClientData();
+  Future<TandizaClient?> getClientData (String id) async {
+    return _serviceProvider.getClientData(id);
+  }
+
+  Future<void> signInWithPhone(String phoneNumber, BuildContext context) async {
+    _serviceProvider.signInWithPhone(phoneNumber, context);
   }
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -78,12 +77,11 @@ class _ExistingClientRegistrationScreenState
 
   @override
   Widget build(BuildContext context) {
-    final tandiza = Provider.of<UserServiceProvider>(context).tandizaClient;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text('Tandiza Client'),
+        title: const Text('Tandiza Client'),
       ),
       resizeToAvoidBottomInset: true,
       body: Stepper(
@@ -100,7 +98,7 @@ class _ExistingClientRegistrationScreenState
                   onPressed: controlsDetails.onStepContinue,
                   child: Text(
                     isLastStep ? 'Confirm' : 'Continue',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: kWhiteColour,
                         fontSize: 18,
                         fontWeight: FontWeight.w500),
@@ -113,7 +111,7 @@ class _ExistingClientRegistrationScreenState
                   Expanded(
                       child: TextButton(
                     onPressed: controlsDetails.onStepCancel,
-                    child: Text('Cancel',
+                    child: const Text('Cancel',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500)),
                   )),
@@ -128,19 +126,34 @@ class _ExistingClientRegistrationScreenState
             });
           }
         },
-        onStepContinue: () {
+        onStepContinue: () async {
           final isLastStep =
               currentStep == getSteps(currentStep, context).length - 1;
 
-          if (isLastStep && _formKeyTandiza.currentState!.validate() && _isChecked) {
+          if (isLastStep && _isChecked) {
             //TODO register the user and navigate to the dashboard
-            getClientData();
+            nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+            final tandiza = await getClientData(nrcnumber);
+            if(!context.mounted) return;
+            signInWithPhone(_phoneController.text, context);
             print(tandiza?.firstName);
-            Navigator.pushNamed(context, HomeScreen.id);
-          } else {
-            setState(() {
-              currentStep = currentStep + 1;
-            });
+            //Navigator.pushNamed(context, HomeScreen.id);
+          } else if(_formKeyAccount.currentState!.validate() && currentStep == 0){
+                setState(() {
+                  currentStep = currentStep + 1;
+                });
+
+              }
+          else if(_formKeyTandiza.currentState!.validate() && currentStep == 1){
+                setState(() {
+                  currentStep = currentStep + 1;
+                });
+              } else if(isLastStep && !_isChecked){
+            const snackBar = SnackBar(
+              content: Text('Confirm Tandiza Terms & Conditions!'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
         currentStep: currentStep,
@@ -200,6 +213,7 @@ class _ExistingClientRegistrationScreenState
                   height: 15,
                 ),
                 IntlPhoneField(
+                  controller: _phoneController,
                   onChanged: (phone) {
                     setState(() {
                       phoneNumber = phone.completeNumber;
@@ -208,7 +222,7 @@ class _ExistingClientRegistrationScreenState
                   initialCountryCode: 'ZM',
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter Phone Number',
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.phone,
                         color: kSecondaryColour,
                       )),
@@ -224,25 +238,6 @@ class _ExistingClientRegistrationScreenState
             key: _formKeyTandiza,
             child: Column(
               children: [
-                TextFormField(
-                  controller: _clientNumberController,
-                  validator: null,
-                  //_validateName,
-                  onChanged: (value) {},
-                  textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.number,
-                  cursorColor: kPrimaryColour,
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Client Number',
-                      prefixIcon: Icon(
-                        Icons.numbers,
-                        color: Theme.of(context).primaryColorDark,
-                      )),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
                 Row(
                   children: [
                     Expanded(
@@ -251,8 +246,7 @@ class _ExistingClientRegistrationScreenState
                         controller: _nrcNumberController1,
                         textInputAction: TextInputAction.next,
                         maxLength: 6,
-                        validator: null,
-                        //_validateName,
+                        validator: _validation.validateNrc1,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
                         textAlign: TextAlign.center,
@@ -266,14 +260,13 @@ class _ExistingClientRegistrationScreenState
                             )),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     Expanded(
                       flex: 1,
                       child: TextFormField(
                         controller: _nrcNumberController2,
                         maxLength: 2,
-                        validator: null,
-                        //_validateName,
+                        validator: _validation.validateNrc2,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
                         textAlign: TextAlign.center,
@@ -284,14 +277,13 @@ class _ExistingClientRegistrationScreenState
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     Expanded(
                       flex: 1,
                       child: TextFormField(
                         controller: _nrcNumberController3,
                         maxLength: 1,
-                        validator: null,
-                        //_validateName,
+                        validator: _validation.validateNrc3,
                         onChanged: (value) {},
                         textCapitalization: TextCapitalization.words,
                         textAlign: TextAlign.center,
@@ -325,7 +317,7 @@ class _ExistingClientRegistrationScreenState
                   },
                   textCapitalization: TextCapitalization.words,
                   textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Date of birth',
@@ -342,8 +334,8 @@ class _ExistingClientRegistrationScreenState
           isActive: currentStep >= 2,
           title: const Text('Complete'),
           content: ListTile(
-            title: Text('Terms & Conditions'),
-            subtitle: Text('I agree to Tandiza Finance Terms. Information provided is correct'),
+            title: const Text('Terms & Conditions'),
+            subtitle: const Text('I agree to Tandiza Finance Terms. Information provided is correct'),
             isThreeLine: true,
             leading: Checkbox(
               value: _isChecked,
@@ -354,21 +346,6 @@ class _ExistingClientRegistrationScreenState
               },
             ),
           ))
-      /*Step(
-          state : currentStep > 2 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 2,
-          title: const Text('NRC'),
-          content: const UploadDocuments()),
-      Step(
-          state : currentStep > 3 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 3,
-          title: const Text('Payslip'),
-          content: const UploadDocuments()),
-      Step(
-          state : currentStep > 4 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 4,
-          title: const Text('Photo'),
-          content: const UploadDocuments()),*/
     ];
   }
 }

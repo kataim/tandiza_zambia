@@ -4,9 +4,9 @@ import 'package:tandiza/datalayer/models/tandiza_client_model.dart';
 import 'package:http/http.dart' as http;
 
 
-class RemoteDataProvider {
-  Future<TandizaClientModel?> getUser () async {
-    String url = 'https://nek-runaloan.calidad.co.za/tdzapi/client?nrcnumber=8310028195084';
+class LoanManagementApi {
+  Future<TandizaClientModel?> getUserByNrc (String id) async {
+    String url = 'https://nek-runaloan.calidad.co.za/tdzapi/client?nrcnumber=$id';
       final response = await http.get(Uri.parse(url), headers: {
         'Accept' : 'application/json',
         'Content-Type' : 'application/json',
