@@ -115,7 +115,7 @@ class FirebaseAuthApi {
         );
     }
 
-    Stream<FirebaseUserEntity> get onAuthStateChanges {
+    Stream<FirebaseUserEntity?> get onAuthStateChanges {
         return _auth.authStateChanges().map((e) {
             return _userFromFirebase(e);
         });

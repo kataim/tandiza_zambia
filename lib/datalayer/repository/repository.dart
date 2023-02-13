@@ -36,8 +36,14 @@ class Repository implements IRepository {
   }
 
   @override
-  Stream<FirebaseUserEntity?> authStateChanges() {
+  Stream<FirebaseUserEntity?>? authStateChanges() {
     // TODO: implement authStateChanges
-    throw UnimplementedError();
+    try{
+      final firebaseUser = firebaseAuthApi.onAuthStateChanges;
+      return firebaseUser;
+    }catch(e){
+      print(e);
+      return null;
+    }
   }
 }

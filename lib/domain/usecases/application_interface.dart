@@ -7,5 +7,5 @@ import '../models/tandiza_client_entity.dart';
 abstract class IUserInterface {
   Future<TandizaClient?> getUserByNrc(String ? id);
   Future<FirebaseUserEntity?> signInWithPhone(String phoneNumber, BuildContext context);
-  Stream<FirebaseUserEntity?> authStateChanges();
+  Stream<FirebaseUserEntity?> ? authStateChanges();
 }

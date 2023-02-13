@@ -22,7 +22,7 @@ class ApplicationFacade implements IUserInterface{
   }
 
   @override
-  Stream<FirebaseUserEntity?> authStateChanges() {
+  Stream<FirebaseUserEntity?>? authStateChanges() {
     // TODO: implement authStateChanges
     return userRepository.authStateChanges();
   }
