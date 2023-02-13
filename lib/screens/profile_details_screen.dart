@@ -122,9 +122,14 @@ String _selectedPeriod = "6 Months";
                          ),
                          const SizedBox(width: 15,),
                         ElevatedButton(onPressed: (() {
-                           setState(() {
-                          _currentStep -= 1;
-                        });
+                          if(_currentStep == 0){
+                               Navigator.pop(context);
+                          }else {
+                               setState(() {
+                                _currentStep -= 1;
+                             });
+                          }
+                           
                         }),
                          child: Text(_currentStep != 0 ? 'Back' : 'Back',
                           // ignore: prefer_const_constructors

@@ -64,9 +64,14 @@ int _selectedTransportAmount = 300;
                          ),
                          const SizedBox(width: 15,),
                         ElevatedButton(onPressed: (() {
-                           setState(() {
-                          _currentStep -= 1;
-                        });
+                          if(_currentStep == 0){
+                            Navigator.pop(context);
+                          }else {
+                              setState(() {
+                                _currentStep -= 1;
+                             });
+                          }
+                           
                         }),
                          child: Text(_currentStep != 0 ? 'Back' : 'Back',
                           // ignore: prefer_const_constructors
@@ -189,7 +194,7 @@ int _selectedTransportAmount = 300;
                       });
                 }),
                 
-                
+                const SizedBox(height: 20.0,)
                       ],
                     ),
                     isActive: _currentStep >= 0,
