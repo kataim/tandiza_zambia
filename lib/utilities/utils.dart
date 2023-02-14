@@ -1,4 +1,18 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+pickImage(ImageSource source) async{
+  String res = 'something';
+  final ImagePicker imagePicker = ImagePicker();
+
+ XFile? file = await imagePicker.pickImage(source: source);
+
+
+if (file != null) {
+    return await file.readAsBytes();
+  }
+ return res;
+}
 
 final amountRequest = [1500, 2500,3500,5000,10000,20000,30000];
 
