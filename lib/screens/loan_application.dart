@@ -1,3 +1,6 @@
+//import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tandiza/utilities/settings.dart';
@@ -13,11 +16,22 @@ class LoanApplication extends StatefulWidget {
 
 class _LoanApplicationState extends State<LoanApplication> {
   int _currentStep = 0;
+  Uint8List? _image;
+
 
   final Validation _validation = Validation();
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
   
+void selectImage() async {
+      Uint8List im = await pickImage(ImageSource.gallery);
+
+      setState(() {
+        _image = im;
+      });
+  }
+
+
 int _selectedAmount = 1500;
 String _selectedPeriod = "6 Months";
 int _selectedNetPay = 3500;
@@ -46,7 +60,7 @@ int _selectedTransportAmount = 300;
                         
                         ElevatedButton(
                           onPressed: (() {
-                           if (_currentStep != 1) {
+                           if (_currentStep != 2) {
                                   setState(() {
                                     _currentStep += 1;
                                   });
@@ -54,7 +68,7 @@ int _selectedTransportAmount = 300;
                                   Navigator.pop(context);
                                 }
                         }),
-                         child: Text(_currentStep != 1 ? 'Continue' : 'Submit',
+                         child: Text(_currentStep != 2 ? 'Continue' : 'Submit',
                           // ignore: prefer_const_constructors
                           style: TextStyle(
                              color: kWhiteColour,
@@ -64,9 +78,14 @@ int _selectedTransportAmount = 300;
                          ),
                          const SizedBox(width: 15,),
                         ElevatedButton(onPressed: (() {
-                           setState(() {
-                          _currentStep -= 1;
-                        });
+                          if(_currentStep == 0){
+                            Navigator.pop(context);
+                          }else {
+                              setState(() {
+                                _currentStep -= 1;
+                             });
+                          }
+                           
                         }),
                          child: Text(_currentStep != 0 ? 'Back' : 'Back',
                           // ignore: prefer_const_constructors
@@ -112,7 +131,7 @@ int _selectedTransportAmount = 300;
                   
        
                   steps: [
-                    Step(title: Text('Loan Application 1'), content: Column(
+                    Step(title: Text('Loan 1'), content: Column(
                       children: [
                         
                  
@@ -180,7 +199,8 @@ int _selectedTransportAmount = 300;
                   items: netPay.map<DropdownMenuItem<int>>((int value) {
                   return DropdownMenuItem<int>(
                     value: value,
-                    child: Center(child: Text(value.toString()))
+                    child: Center(
+                      child: Text(value.toString()))
                     );
                 }).toList(), 
                 onChanged: (int? newValue){
@@ -189,13 +209,13 @@ int _selectedTransportAmount = 300;
                       });
                 }),
                 
-                
+                const SizedBox(height: 20.0,)
                       ],
                     ),
                     isActive: _currentStep >= 0,
                     state: _currentStep >= 0 ? StepState.complete : StepState.disabled,
                     ),
-                    Step(title: Text('Loan Application 2'), content: Column(
+                    Step(title: Text('Loan 2'), content: Column(
                       children: [
                             const Text(
                               'Expenses',
@@ -310,6 +330,70 @@ int _selectedTransportAmount = 300;
                     ),
                     isActive: _currentStep >= 1,
                     state: _currentStep >= 1 ? StepState.complete : StepState.disabled,
+                    ),
+                    Step(title: Text('Upload Payslips'), content: Column(
+                      children: [
+                        Text('Upload Payslips'),
+                        const SizedBox(height: 10.0,),
+
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(kPrimaryColour)
+                          ),
+                          onPressed: selectImage,
+                        child: const Text('Attach Payslip 1',
+                        style: TextStyle(
+                          color: kWhiteColour,
+                          fontSize: 15
+                        ),
+                        ),
+                        ),
+                      const SizedBox(height: 10.0,),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(kPrimaryColour)
+                          ),
+                          onPressed: selectImage, 
+                        child: const Text('Attach Payslip 1',
+                        style: TextStyle(
+                          color: kWhiteColour,
+                          fontSize: 15
+                        ),
+                        ),
+                        ),
+                         const SizedBox(height: 10.0,),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(kPrimaryColour)
+                          ),
+                          onPressed: selectImage, 
+                        child: const Text('Attach Payslip 1',
+                        style: TextStyle(
+                          color: kWhiteColour,
+                          fontSize: 15
+                        ),
+                        ),
+                        ),
+                          const SizedBox(height: 10.0,),
+                        Text('Upload NRCs'),
+                        const SizedBox(height: 10.0,),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(kPrimaryColour)
+                          ),
+                          onPressed: selectImage, 
+                        child: const Text('Upload ID',
+                        style: TextStyle(
+                          color: kWhiteColour,
+                          fontSize: 15
+                        ),
+                        ),
+                        ),
+                         const SizedBox(height: 25.0,),
+                      ],
+                    ),
+                     isActive: _currentStep >= 2,
+                    state: _currentStep >= 2 ? StepState.complete : StepState.disabled,
                     )
                   ]
                   ),

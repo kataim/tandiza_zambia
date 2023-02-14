@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tandiza/screens/loan_application.dart';
+import 'package:tandiza/screens/profile_details_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
+import 'package:tandiza/widgets/service_card.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({Key? key}) : super(key: key);
@@ -12,9 +15,9 @@ class DashBoard extends StatelessWidget {
             fit: StackFit.loose,
             children: [
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.26,
-                    padding: const EdgeInsets.all(15.0),
+                   width: MediaQuery.of(context).size.width,
+                   height: MediaQuery.of(context).size.height * 0.23,
+                    padding: const EdgeInsets.all(10.0),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(8.0),
@@ -25,190 +28,131 @@ class DashBoard extends StatelessWidget {
                     child: const ListTile(
                       title: Text(
                               'Hello Erick,',
-                              style: TextStyle(fontSize: 18,color: kWhiteColour,fontWeight: FontWeight.w500),
+                              style: TextStyle(fontSize: 19,color: kWhiteColour, fontFamily: "Texta Alt",fontWeight: FontWeight.w500),
                       ),
                       subtitle: Text(
                             'Welcome to Tandiza Financial App,',
-                            style: TextStyle(fontSize: 11,color: kWhiteColour),
+                            style: TextStyle(fontSize: 12,color: kWhiteColour,fontFamily: "Texta Alt",),
                       ),
                       trailing: Icon(Icons.notifications_active,
                       color: kWhiteColour,
-                      size:25,
+                      size:27,
                       ),
                     ),
                   ),
                   const SizedBox(height: 5.0,),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 100),
-                      child: Column(
-                        children: [
-                      Card(
-                        elevation: 3.0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: const [
-                                      Text('Savings',
-                                      style: TextStyle(color: kPrimaryColour,fontSize: 18),
-                                      ),
-                                      SizedBox(height: 5.0,),
-                                      Text('ZMW 0.0')
-                                    ],
-                                  ),
-                                  Column(
-                                    children: const [
-                                       Text('Loans',
-                                      style: TextStyle(color: kPrimaryColour,fontSize: 18),),
-                                      SizedBox(height: 5.0,),
-                                      Text('ZMW 0.0')
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 35.0,
-                                child: Divider(thickness: 2.0,),
-                                ),
-                              const FittedBox(
-                                  child: Text('All you need in one App. Here you can borrow and check your repayment status',
-                                  style: TextStyle(
-                                    wordSpacing: 2,
-                                    fontSize: 30
-                                  ),
-                                  ),
-                                )
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15,),
-                       Container(
-                         child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                         const FittedBox(
-                          child: Text('Services',
-                          style: TextStyle(
-                            fontSize: 15
-                          ),
-                          ),
-                        ),
-                        const SizedBox(height: 15,),
-                        SingleChildScrollView(
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            child: ListView(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 80),
+                    child: Column(
+                      children: [
+                    Card(
+                      elevation: 3.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                     Container(
-                                      height: MediaQuery.of(context).size.height * 0.12,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Card(
-                                        color: Color.fromARGB(255, 186, 226, 187),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
-                                            Icon(Icons.person),
-                                            SizedBox(height: 5.0,),
-                                            Text('Profile',
-                                            style: TextStyle(
-                                              fontSize: 12
-                                            ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                     ),
-                                     Container(
-                                      height: MediaQuery.of(context).size.height * 0.12,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Card(
-                                        color: Color.fromARGB(255, 226, 219, 219),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
-                                            Icon(Icons.money),
-                                            SizedBox(height: 5.0,),
-                                            Text('Loans',
-                                            style: TextStyle(
-                                              fontSize: 12
-                                            ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                     ),
-                                     
+                                Column(
+                                  children: const [
+                                    Text('Savings',
+                                    style: TextStyle(color: kPrimaryColour,fontSize: 15,fontFamily: "Texta Alt",),
+                                    ),
+                                    SizedBox(height: 5.0,),
+                                    Text('ZMW 0.0',
+                                    style: TextStyle(
+                                      fontSize: 12
+                                    ),
+                                    )
                                   ],
                                 ),
-                                const SizedBox(height: 30,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                     Container(
-                                      height: MediaQuery.of(context).size.height * 0.12,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Card(
-                                        color: Color.fromARGB(255, 246, 161, 144),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
-                                            Icon(Icons.handshake),
-                                            SizedBox(height: 5.0,),
-                                            Text('Apply for Loan',
-                                            style: TextStyle(
-                                              fontSize: 12
-                                            ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                     ),
-                                     Container(
-                                      height: MediaQuery.of(context).size.height * 0.12,
-                                      width: MediaQuery.of(context).size.width * 0.4,
-                                      child: Card(
-                                        color: Color.fromARGB(255, 134, 155, 246),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: const [
-                                            Icon(Icons.picture_as_pdf),
-                                            SizedBox(height: 5.0,),
-                                            Text('Loan Statement',
-                                            style: TextStyle(
-                                              fontSize: 12
-                                            ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                     ),
-                                     
+                                Column(
+                                  children: const [
+                                     Text('Loans',
+                                    style: TextStyle(color: kPrimaryColour,fontSize: 15,fontFamily: "Texta Alt",),),
+                                    SizedBox(height: 5.0,),
+                                    Text('ZMW 0.0',
+                                    style: TextStyle(
+                                      fontSize: 12
+                                    ),)
                                   ],
-                                ), 
+                                ),
                               ],
                             ),
-                          ),
-                        )
-                      ],
+                            const SizedBox(
+                              height: 35.0,
+                              child: Divider(thickness: 2.0,),
+                              ),
+                            const Text('All you need in one App. ',
+                            style: TextStyle(
+                              fontSize: 12
+                            ),
+                            )
+                          ],
+                        ),
                       ),
+                    ),                            
+                   ],
                   ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  
+                                ),
+               const SizedBox(height: 5.0,),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 190.0),
+                    child: Container(
+                          child: Padding(
+                                    padding: const EdgeInsets.all(28.0),
+                                    child: GridView(
+                                      padding: EdgeInsets.all(10),
+                                      gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisSpacing: 25,crossAxisSpacing: 25),
+                                      children: [
+                                           GestureDetector(
+                                            onTap: (() {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
+                                            }),
+                                             child: const ServicesCard(
+                                              icon: Icons.person, 
+                                              color: Color.fromARGB(255, 220, 246, 232), 
+                                              text: 'Personal Info'),
+                                           ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                
+                                              },
+                                              child: const ServicesCard(
+                                                color: Color.fromARGB(255, 247, 172, 241),
+                                                icon: Icons.money,
+                                                text: 'Loans',
+                                                
+                                               ),
+                                            ),
+                                             GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoanApplication()));
+                                              },
+                                               child: const ServicesCard(
+                                                icon: Icons.handshake, 
+                                               color: Color.fromARGB(255, 238, 146, 131), 
+                                               text: 'Apply for Loan')
+                                             ),
+                                         GestureDetector(
+                                          onTap: (){},
+                                           child: const ServicesCard(icon: Icons.picture_as_pdf, 
+                                           color: Color.fromARGB(106, 171, 214, 221),
+                                           text: 'Loan Statements',)
+                                         ),
+                                            GestureDetector(
+                                              onTap: (){},
+                                              child: const ServicesCard(icon: Icons.mobile_friendly, 
+                                              color: Color.fromARGB(106, 113, 139, 210), 
+                                              text: 'Ndalama')
+                                            ),
+                                      ],
+                                      ),
+                                  ),
+                                ),
+                  )
             ],
           ),
         )
@@ -217,116 +161,4 @@ class DashBoard extends StatelessWidget {
 }
 
 
-/*
-Card(
-                          elevation: 3.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      children: const [
-                                        Text('Savings'),
-                                        SizedBox(height: 5.0,),
-                                        Text('ZMW 0.0')
-                                      ],
-                                    ),
-                                    Column(
-                                      children: const [
-                                         Text('Loans'),
-                                        SizedBox(height: 5.0,),
-                                        Text('ZMW 0.0')
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 35.0,
-                                  child: Divider(thickness: 2.0,),
-                                  ),
-                                const FittedBox(
-                                    child: Text('All you need in one App. Here you can borrow and check your repayment status',
-                                    style: TextStyle(
-                                      wordSpacing: 2,
-                                      fontSize: 30
-                                    ),
-                                    ),
-                                  )
-                              ],
-                            ),
-                          ),
-                        ),
- Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 200),
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FittedBox(
-                            child: Text('Services',
-                            style: TextStyle(
-                              fontSize: 15
-                            ),
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              child: ListView(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                       Container(
-                                        height: MediaQuery.of(context).size.height * 0.2,
-                                        width: MediaQuery.of(context).size.width * 0.5,
-                                        padding: EdgeInsets.all(25),
-                                        child: Card(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: const [
-                                              Icon(Icons.person),
-                                              SizedBox(height: 5.0,),
-                                              Text('Apply for Loan',
-                                              style: TextStyle(
-                                                fontSize: 12
-                                              ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                       ),
-                                       Container(
-                                        height: MediaQuery.of(context).size.height * 0.2,
-                                        width: MediaQuery.of(context).size.width * 0.5,
-                                        padding: EdgeInsets.all(25),
-                                        child: Card(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: const [
-                                              Icon(Icons.person),
-                                              SizedBox(height: 5.0,),
-                                              Text('Apply for Loan',
-                                              style: TextStyle(
-                                                fontSize: 12
-                                              ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                       ),
-                                       
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ) */
+

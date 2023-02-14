@@ -5,6 +5,8 @@ import 'package:tandiza/presentation/application/service_provider.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import 'home_screen.dart';
+
 
 
 class ExistingClientRegistrationScreen extends StatefulWidget {
@@ -132,12 +134,13 @@ class _ExistingClientRegistrationScreenState
 
           if (isLastStep && _isChecked) {
             //TODO register the user and navigate to the dashboard
-            nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
-            final tandiza = await getClientData(nrcnumber);
-            if(!context.mounted) return;
-            signInWithPhone(_phoneController.text, context);
-            print(tandiza?.firstName);
-            //Navigator.pushNamed(context, HomeScreen.id);
+           // nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+           // final tandiza = await getClientData(nrcnumber);
+           // if(!context.mounted) return;
+            // ignore: use_build_context_synchronously
+            //signInWithPhone(_phoneController.text, context);
+            //print(tandiza?.firstName);
+             Navigator.pushNamed(context, HomeScreen.id);
           } else if(_formKeyAccount.currentState!.validate() && currentStep == 0){
                 setState(() {
                   currentStep = currentStep + 1;
