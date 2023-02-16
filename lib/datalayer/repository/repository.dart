@@ -46,4 +46,9 @@ class Repository implements IRepository {
       return null;
     }
   }
+
+  @override
+  Future<void>? signOut() {
+    firebaseAuthApi.signOut();
+  }
 }

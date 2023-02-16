@@ -7,6 +7,7 @@ import 'existing_client_registration_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
+  static const String id = 'welcome_sreen';
 
   @override
   Widget build(BuildContext context) {

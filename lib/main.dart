@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,11 +8,11 @@ import 'package:tandiza/datalayer/datasources/loan_management_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/repository/repository.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
-import 'package:tandiza/presentation/application/service_provider.dart';
 import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
+import 'package:tandiza/presentation/state-management/service_provider.dart';
 import 'package:tandiza/utilities/settings.dart';
 
 void main() async {
@@ -27,10 +28,7 @@ void main() async {
                       firebaseAuthApi: FirebaseAuthApi())));
         }),
         
-        StreamProvider.value(value: ServiceProvider(applicationFacade: ApplicationFacade(
-            userRepository: Repository(
-                loanManagementApi: LoanManagementApi(),
-                firebaseAuthApi: FirebaseAuthApi()))).onAuthStateChanges(), initialData: FirebaseUserModel.fromJson({}))
+        StreamProvider.value(value: FirebaseAuth.instance.authStateChanges(), initialData: FirebaseUserModel.fromJson({}))
       ],
       child: const MyApp()));
 }
@@ -56,17 +54,14 @@ class MyApp extends StatelessWidget {
             primary: kPrimaryColour,
             secondary: kSecondaryColour,
           )),
-      home: StreamBuilder<FirebaseUserEntity?>(
-        stream:  ServiceProvider().onAuthStateChanges(),
-        builder: (context, snapshot) {
-          if(snapshot.hasData){
-            return const HomeScreen();
-          return const WelcomeScreen();
-        }else{
-            return const WelcomeScreen();
-      }}
-      ),
+      home: Consumer<User?>(
+        builder: (context, value, child) {
+          return value?.uid != null
+              ? const HomeScreen()
+              : const WelcomeScreen();
+        }),
       routes: {
+        WelcomeScreen.id : (context) => const WelcomeScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),
         ExistingClientRegistrationScreen.id: (context) => ExistingClientRegistrationScreen(),
         HomeScreen.id: (context) => HomeScreen()

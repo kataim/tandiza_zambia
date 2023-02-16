@@ -31,4 +31,8 @@ class ServiceProvider extends ChangeNotifier {
 
   }
 
+  Future<void> signOut () async {
+    applicationFacade?.signOut();
+  }
+
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
-import 'package:tandiza/presentation/application/service_provider.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../state-management/service_provider.dart';
 import 'home_screen.dart';
 
 

@@ -121,5 +121,9 @@ class FirebaseAuthApi {
         });
     }
 
+    Future<void> signOut () async {
+        _auth.signOut();
+    }
+
 
 }

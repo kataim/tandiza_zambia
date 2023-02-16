@@ -26,4 +26,9 @@ class ApplicationFacade implements IUserInterface{
     // TODO: implement authStateChanges
     return userRepository.authStateChanges();
   }
+
+  @override
+  Future<void> signOut() async {
+    userRepository.signOut();
+  }
 }

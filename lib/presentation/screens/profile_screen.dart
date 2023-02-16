@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tandiza/presentation/state-management/service_provider.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -6,10 +9,13 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text('profile screen'),
-      ),
+    final ServiceProvider serviceProvider = Provider.of(context, listen: false);
+    return Center(
+      child: ElevatedButton(
+      onPressed: () {
+        FirebaseAuth.instance.signOut();
+      },
+      child:  Text('Sign Out')),
     );
   }
 }
