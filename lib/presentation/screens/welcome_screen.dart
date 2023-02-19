@@ -30,29 +30,6 @@ class WelcomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, ExistingClientRegistrationScreen.id);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: kSecondaryColour,
-              fixedSize: const Size(252, 56),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              "Tandiza Client",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: "Texta Alt",
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, RegistrationScreen.id);
-            },
-            style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryColour,
               fixedSize: const Size(252, 56),
               shape: RoundedRectangleBorder(
@@ -60,7 +37,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             child: const Text(
-              "New Client",
+              "Get Started",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

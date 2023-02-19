@@ -26,8 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _children = [
     DashBoard(),
-    WalletScreen(),
-    TransactionScreen(),
+    LearnScreen(),
     ProfileScreen()
   ];
 
@@ -54,11 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             activeIcon: Icon(
-              Icons.star,
+              Icons.dashboard,
               color: kSecondaryColour,
             ),
             icon: Icon(
-              Icons.star_border,
+              Icons.dashboard_outlined,
               color: kWhiteColour,
             ),
             label:
@@ -75,18 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             label:
             'Learn',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Icon(
-              Icons.cloud_download_sharp,
-              color: kSecondaryColour,
-            ),
-            icon: Icon(
-              Icons.cloud_download_outlined,
-              color: kWhiteColour,
-            ),
-            label:
-            'Downloads',
           ),
           BottomNavigationBarItem(
             activeIcon: Icon(

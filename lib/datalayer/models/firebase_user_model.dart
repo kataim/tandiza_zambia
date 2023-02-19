@@ -15,16 +15,16 @@ class FirebaseUserModel extends TandizaClient {
       firstName: firstName, result: result, surname: surname, nrcNumber: nrcNumber, dateOfBirth: dateOfBirth);
 
 
-  factory FirebaseUserModel.fromJson(Map<String, dynamic> json){
+  factory FirebaseUserModel.fromJson(Map<String, dynamic> ? json){
     return FirebaseUserModel(
-        clientId: json['client_id'],
-        result: json['result'],
-        firstName: json['firstnames'],
-        surname: json['surname'],
-        nrcNumber: json['nrcnumber'],
-        dateOfBirth: json['date_of_birth'],
-        uid: json['uid'],
-        phoneNumber: json['phoneNumber']);
+        clientId: json?['client_id'],
+        result: json?['result'],
+        firstName: json?['firstName'],
+        surname: json?['surname'],
+        nrcNumber: json?['nrcnumber'],
+        dateOfBirth: json?['date_of_birth'],
+        uid: json?['uid'],
+        phoneNumber: json?['phoneNumber']);
   }
 
   Map<String, dynamic> toJson () {

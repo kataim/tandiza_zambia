@@ -10,7 +10,7 @@ class ServiceProvider extends ChangeNotifier {
   ServiceProvider({this.applicationFacade});
 
   TandizaClient ? tandizaClient = TandizaClient();
-  FirebaseUserEntity ? firebaseUserModel = FirebaseUserEntity();
+  FirebaseUserEntity ? firebaseUserEntity = FirebaseUserEntity();
 
 
 
@@ -20,10 +20,32 @@ class ServiceProvider extends ChangeNotifier {
     return tandizaClient;
   }
 
-  Future<FirebaseUserEntity?> signInWithPhone(String phoneNumber, BuildContext context) async {
-    firebaseUserModel = await applicationFacade?.signInWithPhone(phoneNumber, context);
+  Future<FirebaseUserEntity?> signInWithPhone(
+      {String ? phoneNumber,
+        required BuildContext context,
+        TandizaClient ? tandizaClient,
+        int ? clientId,
+        String ? firstName,
+        String ? result,
+        String ? surname,
+        String ? nrcNumber,
+        String ? dateOfBirth}) async {
+    firebaseUserEntity = await applicationFacade?.signInWithPhone(
+        phoneNumber: phoneNumber,
+        context : context,
+        tandizaClient: tandizaClient,
+        clientId: clientId,
+    firstName: firstName,
+    result: result,
+    surname: surname,
+    nrcNumber: nrcNumber,
+    dateOfBirth: dateOfBirth);
     notifyListeners();
-    return firebaseUserModel;
+    return firebaseUserEntity;
+  }
+
+  Future<void> updateFirebaseUser(FirebaseUserModel userModel) async {
+    applicationFacade?.updateFirebaseUserData(userModel);
   }
 
   Stream<FirebaseUserEntity?>? onAuthStateChanges () {
@@ -33,6 +55,10 @@ class ServiceProvider extends ChangeNotifier {
 
   Future<void> signOut () async {
     applicationFacade?.signOut();
+  }
+
+  Future<FirebaseUserModel?> getFirebaseUser() async {
+    return applicationFacade?.getFirebaseUserData();
   }
 
 }

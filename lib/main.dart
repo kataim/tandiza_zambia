@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tandiza/application/application_facade.dart';
 import 'package:tandiza/datalayer/datasources/firebase_auth_api.dart';
+import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
 import 'package:tandiza/datalayer/datasources/loan_management_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/repository/repository.dart';
-import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
+import 'package:tandiza/presentation/screens/start_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
 import 'package:tandiza/presentation/state-management/service_provider.dart';
 import 'package:tandiza/utilities/settings.dart';
@@ -24,6 +25,7 @@ void main() async {
           return ServiceProvider(
               applicationFacade: ApplicationFacade(
                   userRepository: Repository(
+                      firebaseDatabaseService: FirebaseDatabaseService(),
                       loanManagementApi: LoanManagementApi(),
                       firebaseAuthApi: FirebaseAuthApi())));
         }),
@@ -54,12 +56,7 @@ class MyApp extends StatelessWidget {
             primary: kPrimaryColour,
             secondary: kSecondaryColour,
           )),
-      home: Consumer<User?>(
-        builder: (context, value, child) {
-          return value?.uid != null
-              ? const HomeScreen()
-              : const WelcomeScreen();
-        }),
+      home: const StartScreen(),
       routes: {
         WelcomeScreen.id : (context) => const WelcomeScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:tandiza/datalayer/models/firebase_user_model.dart';
+import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -41,9 +44,11 @@ class _ExistingClientRegistrationScreenState
   final TextEditingController _nrcNumberController2 = TextEditingController();
   final TextEditingController _nrcNumberController3 = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
 
   @override
   void initState() {
+    _serviceProvider = Provider.of<ServiceProvider>(context, listen: false);
     super.initState();
   }
 
@@ -51,8 +56,29 @@ class _ExistingClientRegistrationScreenState
     return _serviceProvider.getClientData(id);
   }
 
-  Future<void> signInWithPhone(String phoneNumber, BuildContext context) async {
-    _serviceProvider.signInWithPhone(phoneNumber, context);
+  Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
+    required BuildContext context,
+    TandizaClient ? tandizaClient,
+    int ? clientId,
+    String ? firstName,
+    String ? result,
+    String ? surname,
+    String ? nrcNumber,
+    String ? dateOfBirth}) async {
+    return _serviceProvider.signInWithPhone(
+        phoneNumber: phoneNumber,
+        context:context,
+        tandizaClient: tandizaClient,
+    clientId: clientId,
+    firstName: firstName,
+    result: result,
+    surname: surname,
+    nrcNumber: nrcNumber,
+    dateOfBirth: dateOfBirth);
+  }
+
+  Future<void> updateFirebaseUser(FirebaseUserModel userModel) async {
+    _serviceProvider.updateFirebaseUser(userModel);
   }
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -79,11 +105,13 @@ class _ExistingClientRegistrationScreenState
 
   @override
   Widget build(BuildContext context) {
+    final tandiza = Provider.of<ServiceProvider>(context).tandizaClient;
+    final firebaseUser = Provider.of<ServiceProvider>(context).firebaseUserEntity;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text('Tandiza Client'),
+        title: const Text('Tandiza Sign Up'),
       ),
       resizeToAvoidBottomInset: true,
       body: Stepper(
@@ -134,13 +162,21 @@ class _ExistingClientRegistrationScreenState
 
           if (isLastStep && _isChecked) {
             //TODO register the user and navigate to the dashboard
-           // nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
-           // final tandiza = await getClientData(nrcnumber);
-           // if(!context.mounted) return;
-            // ignore: use_build_context_synchronously
-            //signInWithPhone(_phoneController.text, context);
-            //print(tandiza?.firstName);
-             Navigator.pushNamed(context, HomeScreen.id);
+           nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+           final tandiza = await getClientData(nrcnumber);
+           signInWithPhone(
+               phoneNumber: phoneNumber,
+               context:context,
+               tandizaClient: tandiza,
+                clientId: tandiza?.clientId,
+                firstName: tandiza?.firstName ?? _firstNameController.text,
+                surname: tandiza?.surname ?? _lastNameController.text,
+                result: tandiza?.result,
+                nrcNumber: tandiza?.nrcNumber ?? nrcnumber,
+                dateOfBirth: tandiza?.dateOfBirth ?? _dateOfBirthController.text);
+
+            print(tandiza?.result);
+             //Navigator.pushNamed(context, HomeScreen.id);
           } else if(_formKeyAccount.currentState!.validate() && currentStep == 0){
                 setState(() {
                   currentStep = currentStep + 1;
@@ -188,6 +224,7 @@ class _ExistingClientRegistrationScreenState
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'First Name',
+                      labelText: 'First Name',
                       prefixIcon: Icon(
                         Icons.person,
                         color: Theme.of(context).primaryColorDark,
@@ -207,6 +244,7 @@ class _ExistingClientRegistrationScreenState
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Last Name',
+                      labelText: 'Last Name',
                       prefixIcon: Icon(
                         Icons.person,
                         color: Theme.of(context).primaryColorDark,
@@ -215,32 +253,6 @@ class _ExistingClientRegistrationScreenState
                 const SizedBox(
                   height: 15,
                 ),
-                IntlPhoneField(
-                  controller: _phoneController,
-                  onChanged: (phone) {
-                    setState(() {
-                      phoneNumber = phone.completeNumber;
-                    });
-                  },
-                  initialCountryCode: 'ZM',
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter Phone Number',
-                      prefixIcon: const Icon(
-                        Icons.phone,
-                        color: kSecondaryColour,
-                      )),
-                ),
-              ],
-            ),
-          )),
-      Step(
-          state: currentStep > 1 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 1,
-          title: const Text('Tandiza'),
-          content: Form(
-            key: _formKeyTandiza,
-            child: Column(
-              children: [
                 Row(
                   children: [
                     Expanded(
@@ -257,6 +269,7 @@ class _ExistingClientRegistrationScreenState
                         cursorColor: kPrimaryColour,
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: 'NRC Number',
+                            labelText: 'NRC Number',
                             prefixIcon: Icon(
                               Icons.account_circle,
                               color: Theme.of(context).primaryColorDark,
@@ -276,11 +289,13 @@ class _ExistingClientRegistrationScreenState
                         keyboardType: TextInputType.number,
                         cursorColor: kPrimaryColour,
                         decoration: kTextFieldDecoration.copyWith(
-                          hintText: ''
+                            hintText: '',
+                            labelText: ''
                         ),
                       ),
                     ),
                     const SizedBox(width: 10,),
+
                     Expanded(
                       flex: 1,
                       child: TextFormField(
@@ -293,15 +308,31 @@ class _ExistingClientRegistrationScreenState
                         keyboardType: TextInputType.number,
                         cursorColor: kPrimaryColour,
                         decoration: kTextFieldDecoration.copyWith(
-                            hintText: ''
+                            hintText: '',
+                            labelText: ''
                         ),
                       ),
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
+                const SizedBox(height: 15,),
+                IntlPhoneField(
+                  controller: _phoneController,
+                  onChanged: (phone) {
+                    setState(() {
+                      phoneNumber = phone.completeNumber;
+                    });
+                  },
+                  initialCountryCode: 'ZM',
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter Phone Number',
+                      labelText: 'Phone Number',
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: kSecondaryColour,
+                      )),
                 ),
+                const SizedBox(height: 15,),
                 TextFormField(
                   controller: _dateOfBirthController,
                   validator: null,
@@ -324,10 +355,97 @@ class _ExistingClientRegistrationScreenState
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Date of birth',
+                      labelText: 'Date of birth',
                       prefixIcon: Icon(
                         Icons.calendar_month_sharp,
                         color: Theme.of(context).primaryColorDark,
                       )),
+                ),
+              ],
+            ),
+          )),
+      Step(
+          state: currentStep > 1 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 1,
+          title: const Text('Address'),
+          content: Form(
+            key: _formKeyTandiza,
+            child: Column(
+              children: [
+                TextFormField(
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Plot No / House No',
+                      labelText: 'Plot No / House No',
+                      prefixIcon: Icon(
+                        Icons.business,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                TextFormField(
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Street Address',
+                      labelText: 'Street Address',
+                      prefixIcon: Icon(
+                        Icons.web_asset_outlined,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(height: 25,),
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    if (textEditingValue.text == '') {
+                      return const Iterable<String>.empty();
+                    }
+                    return list.where((String option) {
+                      return option
+                          .contains(textEditingValue.text);
+                    });
+                  },
+                  fieldViewBuilder: (BuildContext context,
+                      TextEditingController textEditingController,
+                      FocusNode focusNode,
+                      VoidCallback onFieldSubmitted) {
+                    return TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter city';
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: textEditingController,
+                      focusNode: focusNode,
+                      onFieldSubmitted: (str) => onFieldSubmitted(),
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'City',
+                          labelText: 'City',
+                          prefixIcon: Icon(
+                            Icons.location_city,
+                            color: Theme.of(context).primaryColorDark,
+                          )),
+                    );
+                  },
+                  onSelected: (String selection) {
+                    _cityController.text = selection;
+                    debugPrint('You just selected $selection');
+                  },
                 ),
               ],
             ),
