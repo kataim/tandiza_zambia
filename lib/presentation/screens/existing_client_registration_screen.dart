@@ -175,8 +175,7 @@ class _ExistingClientRegistrationScreenState
                 nrcNumber: tandiza?.nrcNumber ?? nrcnumber,
                 dateOfBirth: tandiza?.dateOfBirth ?? _dateOfBirthController.text);
 
-            print(tandiza?.result);
-             //Navigator.pushNamed(context, HomeScreen.id);
+
           } else if(_formKeyAccount.currentState!.validate() && currentStep == 0){
                 setState(() {
                   currentStep = currentStep + 1;

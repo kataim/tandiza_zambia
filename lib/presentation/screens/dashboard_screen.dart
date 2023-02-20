@@ -133,56 +133,59 @@ class _DashBoardState extends State<DashBoard> {
                     const SizedBox(height: 5.0,),
                     Padding(
                       padding: const EdgeInsets.only(top: 190.0),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(28.0),
-                          child: GridView(
-                            padding: EdgeInsets.all(10),
-                            gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisSpacing: 25,crossAxisSpacing: 25),
-                            children: [
-                              GestureDetector(
-                                onTap: (() {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileDetails()));
-                                }),
-                                child: const ServicesCard(
-                                    icon: Icons.person,
-                                    color: Color.fromARGB(255, 220, 246, 232),
-                                    text: 'Personal Info'),
-                              ),
-                              GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.all(28.0),
+                        child: GridView(
+                          padding: EdgeInsets.all(10),
+                          gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisSpacing: 0,crossAxisSpacing: 0),
+                          children: [
+                            GestureDetector(
                                 onTap: () {
-
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoanApplication()));
                                 },
                                 child: const ServicesCard(
-                                  color: Color.fromARGB(255, 247, 172, 241),
-                                  icon: Icons.money,
-                                  text: 'Loans',
+                                    leftWidth: 1,
+                                    topWidth: 1,
+                                    bottomWidth: 0.5,
+                                    rightWidth: 0.5,
+                                    icon: Icons.check_circle_rounded,
+                                    text: 'Apply for Loan')
+                            ),
+                            GestureDetector(
+                              onTap: () {
 
-                                ),
+                              },
+                              child: const ServicesCard(
+                                leftWidth: 0.5,
+                                topWidth: 1,
+                                bottomWidth: 0.5,
+                                rightWidth: 1,
+                                icon: Icons.account_balance,
+                                text: 'Loans',
+
                               ),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LoanApplication()));
-                                  },
-                                  child: const ServicesCard(
-                                      icon: Icons.handshake,
-                                      color: Color.fromARGB(255, 238, 146, 131),
-                                      text: 'Apply for Loan')
-                              ),
-                              GestureDetector(
-                                  onTap: (){},
-                                  child: const ServicesCard(icon: Icons.picture_as_pdf,
-                                    color: Color.fromARGB(106, 171, 214, 221),
-                                    text: 'Loan Statements',)
-                              ),
-                              GestureDetector(
-                                  onTap: (){},
-                                  child: const ServicesCard(icon: Icons.mobile_friendly,
-                                      color: Color.fromARGB(106, 113, 139, 210),
-                                      text: 'Ndalama')
-                              ),
-                            ],
-                          ),
+                            ),
+                            GestureDetector(
+                                onTap: (){},
+                                child: const ServicesCard(
+                                  leftWidth: 1,
+                                  topWidth: 0.5,
+                                  bottomWidth: 1,
+                                  rightWidth: 0.5,
+                                  icon: Icons.picture_as_pdf,
+                                  text: 'Loan Statements',)
+                            ),
+                            GestureDetector(
+                                onTap: (){},
+                                child: const ServicesCard(
+                                    leftWidth: 0.5,
+                                    topWidth: 0.5,
+                                    bottomWidth: 1,
+                                    rightWidth: 1,
+                                    icon: Icons.mobile_friendly,
+                                    text: 'Ndalama')
+                            ),
+                          ],
                         ),
                       ),
                     )

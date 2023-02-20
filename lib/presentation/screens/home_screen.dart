@@ -40,12 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: kPrimaryColour,
         showSelectedLabels: true,
         onTap: _onItemTap,
         currentIndex: _pageIndex,
         selectedItemColor: kSecondaryColour,
-        unselectedItemColor: kWhiteColour,
+        unselectedItemColor: kPrimaryColour,
         unselectedLabelStyle: TextStyle(color: kSecondaryColour),
         selectedLabelStyle: TextStyle(
           color: kSecondaryColour,
@@ -58,19 +57,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             icon: Icon(
               Icons.dashboard_outlined,
-              color: kWhiteColour,
+              color: kPrimaryColour,
             ),
             label:
-            'Top Rated',
+            'Dashboard',
           ),
           BottomNavigationBarItem(
             activeIcon: Icon(
-              Icons.menu_book,
+              Icons.insert_chart,
               color: kSecondaryColour,
             ),
             icon: Icon(
-              Icons.menu_book,
-              color: kWhiteColour,
+              Icons.insert_chart_outlined,
+              color: kPrimaryColour,
             ),
             label:
             'Learn',
@@ -82,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             icon: Icon(
               Icons.person_outline,
-              color: kWhiteColour,
+              color: kPrimaryColour,
             ),
             label:
             'Account',
