@@ -52,6 +52,19 @@ class _ExistingClientRegistrationScreenState
     super.initState();
   }
 
+  @override
+  void dispose () {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
+    _nrcNumberController1.dispose();
+    _nrcNumberController3.dispose();
+    _nrcNumberController2.dispose();
+    _phoneController.dispose();
+    _dateOfBirthController.dispose();
+    _cityController.dispose();
+  }
+
   Future<TandizaClient?> getClientData (String id) async {
     return _serviceProvider.getClientData(id);
   }
@@ -105,8 +118,6 @@ class _ExistingClientRegistrationScreenState
 
   @override
   Widget build(BuildContext context) {
-    final tandiza = Provider.of<ServiceProvider>(context).tandizaClient;
-    final firebaseUser = Provider.of<ServiceProvider>(context).firebaseUserEntity;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -343,7 +354,7 @@ class _ExistingClientRegistrationScreenState
                     if(dateSelected == null) return;
 
                     setState(() {
-                      _dateOfBirthController.text = DateFormat('d MMM y')
+                      _dateOfBirthController.text = DateFormat('yyyy-MM-dd')
                           .format(dateSelected);
                     });
 

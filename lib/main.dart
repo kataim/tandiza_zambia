@@ -8,8 +8,13 @@ import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
 import 'package:tandiza/datalayer/datasources/loan_management_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/repository/repository.dart';
+import 'package:tandiza/presentation/screens/employment_screen.dart';
 import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
+import 'package:tandiza/presentation/screens/family_information_screen.dart';
+import 'package:tandiza/presentation/screens/home_address_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
+import 'package:tandiza/presentation/screens/login_screen.dart';
+import 'package:tandiza/presentation/screens/personal_information_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/presentation/screens/start_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
@@ -58,10 +63,15 @@ class MyApp extends StatelessWidget {
           )),
       home: const StartScreen(),
       routes: {
+        LoginScreen.id : (context) => const LoginScreen(),
+        HomeAddressScreen.id : (context) => const HomeAddressScreen(),
         WelcomeScreen.id : (context) => const WelcomeScreen(),
         RegistrationScreen.id : (context) => RegistrationScreen(),
-        ExistingClientRegistrationScreen.id: (context) => ExistingClientRegistrationScreen(),
-        HomeScreen.id: (context) => HomeScreen()
+        ExistingClientRegistrationScreen.id: (context) => const ExistingClientRegistrationScreen(),
+        HomeScreen.id: (context) => const HomeScreen(),
+        PersonalInformationScreen.id : (context) => const PersonalInformationScreen(),
+        EmploymentScreen.id : (context) => const EmploymentScreen(),
+        FamilyInformationScreen.id : (context) => const FamilyInformationScreen(),
       },
     );
   }

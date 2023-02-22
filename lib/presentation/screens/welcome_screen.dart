@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tandiza/presentation/screens/login_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 
@@ -50,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
           const SizedBox(height: 15),
           OutlinedButton(
             onPressed: () {
-
+              Navigator.pushNamed(context, LoginScreen.id);
             },
             style: OutlinedButton.styleFrom(
               fixedSize: const Size(252, 56),

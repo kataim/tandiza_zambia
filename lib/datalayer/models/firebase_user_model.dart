@@ -33,8 +33,8 @@ class FirebaseUserModel extends TandizaClient {
       'firstName': firstName,
       'surname': surname,
       'result': result,
-      'nrcNumber': nrcNumber,
-      'dateOfBirth': dateOfBirth,
+      'nrcnumber': nrcNumber,
+      'date_of_birth': dateOfBirth,
       'uid' : uid,
       'phoneNumber' : phoneNumber
     };

@@ -90,6 +90,55 @@ const List<String> list = <String>['Ndola',
 'Luwingu'
 ];
 
+List<String> zambiaProvinces = [
+  'Central Province',
+  'Copperbelt Province',
+  'Eastern Province',
+  'Luapula Province',
+  'Lusaka Province',
+  'Muchinga Province',
+  'Northern Province',
+  'North-Western Province',
+  'Southern Province',
+  'Western Province'
+];
+
+List<String> employers = [
+  'Madison Insurance',
+  'Total Zambia',
+  'Toyota Zambia',
+  'Zambia Revenue Authority',
+  'ZANAZO',
+  'First National Bank',
+  'MTN',
+  'Airtel',
+  'Mopani Copper Mines',
+  'Konkola Copper Mines'
+];
+
+List<DropdownMenuItem<Object>> contractType = <String>['Permanent', 'Part Time', 'Contractor'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+List<DropdownMenuItem<Object>> contractDuration = <String>['6 Months', '1 Year', '2 Years', '5 Years', '10 Years'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+
 const kTextFieldDecoration = InputDecoration(
   labelText: 'Field title',
   hintText: 'Enter a value',

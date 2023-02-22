@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: kPrimaryColour,
             ),
             label:
-            'Learn',
+            'Ndalama',
           ),
           BottomNavigationBarItem(
             activeIcon: Icon(
