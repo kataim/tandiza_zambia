@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> updateFirebaseUser(FirebaseUserModel userModel) async {
-    _serviceProvider.updateFirebaseUser(userModel);
+    _serviceProvider.saveFirebaseUser(userModel);
   }
 
   @override
@@ -194,9 +194,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     if(tandiza?.result == 'Found'){
                       signInWithPhone(
-                        phoneNumber: phoneNumber,
-                        context:context,
-                      );
+                          phoneNumber: phoneNumber,
+                          context:context,
+                          tandizaClient: tandiza,
+                          clientId: tandiza?.clientId,
+                          firstName: tandiza?.firstName,
+                          surname: tandiza?.surname ,
+                          result: tandiza?.result,
+                          nrcNumber: tandiza?.nrcNumber,
+                          dateOfBirth: tandiza?.dateOfBirth);
+
                     }else{
                       showDialog<void>(
                           context: context,

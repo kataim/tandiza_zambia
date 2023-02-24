@@ -6,7 +6,7 @@ class FirebaseDatabaseService {
 
   FirebaseDatabaseService({this.uid});
 
-  Future<void> updateUserData(FirebaseUserModel userData) async {
+  Future<void> saveUserData(FirebaseUserModel userData) async {
     FirebaseFirestore.instance
         .collection('tandiza_client')
         .doc(uid)
@@ -17,5 +17,12 @@ class FirebaseDatabaseService {
     final userData =
     await FirebaseFirestore.instance.collection('tandiza_client').doc(uid).get();
     return FirebaseUserModel.fromJson(userData.data());
+  }
+
+  Future<void> updateUserData(Map<String, dynamic> userJsonMap) async {
+    FirebaseFirestore.instance
+        .collection('tandiza_client')
+        .doc(uid)
+        .update(userJsonMap);
   }
 }

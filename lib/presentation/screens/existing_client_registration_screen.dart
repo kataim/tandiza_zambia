@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +29,8 @@ class _ExistingClientRegistrationScreenState
   bool _isChecked = false;
   late String nrcnumber;
   final Validation _validation = Validation();
+
+  final GlobalKey<FormState> _formKeyIdentity = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
   late String phoneNumber;
@@ -91,7 +95,7 @@ class _ExistingClientRegistrationScreenState
   }
 
   Future<void> updateFirebaseUser(FirebaseUserModel userModel) async {
-    _serviceProvider.updateFirebaseUser(userModel);
+    _serviceProvider.saveFirebaseUser(userModel);
   }
   void onPhoneNumberChange(
       String number, String internationalizedPhoneNumber, String isoCode) {
@@ -187,13 +191,27 @@ class _ExistingClientRegistrationScreenState
                 dateOfBirth: tandiza?.dateOfBirth ?? _dateOfBirthController.text);
 
 
-          } else if(_formKeyAccount.currentState!.validate() && currentStep == 0){
-                setState(() {
-                  currentStep = currentStep + 1;
-                });
-
+          } else if(_formKeyIdentity.currentState!.validate() && currentStep == 0){
+            nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+            final tandiza = await getClientData(nrcnumber);
+            if(tandiza?.result == 'Found'){
+              signInWithPhone(
+                  phoneNumber: phoneNumber,
+                  context:context,
+                  tandizaClient: tandiza,
+                  clientId: tandiza?.clientId,
+                  firstName: tandiza?.firstName,
+                  surname: tandiza?.surname,
+                  result: tandiza?.result,
+                  nrcNumber: tandiza?.nrcNumber,
+                  dateOfBirth: tandiza?.dateOfBirth);
+            }else{
+              setState(() {
+                currentStep = currentStep + 1;
+              });
+            }
               }
-          else if(_formKeyTandiza.currentState!.validate() && currentStep == 1){
+          else if(_formKeyAccount.currentState!.validate() && currentStep == 1){
                 setState(() {
                   currentStep = currentStep + 1;
                 });
@@ -218,51 +236,14 @@ class _ExistingClientRegistrationScreenState
       Step(
           state: currentStep > 0 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 0,
-          title: const Text('Account'),
+          title: const Text('Identity'),
           content: Form(
-            key: _formKeyAccount,
+            key: _formKeyIdentity,
             child: Column(
               children: [
-                TextFormField(
-                  controller: _firstNameController,
-                  validator: _validation.validateName,
-                  //_validateName,
-                  onChanged: (value) {},
-                  textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
-                  cursorColor: kPrimaryColour,
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'First Name',
-                      labelText: 'First Name',
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Theme.of(context).primaryColorDark,
-                      )),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                TextFormField(
-                  controller: _lastNameController,
-                  validator: _validation.validateName,
-                  //_validateName,
-                  onChanged: (value) {},
-                  textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
-                  cursorColor: kPrimaryColour,
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Last Name',
-                      labelText: 'Last Name',
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Theme.of(context).primaryColorDark,
-                      )),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const SizedBox(height: 10,),
+                const Text('NRC Number', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
                 Row(
                   children: [
                     Expanded(
@@ -325,7 +306,9 @@ class _ExistingClientRegistrationScreenState
                     )
                   ],
                 ),
-                const SizedBox(height: 15,),
+                const SizedBox(height: 10,),
+                const Text('Phone Number', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
                 IntlPhoneField(
                   controller: _phoneController,
                   onChanged: (phone) {
@@ -342,7 +325,64 @@ class _ExistingClientRegistrationScreenState
                         color: kSecondaryColour,
                       )),
                 ),
+              ],
+            ),
+          )),
+      Step(
+          state: currentStep > 1 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 1,
+          title: const Text('Account'),
+          content: Form(
+            key: _formKeyAccount,
+            child: Column(
+              children: [
+                const SizedBox(height: 10,),
+                const Text('First Name', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
+                TextFormField(
+                  controller: _firstNameController,
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'First Name',
+                      labelText: 'First Name',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const SizedBox(height: 10,),
+                const Text('Last Name', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
+                TextFormField(
+                  controller: _lastNameController,
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Last Name',
+                      labelText: 'Last Name',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
                 const SizedBox(height: 15,),
+                const SizedBox(height: 10,),
+                const Text('Date of Birth', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
                 TextFormField(
                   controller: _dateOfBirthController,
                   validator: null,
@@ -375,8 +415,8 @@ class _ExistingClientRegistrationScreenState
             ),
           )),
       Step(
-          state: currentStep > 1 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 1,
+          state: currentStep > 2 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 2,
           title: const Text('Address'),
           content: Form(
             key: _formKeyTandiza,
@@ -457,26 +497,22 @@ class _ExistingClientRegistrationScreenState
                     debugPrint('You just selected $selection');
                   },
                 ),
+                ListTile(
+                  title: const Text('Terms & Conditions'),
+                  subtitle: const Text('I agree to Tandiza Finance Terms. Information provided is correct'),
+                  isThreeLine: true,
+                  leading: Checkbox(
+                    value: _isChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        _isChecked = value!;
+                      });
+                    },
+                  ),
+                )
               ],
             ),
           )),
-      Step(
-          state: currentStep > 2 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 2,
-          title: const Text('Complete'),
-          content: ListTile(
-            title: const Text('Terms & Conditions'),
-            subtitle: const Text('I agree to Tandiza Finance Terms. Information provided is correct'),
-            isThreeLine: true,
-            leading: Checkbox(
-              value: _isChecked,
-              onChanged: (value) {
-                setState(() {
-                  _isChecked = value!;
-                });
-              },
-            ),
-          ))
     ];
   }
 }

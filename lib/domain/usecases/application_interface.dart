@@ -18,6 +18,7 @@ abstract class IUserInterface {
     String ? dateOfBirth});
   Stream<FirebaseUserEntity?> ? authStateChanges();
   Future<void> signOut();
-  Future<void> ? updateFirebaseUserData(FirebaseUserModel userModel);
+  Future<void> ? saveFirebaseUserData(FirebaseUserModel userModel);
   Future<FirebaseUserModel?> getFirebaseUserData();
+  Future<void> ? updateFirebaseUserData(Map<String, dynamic> userJsonMap);
 }

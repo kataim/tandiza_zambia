@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 
 import '../../datalayer/datasources/firebase_database_api.dart';
 import '../../datalayer/models/firebase_user_model.dart';
@@ -61,6 +64,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
   final TextEditingController _cityController = TextEditingController();
 
+
   late Future<FirebaseUserModel> getUsers;
   late FirebaseUserModel userModel;
 
@@ -88,6 +92,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    _serviceProvider = Provider.of<ServiceProvider>(context, listen: false);
     initialise();
     super.initState();
   }
@@ -102,21 +107,21 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         builder: (context, snapshot) {
           if(snapshot.hasData){
             return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0, right: 15, top: 30),
-                    child: Form(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10, top: 30, right: 10),
+                child: Column(
+                  children: [
+                    Form(
                       key: null,
                       child: Column(
                         children: [
                           TextFormField(
+                            enabled: false,
                             controller: _firstNameController,
                             validator: _validation.validateName,
                             //_validateName,
                             onChanged: (value) {},
                             textCapitalization: TextCapitalization.words,
-                            textAlign: TextAlign.center,
                             keyboardType: TextInputType.text,
                             cursorColor: kPrimaryColour,
                             decoration: kTextFieldDecoration.copyWith(
@@ -131,12 +136,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                             height: 15,
                           ),
                           TextFormField(
+                            enabled: false,
                             controller: _lastNameController,
                             validator: _validation.validateName,
                             //_validateName,
                             onChanged: (value) {},
                             textCapitalization: TextCapitalization.words,
-                            textAlign: TextAlign.center,
                             keyboardType: TextInputType.text,
                             cursorColor: kPrimaryColour,
                             decoration: kTextFieldDecoration.copyWith(
@@ -155,13 +160,14 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               Expanded(
                                 flex: 3,
                                 child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
                                   controller: _nrcNumberController1,
                                   textInputAction: TextInputAction.next,
                                   maxLength: 6,
                                   validator: null,
                                   onChanged: (value) {},
                                   textCapitalization: TextCapitalization.words,
-                                  textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
                                   cursorColor: kPrimaryColour,
                                   decoration: kTextFieldDecoration.copyWith(
@@ -177,12 +183,14 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                               Expanded(
                                 flex: 1,
                                 child: TextFormField(
+
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
                                   controller: _nrcNumberController2,
                                   maxLength: 2,
                                   validator: _validation.validateNrc2,
                                   onChanged: (value) {},
                                   textCapitalization: TextCapitalization.words,
-                                  textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
                                   cursorColor: kPrimaryColour,
                                   decoration: kTextFieldDecoration.copyWith(
@@ -192,16 +200,17 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                                 ),
                               ),
                               const SizedBox(width: 10,),
-
                               Expanded(
                                 flex: 1,
                                 child: TextFormField(
+
+                                  textAlign: TextAlign.center,
+                                  enabled: false,
                                   controller: _nrcNumberController3,
                                   maxLength: 1,
                                   validator: _validation.validateNrc3,
                                   onChanged: (value) {},
                                   textCapitalization: TextCapitalization.words,
-                                  textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
                                   cursorColor: kPrimaryColour,
                                   decoration: kTextFieldDecoration.copyWith(
@@ -231,6 +240,8 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           ),
                           const SizedBox(height: 15,),
                           TextFormField(
+
+                            enabled: false,
                             controller: _dateOfBirthController,
                             validator: null,
                             //_validateName,
@@ -247,7 +258,6 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
                             },
                             textCapitalization: TextCapitalization.words,
-                            textAlign: TextAlign.center,
                             textInputAction: TextInputAction.done,
                             cursorColor: kPrimaryColour,
                             decoration: kTextFieldDecoration.copyWith(
@@ -261,22 +271,46 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 40,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(double.infinity, 50)
-                        ),
-                        onPressed: () {
+                    const SizedBox(height: 40,),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                final FirebaseUserModel userModel = FirebaseUserModel(
+                                    phoneNumber: _phoneController.text,
+                                    firstName: _firstNameController.text,
+                                    surname: _lastNameController.text,
+                                    nrcNumber: '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}',
+                                    dateOfBirth: _dateOfBirthController.text
+                                );
+                                FirebaseDatabaseService(uid: FirebaseAuth.instance.currentUser?.uid).
+                                updateUserData({
+                                  'phoneNumber' : phoneNumber
+                                });
+                                const snackBar = SnackBar(
+                                  content: Text('Updated phone number'),
+                                );
 
-                        }, child: Text('Update', style: TextStyle(fontSize: 20,
-                        letterSpacing:0.8,
-                        fontWeight: FontWeight.bold,
-                        color: kWhiteColour),)),
-                  )
-                ],
+// Find the ScaffoldMessenger in the widget tree
+// and use it to show a SnackBar.
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                 Navigator.pop(context);
+
+                              }, child: const Text('Update', style: TextStyle(fontSize: 20,
+
+                              color: kWhiteColour),)),
+                        ),
+                        Expanded(
+                          child: TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: const Text('Cancel', style: TextStyle(fontSize: 20,))),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             );
           }

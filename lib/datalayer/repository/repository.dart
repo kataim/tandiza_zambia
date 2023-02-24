@@ -72,14 +72,19 @@ class Repository implements IRepository {
   }
 
   @override
-  Future<void>? updateFirebaseUserData(FirebaseUserModel userModel) {
+  Future<void>? saveFirebaseUserData(FirebaseUserModel userModel) {
     // TODO: implement updateFirebaseUserData
-    firebaseDatabaseService.updateUserData(userModel);
+    firebaseDatabaseService.saveUserData(userModel);
   }
 
   @override
   Future<FirebaseUserModel?> getFirebaseUserData() async {
     // TODO: implement getFirebaseUserData
     return firebaseDatabaseService.getUserData();
+  }
+
+  @override
+  Future<void>? updateFirebaseUserData(Map<String, dynamic> userJsonMap) {
+    firebaseDatabaseService.updateUserData(userJsonMap);
   }
 }

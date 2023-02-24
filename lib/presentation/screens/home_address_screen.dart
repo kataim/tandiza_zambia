@@ -218,8 +218,8 @@ class _HomeAddressScreenState extends State<HomeAddressScreen> {
                               minimumSize: const Size(double.infinity, 50)
                           ),
                           onPressed: () {
-
-                          }, child: Text('Update', style: TextStyle(fontSize: 20,
+                            //FirebaseDatabaseService(uid: FirebaseAuth.instance.currentUser?.uid).updateUserData();
+                          }, child: const Text('Update', style: TextStyle(fontSize: 20,
                           letterSpacing:0.8,
                           fontWeight: FontWeight.bold,
                           color: kWhiteColour),)),

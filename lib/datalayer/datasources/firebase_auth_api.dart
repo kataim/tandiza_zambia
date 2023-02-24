@@ -91,7 +91,7 @@ class FirebaseAuthApi {
                                         Navigator.of(context).popUntil((route) => route.isFirst);
                                         final userCredential = await _auth.signInWithCredential(credential);
                                         FirebaseDatabaseService(uid: userCredential.user?.uid).
-                                        updateUserData(FirebaseUserModel(
+                                        saveUserData(FirebaseUserModel(
                                             uid: userCredential.user?.uid,
                                             phoneNumber: userCredential.user?.phoneNumber,
                                             clientId: clientId,

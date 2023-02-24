@@ -37,6 +37,14 @@ MaterialColor(kPrimaryColourInt, <int, Color>{
   900: kPrimaryColour,
 });
 
+// Affordability Check constants
+const double MIN_AFFORDABILITY_RATIO_NETPAY = 0.4;
+const double MIN_AFFORDABILITY_RATIO_DISPOSABLE_INCOME = 0.6;
+const int MIN_LOAN_REQUEST_AMOUNT = 2000;
+const int MIN_EXPENSES = 1500;
+const int MIN_FEES = 50;
+const double PERCENT_LOAN_INTEREST = 0.25;
+
 const List<String> list = <String>['Ndola',
 'Lusaka',
 'Chipata',

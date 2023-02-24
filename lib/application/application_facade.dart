@@ -34,9 +34,9 @@ class ApplicationFacade implements IUserInterface{
   }
 
   @override
-  Future<void>? updateFirebaseUserData(FirebaseUserModel userModel) {
+  Future<void>? saveFirebaseUserData(FirebaseUserModel userModel) {
     // TODO: implement updateFirebaseUserData
-    userRepository.updateFirebaseUserData(userModel);
+    userRepository.saveFirebaseUserData(userModel);
   }
 
   @override
@@ -68,5 +68,10 @@ class ApplicationFacade implements IUserInterface{
   Future<FirebaseUserModel?> getFirebaseUserData() async {
     // TODO: implement getFirebaseUserData
     return userRepository.getFirebaseUserData();
+  }
+
+  @override
+  Future<void>? updateFirebaseUserData(Map<String, dynamic> userJsonMap) {
+    userRepository.updateFirebaseUserData(userJsonMap);
   }
 }
