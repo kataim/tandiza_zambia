@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../utilities/settings.dart';
 
-class UploadDocuments extends StatelessWidget {
-  const UploadDocuments({
-    required this.startCamera
-    Key? key,
-  }) : super(key: key);
-
-  final VoidCallback startCamera;
+class UploadDocImage extends StatelessWidget {
+  const UploadDocImage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

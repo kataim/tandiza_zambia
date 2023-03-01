@@ -101,6 +101,27 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                         key: null,
                         child: Column(
                           children: [
+                            Text('ZMW ${monthlyEarnings.round().toString()}',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),),
+                            Text('Monthly Net Pay'),
+                            const SizedBox(height: 25,),
+                            SliderTheme(
+                              data: const SliderThemeData(
+                                  valueIndicatorColor: kSecondaryColour,
+                                  valueIndicatorShape: PaddleSliderValueIndicatorShape()
+                              ),
+                              child: Slider.adaptive(
+                                min: 5000,
+                                max: 50000,
+                                divisions: 50,
+                                label: '${monthlyEarnings.round().toString()}',
+                                value: monthlyEarnings, onChanged: (double value) {
+                                setState(() {
+                                  monthlyEarnings = value;
+                                });
+                              },),
+                            ),
+                            const SizedBox(height: 25,),
                             Autocomplete<String>(
                               optionsBuilder: (TextEditingValue textEditingValue) {
                                 if (textEditingValue.text == '') {
@@ -169,25 +190,6 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                                   },
                                     icon: const Icon(Icons.calendar_month_sharp)  ,
                                   )),
-                            ),
-                            const SizedBox(height: 45,),
-                            Text('Monthly Earnings: ZMW ${monthlyEarnings.round().toString()}'),
-                            const SizedBox(height: 45,),
-                            SliderTheme(
-                              data: const SliderThemeData(
-                                  valueIndicatorColor: kSecondaryColour,
-                                  valueIndicatorShape: PaddleSliderValueIndicatorShape()
-                              ),
-                              child: Slider.adaptive(
-                                min: 5000,
-                                max: 50000,
-                                divisions: 50,
-                                label: '${monthlyEarnings.round().toString()}',
-                                value: monthlyEarnings, onChanged: (double value) {
-                                setState(() {
-                                  monthlyEarnings = value;
-                                });
-                              },),
                             ),
                             const SizedBox(height: 25,),
                             const SizedBox(
