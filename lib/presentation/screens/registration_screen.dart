@@ -393,7 +393,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           state : currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,
           title: const Text('Complete'),
-          content: const UploadDocuments())
+          content: UploadDocuments(startCamera: () {  },))
       /*Step(
           state : currentStep > 2 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 2,

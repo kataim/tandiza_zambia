@@ -302,7 +302,7 @@ bool ? _accepted = false;
           state: currentStep > 3 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 3,
           title: Text('Upload HR Letter'),
-          content: UploadDocuments()),
+          content: UploadDocuments(startCamera: () {  },)),
       Step(
           state: currentStep > 4 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 4,

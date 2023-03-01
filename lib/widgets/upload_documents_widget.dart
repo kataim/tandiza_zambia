@@ -4,8 +4,7 @@ import '../utilities/settings.dart';
 class UploadDocuments extends StatelessWidget {
   const UploadDocuments({
     required this.startCamera
-    Key? key,
-  }) : super(key: key);
+  });
 
   final VoidCallback startCamera;
 
