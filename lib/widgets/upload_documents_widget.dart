@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../utilities/settings.dart';
 
 class UploadDocuments extends StatelessWidget {
@@ -6,7 +7,7 @@ class UploadDocuments extends StatelessWidget {
     required this.startCamera
   });
 
-  final VoidCallback startCamera;
+  final Function(ImageSource imageSource) startCamera;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class UploadDocuments extends StatelessWidget {
                                 leading: const Icon(Icons.camera_alt_outlined),
                                 title: const Text('Camera'),
                                 onTap: (){
-                                  Navigator.pop(context);
+                                  startCamera(ImageSource.camera);
                                 },
                               ),
                               const Divider(thickness: 0.5,),
@@ -43,7 +44,7 @@ class UploadDocuments extends StatelessWidget {
                                 leading: const  Icon(Icons.image_outlined),
                                 title: const Text('Photo Library'),
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  startCamera(ImageSource.gallery);
                                 },
                               ),
                             ],

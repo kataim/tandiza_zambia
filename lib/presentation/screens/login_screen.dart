@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
+import '../../datalayer/models/tandiza_client_financials_model.dart';
 import '../../domain/models/firebase_user_entity.dart';
 import '../../domain/models/tandiza_client_entity.dart';
 import '../../utilities/settings.dart';
@@ -50,19 +51,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return _serviceProvider.getClientData(id);
   }
 
+  Future<TandizaClientFinancialsModel?> getClientFinancialData(int ? clientId) async {
+    return _serviceProvider.getClientFinancials(clientId);
+  }
+
   Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
     required BuildContext context,
-    TandizaClient ? tandizaClient,
+    TandizaClientFinancialsModel ? clientFinancialsModel,
     int ? clientId,
     String ? firstName,
     String ? result,
     String ? surname,
     String ? nrcNumber,
-    String ? dateOfBirth}) async {
+    String ? dateOfBirth, TandizaClientFinancialsModel? tandizaClientFinancialsModel}) async {
     return _serviceProvider.signInWithPhone(
         phoneNumber: phoneNumber,
         context:context,
-        tandizaClient: tandizaClient,
+        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
         clientId: clientId,
         firstName: firstName,
         result: result,
@@ -193,10 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     final tandiza = await getClientData(nrcnumber);
 
                     if(tandiza?.result == 'Found'){
+                      final clientFinancialsModel = await getClientFinancialData(tandiza?.clientId);
                       signInWithPhone(
                           phoneNumber: phoneNumber,
                           context:context,
-                          tandizaClient: tandiza,
+                          clientFinancialsModel: clientFinancialsModel,
                           clientId: tandiza?.clientId,
                           firstName: tandiza?.firstName,
                           surname: tandiza?.surname ,

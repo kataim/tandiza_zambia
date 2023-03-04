@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:tandiza/presentation/screens/application_complete_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tandiza/utilities/utils.dart';
@@ -33,17 +34,14 @@ class _LoanApplicationState extends State<LoanApplication> {
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
 
   File? imageHrLetter;
-  Future<File?> startCamera(ImageSource source, File ? imageSelected) async {
+  Future<File?> startCamera(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) {
         return null;
       }
-      final imageFilePath = await saveImagePermanently(image.path);
-      setState(() {
-        imageSelected = imageFilePath;
-      });
-      return imageSelected;
+      return await saveImagePermanently(image.path);
+
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
     }
@@ -89,7 +87,7 @@ bool ? _accepted = false;
                             child: ElevatedButton(
                               onPressed: controlsDetails.onStepContinue,
                               child: Text(
-                                isLastStep ? 'Confirm' : 'Continue',
+                                isLastStep ? 'Apply' : 'Continue',
                                 style: const TextStyle(
                                     color: kWhiteColour,
                                     fontSize: 18,
@@ -122,7 +120,7 @@ bool ? _accepted = false;
                 final isLastStep = _currentStep == getSteps(_currentStep, context).length - 1;
                 if(isLastStep && _accepted!){
                   //TODO apply for loan
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, ApplicationComplete.id);
                 }else if(isLastStep && !_accepted!){
                   const snackBar = SnackBar(
                     content: Text('Confirm Tandiza Terms & Conditions!'),
@@ -302,7 +300,9 @@ bool ? _accepted = false;
           state: currentStep > 3 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 3,
           title: Text('Upload HR Letter'),
-          content: UploadDocuments(startCamera: () {  },)),
+          content: UploadDocuments(startCamera: (imageSource) async {
+            imageHrLetter = await startCamera(imageSource);
+          },)),
       Step(
           state: currentStep > 4 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 4,

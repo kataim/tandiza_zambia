@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tandiza/datalayer/datasources/firebase_auth_api.dart';
 import 'package:tandiza/datalayer/datasources/loan_management_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import 'package:tandiza/domain/repository/repository_interface.dart';
@@ -31,13 +32,12 @@ class Repository implements IRepository {
   Future<FirebaseUserEntity?> signInWithPhone(
   {String ? phoneNumber,
     required BuildContext context,
-    TandizaClient ? tandizaClient,
     int ? clientId,
     String ? firstName,
     String ? result,
     String ? surname,
     String ? nrcNumber,
-    String ? dateOfBirth}) async {
+    String ? dateOfBirth, TandizaClientFinancialsModel ? tandizaClientFinancialsModel}) async {
     try{
       final FirebaseUserEntity ? firebaseUser = await firebaseAuthApi.
       signInWithPhone(phoneNumber: phoneNumber,
@@ -86,5 +86,27 @@ class Repository implements IRepository {
   @override
   Future<void>? updateFirebaseUserData(Map<String, dynamic> userJsonMap) {
     firebaseDatabaseService.updateUserData(userJsonMap);
+  }
+
+  @override
+  Future<void> loanStatement(String loanId) {
+    // TODO: implement loanStatement
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveClientFinancials(TandizaClientFinancialsModel financialsModel) async {
+    firebaseDatabaseService.saveClientFinancialData(financialsModel);
+  }
+
+  @override
+  Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId) async {
+    try{
+      final clientFinancials = await loanManagementApi.getClientFinancialsById(clientId);
+      return clientFinancials;
+    }catch(e){
+      print(e);
+    }
+
   }
 }

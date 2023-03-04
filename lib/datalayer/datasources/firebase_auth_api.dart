@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import '../../domain/models/firebase_user_entity.dart';
 import '../../utilities/settings.dart';
@@ -16,7 +17,7 @@ class FirebaseAuthApi {
     Future<FirebaseUserEntity?> signInWithPhone (
         {String ? phoneNumber,
             required BuildContext context,
-            TandizaClient ? tandizaClient,
+            TandizaClientFinancialsModel ? clientFinancialsModel,
             int ? clientId,
             String ? firstName,
             String ? result,

@@ -4,13 +4,13 @@ import 'package:tandiza/domain/models/tandiza_loans_entity.dart';
 
 class TandizaClientFinancials extends TandizaClient{
 
-  final List<TandizaLoan> loans;
-  final List<TandizaApplication> applications;
+  final List<TandizaLoanEntity> ? loans;
+  final List<TandizaApplication> ? applications;
 
   TandizaClientFinancials({result, clientId, firstName,
     surname,nrcNumber,
     dateOfBirth,
-    required this.loans,
-    required this.applications});
+    this.loans,
+    this.applications});
 
 }

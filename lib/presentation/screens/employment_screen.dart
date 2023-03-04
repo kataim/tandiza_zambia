@@ -39,7 +39,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
 
   String confirmedNumber = '';
 
-  String contractTypeDropDown = 'Contractor';
+  String contractTypeDropDown = 'Contract';
 
   String contractDurationDropDown = '1 Year';
 
@@ -214,7 +214,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                             ),
                             const SizedBox(height: 25,),
                             Visibility(
-                              visible: contractTypeDropDown.contains('Contractor'),
+                              visible: contractTypeDropDown.contains('Contract'),
                               child: DropdownButtonFormField(
                                 //_validateName,
                                 value: contractDurationDropDown,

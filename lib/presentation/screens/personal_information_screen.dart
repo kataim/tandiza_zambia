@@ -64,6 +64,9 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
   final TextEditingController _cityController = TextEditingController();
 
+  String title = 'Mr';
+  String gender = 'Male';
+  String maritalStatus = 'Married';
 
   late Future<FirebaseUserModel> getUsers;
   late FirebaseUserModel userModel;
@@ -115,6 +118,9 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                       key: null,
                       child: Column(
                         children: [
+                          const SizedBox(
+                            height: 15,
+                          ),
                           TextFormField(
                             enabled: false,
                             controller: _firstNameController,
@@ -155,6 +161,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           const SizedBox(
                             height: 15,
                           ),
+                          const SizedBox(height: 15,),
                           Row(
                             children: [
                               Expanded(
@@ -268,10 +275,11 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                                   color: Theme.of(context).primaryColorDark,
                                 )),
                           ),
+                          const SizedBox(height: 15,),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 40,),
+                    const SizedBox(height: 20,),
                     Row(
                       children: [
                         Expanded(

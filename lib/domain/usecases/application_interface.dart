@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
@@ -7,9 +8,10 @@ import '../models/tandiza_client_entity.dart';
 
 abstract class IUserInterface {
   Future<TandizaClient?> getUserByNrc(String ? id);
+  Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId);
   Future<FirebaseUserEntity?> signInWithPhone({String phoneNumber,
     required BuildContext context,
-    TandizaClient ? tandizaClient,
+    TandizaClientFinancialsModel ? tandizaClientFinancialsModel,
     int clientId,
     String ? firstName,
     String ? result,
@@ -21,4 +23,9 @@ abstract class IUserInterface {
   Future<void> ? saveFirebaseUserData(FirebaseUserModel userModel);
   Future<FirebaseUserModel?> getFirebaseUserData();
   Future<void> ? updateFirebaseUserData(Map<String, dynamic> userJsonMap);
+  bool canClientAffordLoan(int loanRepayment, int disposableIncome, int netIncome);
+  bool checkAffordabilityRatio1(int loanRepayment, int disposableIncome);
+  bool checkAffordabilityRatio2(int loanRepayment, int netIncome);
+  Future<void> loanStatement (String loanId);
+  Future<void> saveClientFinancials(TandizaClientFinancialsModel financialsModel);
 }

@@ -45,6 +45,40 @@ const int MIN_EXPENSES = 1500;
 const int MIN_FEES = 50;
 const double PERCENT_LOAN_INTEREST = 0.25;
 
+List<DropdownMenuItem<Object>> titles = ['Mr', 'Mrs', 'Miss', 'Dr'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+List<DropdownMenuItem<Object>> marital = ['Single', 'Married', 'Divorced', 'Widowed'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+List<DropdownMenuItem<Object>> genders = ['Male', 'Female'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+
 const List<String> list = <String>['Ndola',
 'Lusaka',
 'Chipata',
@@ -124,7 +158,7 @@ List<String> employers = [
   'Konkola Copper Mines'
 ];
 
-List<DropdownMenuItem<Object>> contractType = <String>['Permanent', 'Part Time', 'Contractor'].
+List<DropdownMenuItem<Object>> contractType = <String>['Permanent', 'Temporary', 'Contract'].
 map<DropdownMenuItem<String>>((String value) {
   return DropdownMenuItem<String>(
     value: value,

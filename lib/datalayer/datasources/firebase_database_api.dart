@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 
 class FirebaseDatabaseService {
   final String ? uid;
@@ -12,6 +13,14 @@ class FirebaseDatabaseService {
         .doc(uid)
         .set(userData.toJson());
   }
+
+  Future<void> saveClientFinancialData(TandizaClientFinancialsModel financialsModel)async {
+    FirebaseFirestore.instance
+        .collection('client_financial_data')
+        .doc(uid)
+        .set(financialsModel.toJson());
+  }
+
 
   Future<FirebaseUserModel> getUserData() async {
     final userData =

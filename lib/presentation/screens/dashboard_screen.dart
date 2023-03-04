@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/presentation/state-management/service_provider.dart';
-import 'package:tandiza/screens/loan_application.dart';
+import 'package:tandiza/presentation/screens/loan_application_screen.dart';
 import 'package:tandiza/screens/profile_details_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:tandiza/widgets/service_card.dart';

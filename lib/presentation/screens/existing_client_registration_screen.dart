@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import 'package:tandiza/utilities/settings.dart';
@@ -27,6 +28,7 @@ class _ExistingClientRegistrationScreenState
     extends State<ExistingClientRegistrationScreen> {
   int currentStep = 0;
   bool _isChecked = false;
+  bool _isResident = false;
   late String nrcnumber;
   final Validation _validation = Validation();
 
@@ -36,6 +38,9 @@ class _ExistingClientRegistrationScreenState
   late String phoneNumber;
   late ServiceProvider _serviceProvider;
   late String phoneIsoCode;
+  String title = 'Mr';
+  String gender = 'Male';
+  String maritalStatus = 'Married';
   bool visible = false;
   String confirmedNumber = '';
   DateTime firstDate = DateTime(1940, 01, 01);
@@ -73,9 +78,13 @@ class _ExistingClientRegistrationScreenState
     return _serviceProvider.getClientData(id);
   }
 
+  Future<TandizaClientFinancialsModel?> getClientFinancialData(int ? clientId) async {
+    return _serviceProvider.getClientFinancials(clientId);
+  }
+
   Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
     required BuildContext context,
-    TandizaClient ? tandizaClient,
+    TandizaClientFinancialsModel ? tandizaClientFinancialsModel,
     int ? clientId,
     String ? firstName,
     String ? result,
@@ -85,7 +94,7 @@ class _ExistingClientRegistrationScreenState
     return _serviceProvider.signInWithPhone(
         phoneNumber: phoneNumber,
         context:context,
-        tandizaClient: tandizaClient,
+        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
     clientId: clientId,
     firstName: firstName,
     result: result,
@@ -178,27 +187,26 @@ class _ExistingClientRegistrationScreenState
           if (isLastStep && _isChecked) {
             //TODO register the user and navigate to the dashboard
            nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
-           final tandiza = await getClientData(nrcnumber);
            signInWithPhone(
                phoneNumber: phoneNumber,
                context:context,
-               tandizaClient: tandiza,
-                clientId: tandiza?.clientId,
-                firstName: tandiza?.firstName ?? _firstNameController.text,
-                surname: tandiza?.surname ?? _lastNameController.text,
-                result: tandiza?.result,
-                nrcNumber: tandiza?.nrcNumber ?? nrcnumber,
-                dateOfBirth: tandiza?.dateOfBirth ?? _dateOfBirthController.text);
+                firstName: _firstNameController.text,
+                surname: _lastNameController.text,
+                nrcNumber: nrcnumber,
+                dateOfBirth: _dateOfBirthController.text);
 
 
           } else if(_formKeyIdentity.currentState!.validate() && currentStep == 0){
             nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
             final tandiza = await getClientData(nrcnumber);
             if(tandiza?.result == 'Found'){
+
+              final clientFinancialData = await getClientFinancialData(tandiza?.clientId);
+
               signInWithPhone(
                   phoneNumber: phoneNumber,
                   context:context,
-                  tandizaClient: tandiza,
+                  tandizaClientFinancialsModel: clientFinancialData,
                   clientId: tandiza?.clientId,
                   firstName: tandiza?.firstName,
                   surname: tandiza?.surname,
@@ -336,9 +344,24 @@ class _ExistingClientRegistrationScreenState
             key: _formKeyAccount,
             child: Column(
               children: [
-                const SizedBox(height: 10,),
-                const Text('First Name', style: TextStyle(fontWeight: FontWeight.bold),),
-                const SizedBox(height: 10,),
+                DropdownButtonFormField(
+                  value: title,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      title = value.toString();
+                      print(title);
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Title',
+                      labelText: 'Title',
+                      prefixIcon: Icon(
+                        Icons.perm_identity,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: titles,
+                ),
+                const SizedBox(height: 15,),
                 TextFormField(
                   controller: _firstNameController,
                   validator: _validation.validateName,
@@ -359,9 +382,6 @@ class _ExistingClientRegistrationScreenState
                 const SizedBox(
                   height: 15,
                 ),
-                const SizedBox(height: 10,),
-                const Text('Last Name', style: TextStyle(fontWeight: FontWeight.bold),),
-                const SizedBox(height: 10,),
                 TextFormField(
                   controller: _lastNameController,
                   validator: _validation.validateName,
@@ -380,9 +400,24 @@ class _ExistingClientRegistrationScreenState
                       )),
                 ),
                 const SizedBox(height: 15,),
-                const SizedBox(height: 10,),
-                const Text('Date of Birth', style: TextStyle(fontWeight: FontWeight.bold),),
-                const SizedBox(height: 10,),
+                DropdownButtonFormField(
+                  value: gender,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value.toString();
+                      print(gender);
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Gender',
+                      labelText: 'Gender',
+                      prefixIcon: Icon(
+                        gender.contains('Male') ? Icons.male : Icons.female,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: genders,
+                ),
+                const SizedBox(height: 15,),
                 TextFormField(
                   controller: _dateOfBirthController,
                   validator: null,
@@ -410,6 +445,24 @@ class _ExistingClientRegistrationScreenState
                         Icons.calendar_month_sharp,
                         color: Theme.of(context).primaryColorDark,
                       )),
+                ),
+                const SizedBox(height: 15,),
+                DropdownButtonFormField(
+                  value: maritalStatus,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      maritalStatus = value.toString();
+                      print(maritalStatus);
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Marital Status',
+                      labelText: 'Marital Status',
+                      prefixIcon: Icon(
+                        Icons.diamond,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: marital,
                 ),
               ],
             ),
@@ -497,19 +550,34 @@ class _ExistingClientRegistrationScreenState
                     debugPrint('You just selected $selection');
                   },
                 ),
-                ListTile(
-                  title: const Text('Terms & Conditions'),
-                  subtitle: const Text('I agree to Tandiza Finance Terms. Information provided is correct'),
-                  isThreeLine: true,
-                  leading: Checkbox(
-                    value: _isChecked,
-                    onChanged: (value) {
+                const SizedBox(height: 25,),
+                Row(
+                  children: [
+                    Checkbox(value: _isResident, onChanged: (value){
                       setState(() {
-                        _isChecked = value!;
+                        _isResident = value!;
                       });
-                    },
-                  ),
-                )
+                    }),
+                    const SizedBox(width: 10,),
+                    const Expanded(child: Text('Resident', style: TextStyle(fontSize: 18),))
+                  ],
+                ),
+                const SizedBox(height: 25,),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          _isChecked = value!;
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 10,),
+                    const Expanded(child: Text('I agree to Tandiza Finance Terms & Conditions', style: TextStyle(fontSize: 18),))
+
+                  ],
+                ),
               ],
             ),
           )),
