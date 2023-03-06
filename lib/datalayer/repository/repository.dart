@@ -7,6 +7,7 @@ import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import 'package:tandiza/domain/repository/repository_interface.dart';
 
+import '../../domain/models/tandiza_client_financials_entity.dart';
 import '../datasources/firebase_database_api.dart';
 
 class Repository implements IRepository {
@@ -37,12 +38,13 @@ class Repository implements IRepository {
     String ? result,
     String ? surname,
     String ? nrcNumber,
-    String ? dateOfBirth, TandizaClientFinancialsModel ? tandizaClientFinancialsModel}) async {
+    String ? dateOfBirth, TandizaClientFinancialsModel ? tandizaClientFinancials}) async {
     try{
       final FirebaseUserEntity ? firebaseUser = await firebaseAuthApi.
       signInWithPhone(phoneNumber: phoneNumber,
         context: context,
       clientId: clientId,
+          tandizaClientFinancials: tandizaClientFinancials,
       firstName: firstName,
       result: result,
       surname: surname,

@@ -1,36 +1,54 @@
+import 'package:json_annotation/json_annotation.dart';
+
 class TandizaBalanceEntity {
 
   final int id;
 
-  final double principalDisbursed;
+  @JsonKey(name: 'principal_disbursed')
+  String ? principalDisbursed;
 
-  final double principalOutstanding;
+  @JsonKey(name: 'principal_outstanding')
+  String ? principalOutstanding;
 
-  final double originationFees;
+  @JsonKey(name: 'origination_fees')
+  String ? originationFees;
 
-  final double originationFeesOutstanding;
+  @JsonKey(name: 'origination_fees_outstanding')
+  String ? originationFeesOutstanding;
 
-  final double totalOverpaid;
+  @JsonKey(name: 'total_overpaid')
+  String ? totalOverpaid;
 
-  final double interestOutstanding;
+  @JsonKey(name: 'interest_outstanding')
+  String ? interestOutstanding;
 
-  final double totalReceivable;
+  @JsonKey(name: 'total_receivable')
+  String ? totalReceivable;
 
-  final int dueThisMonth;
+  @JsonKey(name: 'due_this_month')
+  int ? dueThisMonth;
 
-  final int arrearsBalance;
+  @JsonKey(name: 'arrears_balance')
+  int ? arrearsBalance;
 
-  final int paidInAdvance;
+  @JsonKey(name: 'paid_in_advance')
+  int ? paidInAdvance;
 
-  final int numberOfPayments;
+  @JsonKey(name: 'number_of_payments')
+  int ? numberOfPayments;
 
-  final double totalPayments;
+  @JsonKey(name: 'total_payments')
+  String ? totalPayments;
 
-  final int instalmentsRemaining;
+  @JsonKey(name: 'instalments_remaining')
+  int ? instalmentsRemaining;
 
-  final double totalInterestReceivable;
+  @JsonKey(name: 'total_interest_receivable')
+  String ? totalInterestReceivable;
 
-  final double loanBalance;
+  @JsonKey(name: 'loan_balance')
+  int ? loanBalance;
+
 
   TandizaBalanceEntity({
     required this.id,

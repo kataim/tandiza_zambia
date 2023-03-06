@@ -9,12 +9,9 @@ part of 'tandiza_client_financials_model.dart';
 TandizaClientFinancialsModel _$TandizaClientFinancialsModelFromJson(
         Map<String, dynamic> json) =>
     TandizaClientFinancialsModel(
-      result: json['result'],
       clientId: json['client_id'] as int?,
       firstName: json['firstnames'] as String?,
-      surname: json['surname'],
-      nrcNumber: json['nrcnumber'] as String?,
-      dateOfBirth: json['date_of_birth'] as String?,
+      surname: json['surname'] as String?,
       loans: (json['loans'] as List<dynamic>?)
           ?.map((e) => TandizaLoanModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -22,17 +19,20 @@ TandizaClientFinancialsModel _$TandizaClientFinancialsModelFromJson(
           ?.map((e) =>
               TandizaApplicationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      nrcNumber: json['nrcnumber'] as String?,
+      dateOfBirth: json['date_of_birth'] as String?,
+      result: json['result'] as String?,
     );
 
 Map<String, dynamic> _$TandizaClientFinancialsModelToJson(
         TandizaClientFinancialsModel instance) =>
     <String, dynamic>{
-      'surname': instance.surname,
-      'result': instance.result,
-      'loans': instance.loans,
-      'applications': instance.applications,
+      'loans': instance.loans?.map((e) => e.toJson()).toList(),
+      'applications': instance.applications?.map((e) => e.toJson()).toList(),
       'client_id': instance.clientId,
       'firstnames': instance.firstName,
+      'surname': instance.surname,
       'nrcnumber': instance.nrcNumber,
       'date_of_birth': instance.dateOfBirth,
+      'result': instance.result,
     };

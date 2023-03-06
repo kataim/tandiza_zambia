@@ -7,6 +7,7 @@ import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
+import 'package:tandiza/domain/models/tandiza_client_financials_entity.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -84,7 +85,7 @@ class _ExistingClientRegistrationScreenState
 
   Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
     required BuildContext context,
-    TandizaClientFinancialsModel ? tandizaClientFinancialsModel,
+    TandizaClientFinancialsModel ? tandizaClientFinancials,
     int ? clientId,
     String ? firstName,
     String ? result,
@@ -94,7 +95,7 @@ class _ExistingClientRegistrationScreenState
     return _serviceProvider.signInWithPhone(
         phoneNumber: phoneNumber,
         context:context,
-        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
+        tandizaClientFinancials: tandizaClientFinancials,
     clientId: clientId,
     firstName: firstName,
     result: result,
@@ -206,7 +207,7 @@ class _ExistingClientRegistrationScreenState
               signInWithPhone(
                   phoneNumber: phoneNumber,
                   context:context,
-                  tandizaClientFinancialsModel: clientFinancialData,
+                  tandizaClientFinancials: clientFinancialData,
                   clientId: tandiza?.clientId,
                   firstName: tandiza?.firstName,
                   surname: tandiza?.surname,

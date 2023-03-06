@@ -5,6 +5,7 @@ import 'package:tandiza/domain/repository/repository_interface.dart';
 import '../datalayer/models/firebase_user_model.dart';
 import '../datalayer/repository/repository.dart';
 import '../domain/models/tandiza_client_entity.dart';
+import '../domain/models/tandiza_client_financials_entity.dart';
 import '../domain/usecases/application_interface.dart';
 import '../utilities/settings.dart';
 
@@ -45,7 +46,7 @@ class ApplicationFacade implements IUserInterface{
   Future<FirebaseUserEntity?> signInWithPhone({
     String ? phoneNumber,
     required BuildContext context,
-    TandizaClientFinancialsModel? tandizaClientFinancialsModel,
+    TandizaClientFinancialsModel? tandizaClientFinancials,
     int ? clientId,
     String? firstName,
     String? result,
@@ -56,7 +57,7 @@ class ApplicationFacade implements IUserInterface{
     return userRepository.signInWithPhone(
       phoneNumber : phoneNumber,
       context: context,
-        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
+        tandizaClientFinancials: tandizaClientFinancials,
       clientId: clientId,
       firstName: firstName,
       result: result,
@@ -129,6 +130,6 @@ class ApplicationFacade implements IUserInterface{
 
   @override
   Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId) async {
-    userRepository.getClientFinancials(clientId);
+    return userRepository.getClientFinancials(clientId);
   }
 }

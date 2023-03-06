@@ -6,6 +6,7 @@ import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import '../../datalayer/models/firebase_user_model.dart';
 import '../../domain/models/firebase_user_entity.dart';
 import '../../domain/models/tandiza_client_expenses.dart';
+import '../../domain/models/tandiza_client_financials_entity.dart';
 import '../../domain/models/tandiza_client_income.dart';
 import '../../utilities/settings.dart';
 import '../../utilities/utils.dart';
@@ -52,7 +53,7 @@ class ServiceProvider extends ChangeNotifier {
   Future<FirebaseUserEntity?> signInWithPhone(
       {String ? phoneNumber,
         required BuildContext context,
-        TandizaClientFinancialsModel ? tandizaClientFinancialsModel,
+        TandizaClientFinancialsModel ? tandizaClientFinancials,
         int ? clientId,
         String ? firstName,
         String ? result,
@@ -62,7 +63,7 @@ class ServiceProvider extends ChangeNotifier {
     firebaseUserEntity = await applicationFacade?.signInWithPhone(
         phoneNumber: phoneNumber,
         context : context,
-        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
+        tandizaClientFinancials: tandizaClientFinancials,
         clientId: clientId,
     firstName: firstName,
     result: result,

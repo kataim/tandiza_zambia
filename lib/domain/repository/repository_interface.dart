@@ -3,13 +3,14 @@ import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import '../../datalayer/models/tandiza_client_financials_model.dart';
 import '../models/tandiza_client_entity.dart';
+import '../models/tandiza_client_financials_entity.dart';
 
 abstract class IRepository {
   Future<TandizaClient?> getUserByNrc(String ? id);
   Future<FirebaseUserEntity?> signInWithPhone({
     String ? phoneNumber,
     required BuildContext  context,
-    TandizaClientFinancialsModel ? tandizaClientFinancialsModel,
+    TandizaClientFinancialsModel ? tandizaClientFinancials,
     int ? clientId,
     String ? firstName,
     String ? result,

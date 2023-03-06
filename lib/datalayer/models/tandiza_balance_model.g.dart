@@ -8,23 +8,23 @@ part of 'tandiza_balance_model.dart';
 
 TandizaBalanceModel _$TandizaBalanceModelFromJson(Map<String, dynamic> json) =>
     TandizaBalanceModel(
-      id: json['id'] as int,
-      principalDisbursed: json['principal_disbursed'] as String,
-      principalOutstanding: json['principal_outstanding'] as String,
-      originationFees: json['origination_fees'] as String,
+      id: json['id'] as int?,
+      principalDisbursed: json['principal_disbursed'] as String?,
+      principalOutstanding: json['principal_outstanding'] as String?,
+      originationFees: json['origination_fees'] as String?,
       originationFeesOutstanding:
-          json['origination_fees_outstanding'] as String,
-      totalOverpaid: json['total_overpaid'] as String,
-      interestOutstanding: json['interest_outstanding'] as String,
-      totalReceivable: json['total_receivable'] as String,
-      dueThisMonth: json['due_this_month'] as int,
-      arrearsBalance: json['arrears_balance'] as int,
-      paidInAdvance: json['paid_in_advance'] as int,
-      numberOfPayments: json['number_of_payments'] as int,
-      totalPayments: json['total_payments'] as String,
-      instalmentsRemaining: json['instalments_remaining'] as int,
-      totalInterestReceivable: json['total_interest_receivable'] as String,
-      loanBalance: json['loan_balance'] as int,
+          json['origination_fees_outstanding'] as String?,
+      totalOverpaid: json['total_overpaid'] as String?,
+      interestOutstanding: json['interest_outstanding'] as String?,
+      totalReceivable: json['total_receivable'] as String?,
+      dueThisMonth: json['due_this_month'] as int?,
+      arrearsBalance: json['arrears_balance'] as int?,
+      paidInAdvance: json['paid_in_advance'] as int?,
+      numberOfPayments: json['number_of_payments'] as int?,
+      totalPayments: json['total_payments'] as String?,
+      instalmentsRemaining: json['instalments_remaining'] as int?,
+      totalInterestReceivable: json['total_interest_receivable'] as String?,
+      loanBalance: json['loan_balance'] as int?,
     );
 
 Map<String, dynamic> _$TandizaBalanceModelToJson(

@@ -9,10 +9,10 @@ part of 'tandiza_applications_model.dart';
 TandizaApplicationModel _$TandizaApplicationModelFromJson(
         Map<String, dynamic> json) =>
     TandizaApplicationModel(
-      application_id: json['application_id'],
-      application_status: json['application_status'],
-      loan_id: json['loan_id'],
-      application_datetime: json['application_datetime'],
+      application_id: json['application_id'] as int?,
+      application_status: json['application_status'] as String?,
+      loan_id: json['loan_id'] as int?,
+      application_datetime: json['application_datetime'] as String?,
     );
 
 Map<String, dynamic> _$TandizaApplicationModelToJson(

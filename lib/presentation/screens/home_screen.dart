@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tandiza/presentation/screens/dashboard_screen.dart';
 import 'package:tandiza/presentation/screens/profile_screen.dart';
-import 'package:tandiza/presentation/screens/transaction_screen.dart';
 import 'package:tandiza/presentation/screens/wallet_screen.dart';
 
 import '../../utilities/settings.dart';

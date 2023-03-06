@@ -4,6 +4,7 @@ import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import '../../domain/models/firebase_user_entity.dart';
+import '../../domain/models/tandiza_client_financials_entity.dart';
 import '../../utilities/settings.dart';
 import '../models/firebase_user_model.dart';
 
@@ -14,16 +15,15 @@ class FirebaseAuthApi {
     final _form_key = GlobalKey<FormState>();
     late UserCredential authCredential;
 
-    Future<FirebaseUserEntity?> signInWithPhone (
-        {String ? phoneNumber,
+    Future<FirebaseUserEntity?> signInWithPhone ({String ? phoneNumber,
             required BuildContext context,
-            TandizaClientFinancialsModel ? clientFinancialsModel,
+            TandizaClientFinancialsModel ? tandizaClientFinancials,
             int ? clientId,
             String ? firstName,
             String ? result,
             String ? surname,
             String ? nrcNumber,
-            String ? dateOfBirth}) async{
+            String ? dateOfBirth, }) async{
         await _auth.verifyPhoneNumber(
             phoneNumber: phoneNumber,
             verificationCompleted: (PhoneAuthCredential credential) async {
@@ -101,6 +101,11 @@ class FirebaseAuthApi {
                                             result: result,
                                             nrcNumber: nrcNumber,
                                             dateOfBirth: dateOfBirth,
+                                        ));
+                                        FirebaseDatabaseService(uid: userCredential.user?.uid).
+                                        saveClientFinancialData(TandizaClientFinancialsModel(
+                                            loans: tandizaClientFinancials?.loans,
+                                            applications: tandizaClientFinancials?.applications
                                         ));
                                     },
                                 )

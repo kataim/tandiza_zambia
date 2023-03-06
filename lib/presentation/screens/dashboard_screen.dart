@@ -9,6 +9,8 @@ import 'package:tandiza/screens/profile_details_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:tandiza/widgets/service_card.dart';
 
+import 'loan_statement_screen.dart';
+
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
 
@@ -162,11 +164,12 @@ class _DashBoardState extends State<DashBoard> {
                                 rightWidth: 1,
                                 icon: Icons.account_balance,
                                 text: 'Loans',
-
                               ),
                             ),
                             GestureDetector(
-                                onTap: (){},
+                                onTap: (){
+                                  Navigator.pushNamed(context, LoanStatementScreen.id);
+                                },
                                 child: const ServicesCard(
                                   leftWidth: 1,
                                   topWidth: 0.5,

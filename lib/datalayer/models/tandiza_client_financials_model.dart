@@ -1,35 +1,26 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tandiza/datalayer/models/tandiza_applications_model.dart';
-import 'package:tandiza/datalayer/models/tandiza_balance_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_loan_model.dart';
-import '../../domain/models/tandiza_client_financials_entity.dart';
 
 part 'tandiza_client_financials_model.g.dart';
 
-@JsonSerializable()
-class TandizaClientFinancialsModel extends TandizaClientFinancials{
+@JsonSerializable(explicitToJson: true)
+class TandizaClientFinancialsModel{
   final List<TandizaLoanModel> ? loans;
-  @override
   final List<TandizaApplicationModel> ? applications;
-  @override
   @JsonKey(name: 'client_id')
   final int ? clientId;
-  @override
   @JsonKey(name: 'firstnames')
   final String ? firstName;
-  @override
+  final String ? surname;
   @JsonKey(name: 'nrcnumber')
   final String ? nrcNumber;
   @JsonKey(name: 'date_of_birth')
   final String ? dateOfBirth;
+  final String ? result;
 
-  TandizaClientFinancialsModel({result, this.clientId, this.firstName,
-    surname, this.nrcNumber,
-    this.dateOfBirth,
-    this.loans,
-    this.applications}) : super(result: result, clientId: clientId,
-      firstName: firstName, surname: surname, dateOfBirth: dateOfBirth, loans: loans,
-  applications: applications);
+  TandizaClientFinancialsModel({this.clientId, this.firstName, this.surname, this.loans, this.applications,
+    this.nrcNumber, this.dateOfBirth, this.result});
 
   factory TandizaClientFinancialsModel.fromJson(Map<String, dynamic> json){
     return _$TandizaClientFinancialsModelFromJson(json);

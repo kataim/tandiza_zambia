@@ -7,6 +7,7 @@ import '../../datalayer/models/firebase_user_model.dart';
 import '../../datalayer/models/tandiza_client_financials_model.dart';
 import '../../domain/models/firebase_user_entity.dart';
 import '../../domain/models/tandiza_client_entity.dart';
+import '../../domain/models/tandiza_client_financials_entity.dart';
 import '../../utilities/settings.dart';
 import '../state-management/service_provider.dart';
 
@@ -63,11 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
     String ? result,
     String ? surname,
     String ? nrcNumber,
-    String ? dateOfBirth, TandizaClientFinancialsModel? tandizaClientFinancialsModel}) async {
+    String ? dateOfBirth, TandizaClientFinancialsModel? tandizaClientFinancials}) async {
     return _serviceProvider.signInWithPhone(
         phoneNumber: phoneNumber,
         context:context,
-        tandizaClientFinancialsModel: tandizaClientFinancialsModel,
+        tandizaClientFinancials: tandizaClientFinancials,
         clientId: clientId,
         firstName: firstName,
         result: result,

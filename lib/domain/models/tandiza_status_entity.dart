@@ -1,7 +1,10 @@
-class TandizaStatusEntity {
-  final String id;
-  final String description;
-  final int activeStatus;
+import 'package:json_annotation/json_annotation.dart';
 
-  TandizaStatusEntity({required this.id, required this.activeStatus, required this.description});
+class TandizaStatusEntity {
+  final String ? id;
+  final String ? description;
+  @JsonKey(name: 'active_status')
+  final int ? activeStatus;
+
+  TandizaStatusEntity({this.id, this.activeStatus, this.description});
 }

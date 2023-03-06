@@ -4,13 +4,15 @@ import 'package:tandiza/domain/models/tandiza_applications_entity.dart';
 part 'tandiza_applications_model.g.dart';
 
 @JsonSerializable()
-class TandizaApplicationModel extends TandizaApplication{
+class TandizaApplicationModel {
+  final int ? application_id;
+  final String ? application_status;
+  final String ? application_datetime;
+  final int ? loan_id;
 
 
-  TandizaApplicationModel({application_id, application_status, loan_id, application_datetime, }) :
-        super(application_datetime: application_datetime,
-      application_id: application_id, loan_id: loan_id,
-      application_status:application_status);
+  TandizaApplicationModel({this.application_id, this.application_status, this.loan_id, this.application_datetime, });
+
 
   factory TandizaApplicationModel.fromJson(Map<String, dynamic> json){
     return _$TandizaApplicationModelFromJson(json);

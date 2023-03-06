@@ -14,6 +14,7 @@ import 'package:tandiza/presentation/screens/existing_client_registration_screen
 import 'package:tandiza/presentation/screens/family_information_screen.dart';
 import 'package:tandiza/presentation/screens/home_address_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
+import 'package:tandiza/presentation/screens/loan_statement_screen.dart';
 import 'package:tandiza/presentation/screens/login_screen.dart';
 import 'package:tandiza/presentation/screens/personal_information_screen.dart';
 import 'package:tandiza/presentation/screens/registration_screen.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           )),
       home: const StartScreen(),
       routes: {
+        LoanStatementScreen.id : (context) => LoanStatementScreen(),
         LoginScreen.id : (context) => const LoginScreen(),
         HomeAddressScreen.id : (context) => const HomeAddressScreen(),
         WelcomeScreen.id : (context) => const WelcomeScreen(),
@@ -73,7 +75,7 @@ class MyApp extends StatelessWidget {
         PersonalInformationScreen.id : (context) => const PersonalInformationScreen(),
         EmploymentScreen.id : (context) => const EmploymentScreen(),
         FamilyInformationScreen.id : (context) => const FamilyInformationScreen(),
-        ApplicationComplete.id : (context) => const ApplicationComplete()
+        ApplicationComplete.id : (context) => const ApplicationComplete(),
       },
     );
   }
