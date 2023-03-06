@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
@@ -9,6 +10,7 @@ import '../models/tandiza_client_financials_entity.dart';
 
 abstract class IUserInterface {
   Future<TandizaClient?> getUserByNrc(String ? id);
+  Future<TandizaLoanStatementModel?> getLoanStatement(int ? loanId);
   Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId);
   Future<FirebaseUserEntity?> signInWithPhone({String phoneNumber,
     required BuildContext context,

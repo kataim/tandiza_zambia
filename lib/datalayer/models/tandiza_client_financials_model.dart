@@ -22,8 +22,8 @@ class TandizaClientFinancialsModel{
   TandizaClientFinancialsModel({this.clientId, this.firstName, this.surname, this.loans, this.applications,
     this.nrcNumber, this.dateOfBirth, this.result});
 
-  factory TandizaClientFinancialsModel.fromJson(Map<String, dynamic> json){
-    return _$TandizaClientFinancialsModelFromJson(json);
+  factory TandizaClientFinancialsModel.fromJson(Map<String, dynamic> ? json){
+    return _$TandizaClientFinancialsModelFromJson(json!);
   }
 
   Map<String, dynamic> toJson(){

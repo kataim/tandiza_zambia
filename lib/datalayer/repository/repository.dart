@@ -3,6 +3,7 @@ import 'package:tandiza/datalayer/datasources/firebase_auth_api.dart';
 import 'package:tandiza/datalayer/datasources/loan_management_api.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 import 'package:tandiza/domain/repository/repository_interface.dart';
@@ -90,11 +91,6 @@ class Repository implements IRepository {
     firebaseDatabaseService.updateUserData(userJsonMap);
   }
 
-  @override
-  Future<void> loanStatement(String loanId) {
-    // TODO: implement loanStatement
-    throw UnimplementedError();
-  }
 
   @override
   Future<void> saveClientFinancials(TandizaClientFinancialsModel financialsModel) async {
@@ -110,5 +106,21 @@ class Repository implements IRepository {
       print(e);
     }
 
+  }
+
+  @override
+  Future<TandizaLoanStatementModel?> getLoanStatement(int? loanId) async{
+    try{
+      final loanStatement = await loanManagementApi.getLoanStatement(loanId);
+      return loanStatement;
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
+  Future<void> loanStatement(String loanId) {
+    // TODO: implement loanStatement
+    throw UnimplementedError();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tandiza/application/application_facade.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
@@ -18,6 +19,7 @@ class ServiceProvider extends ChangeNotifier {
   TandizaClient ? tandizaClient = TandizaClient();
   TandizaClientFinancialsModel ? clientFinancialsModel = TandizaClientFinancialsModel();
   FirebaseUserEntity ? firebaseUserEntity = FirebaseUserEntity();
+  TandizaLoanStatementModel ? loanStatementModel = TandizaLoanStatementModel();
 
   TandizaClientExpenses clientExpenses = TandizaClientExpenses();
   TandizaClientIncome clientIncome = TandizaClientIncome();
@@ -48,6 +50,12 @@ class ServiceProvider extends ChangeNotifier {
     clientFinancialsModel = await applicationFacade?.getClientFinancials(clientId);
     notifyListeners();
     return clientFinancialsModel;
+  }
+
+  Future<TandizaLoanStatementModel?> getLoanStatement(int ? loanId) async {
+    loanStatementModel = await applicationFacade?.getLoanStatement(loanId);
+    notifyListeners();
+    return loanStatementModel;
   }
 
   Future<FirebaseUserEntity?> signInWithPhone(

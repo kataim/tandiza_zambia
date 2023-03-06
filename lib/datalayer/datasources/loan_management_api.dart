@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 
 
 class LoanManagementApi {
@@ -33,6 +34,22 @@ class LoanManagementApi {
 
     if(response.statusCode == 200){
       return TandizaClientFinancialsModel.fromJson(jsonDecode(response.body));
+    }else{
+      throw Exception('Failed to get data');
+    }
+  }
+
+  Future<TandizaLoanStatementModel> getLoanStatement(int ? loanId) async {
+    String url = 'https://nek-runaloan.calidad.co.za/tdzapi/loan-statement?loan_id=$loanId';
+    final response = await http.get(Uri.parse(url), headers: {
+      'Accept' : 'application/json',
+      'Content-Type' : 'application/json',
+      'Authorisation' : 'Tandiza210Rocks1964',
+      'Tenant' : 'TDZ'
+    });
+
+    if(response.statusCode == 200){
+      return TandizaLoanStatementModel.fromJson(jsonDecode(response.body));
     }else{
       throw Exception('Failed to get data');
     }

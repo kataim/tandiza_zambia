@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/repository/repository_interface.dart';
 import '../datalayer/models/firebase_user_model.dart';
@@ -131,5 +132,10 @@ class ApplicationFacade implements IUserInterface{
   @override
   Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId) async {
     return userRepository.getClientFinancials(clientId);
+  }
+
+  @override
+  Future<TandizaLoanStatementModel?> getLoanStatement(int? loanId) {
+    return userRepository.getLoanStatement(loanId);
   }
 }
