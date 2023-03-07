@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tandiza/datalayer/datasources/firebase_database_api.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_loan_statement_model.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
+import 'package:tandiza/presentation/state-management/service_provider.dart';
 import '../../domain/models/firebase_user_entity.dart';
 import '../../domain/models/tandiza_client_financials_entity.dart';
 import '../../utilities/settings.dart';
@@ -52,6 +55,7 @@ class FirebaseAuthApi {
                 showDialog<void>(
                     context: context,
                     builder: (BuildContext context) {
+                        final loanStatementModel = Provider.of<ServiceProvider>(context, listen: false);
                         return AlertDialog(
                             title: const Text('Enter SMS Code'),
                             content: Container(
@@ -106,6 +110,13 @@ class FirebaseAuthApi {
                                         saveClientFinancialData(TandizaClientFinancialsModel(
                                             loans: tandizaClientFinancials?.loans,
                                             applications: tandizaClientFinancials?.applications
+                                        ));
+
+                                        final statement = await loanStatementModel.getLoanStatement(tandizaClientFinancials?.loans?[0].loanId);
+
+                                        FirebaseDatabaseService(uid: userCredential.user?.uid).
+                                        saveLoanStatement(TandizaLoanStatementModel(
+                                            pdf: statement?.pdf
                                         ));
                                     },
                                 )

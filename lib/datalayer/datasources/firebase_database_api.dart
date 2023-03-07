@@ -8,7 +8,6 @@ import '../models/tandiza_loan_statement_model.dart';
 
 class FirebaseDatabaseService {
   final String ? uid;
-  ServiceProvider _serviceProvider = ServiceProvider();
 
   FirebaseDatabaseService({this.uid});
 
@@ -26,6 +25,20 @@ class FirebaseDatabaseService {
         .set(financialsModel.toJson());
   }
 
+  Future<void> saveLoanStatement(TandizaLoanStatementModel loanStatementModel) async {
+    FirebaseFirestore.instance
+        .collection('client_loan_statement')
+        .doc(uid)
+        .set(loanStatementModel.toJson());
+  }
+
+  Future<TandizaLoanStatementModel> getFirebaseLoanStatement() async {
+    final loanStatement =
+        await FirebaseFirestore.instance.collection('client_loan_statement')
+        .doc(uid).get();
+    return TandizaLoanStatementModel.fromJson(loanStatement.data());
+  }
+
 
   Future<FirebaseUserModel> getUserData() async {
     final userData =
@@ -33,13 +46,10 @@ class FirebaseDatabaseService {
     return FirebaseUserModel.fromJson(userData.data());
   }
 
-  Future<TandizaLoanStatementModel?> getUserFinancialData() async {
+  Future<TandizaClientFinancialsModel?> getUserFinancialData() async {
     final userFinancialData =
     await FirebaseFirestore.instance.collection('client_financial_data').doc(uid).get();
-    final userFinancialModel = TandizaClientFinancialsModel.fromJson(userFinancialData.data());
-    return _serviceProvider.getLoanStatement(userFinancialModel.loans?[0].loanId);
-
-
+    return TandizaClientFinancialsModel.fromJson(userFinancialData.data());
   }
 
   Future<void> updateUserData(Map<String, dynamic> userJsonMap) async {

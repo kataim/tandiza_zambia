@@ -58,13 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
     required BuildContext context,
-    TandizaClientFinancialsModel ? clientFinancialsModel,
+    TandizaClientFinancialsModel ? tandizaClientFinancials,
     int ? clientId,
     String ? firstName,
     String ? result,
     String ? surname,
     String ? nrcNumber,
-    String ? dateOfBirth, TandizaClientFinancialsModel? tandizaClientFinancials}) async {
+    String ? dateOfBirth}) async {
     return _serviceProvider.signInWithPhone(
         phoneNumber: phoneNumber,
         context:context,
@@ -76,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
         nrcNumber: nrcNumber,
         dateOfBirth: dateOfBirth);
   }
-
   Future<void> updateFirebaseUser(FirebaseUserModel userModel) async {
     _serviceProvider.saveFirebaseUser(userModel);
   }
@@ -200,10 +199,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     if(tandiza?.result == 'Found'){
                       final clientFinancialsModel = await getClientFinancialData(tandiza?.clientId);
+                      if(!context.mounted){
+                        return;
+                      }
                       signInWithPhone(
                           phoneNumber: phoneNumber,
                           context:context,
-                          clientFinancialsModel: clientFinancialsModel,
+                          tandizaClientFinancials: clientFinancialsModel,
                           clientId: tandiza?.clientId,
                           firstName: tandiza?.firstName,
                           surname: tandiza?.surname ,

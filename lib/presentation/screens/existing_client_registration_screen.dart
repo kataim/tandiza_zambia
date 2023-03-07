@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,12 +5,9 @@ import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
-import 'package:tandiza/domain/models/tandiza_client_financials_entity.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
 import '../state-management/service_provider.dart';
-import 'home_screen.dart';
 
 
 
@@ -60,19 +55,6 @@ class _ExistingClientRegistrationScreenState
   void initState() {
     _serviceProvider = Provider.of<ServiceProvider>(context, listen: false);
     super.initState();
-  }
-
-  @override
-  void dispose () {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneController.dispose();
-    _nrcNumberController1.dispose();
-    _nrcNumberController3.dispose();
-    _nrcNumberController2.dispose();
-    _phoneController.dispose();
-    _dateOfBirthController.dispose();
-    _cityController.dispose();
   }
 
   Future<TandizaClient?> getClientData (String id) async {
@@ -203,7 +185,9 @@ class _ExistingClientRegistrationScreenState
             if(tandiza?.result == 'Found'){
 
               final clientFinancialData = await getClientFinancialData(tandiza?.clientId);
-
+              if(!context.mounted){
+                return;
+              }
               signInWithPhone(
                   phoneNumber: phoneNumber,
                   context:context,
