@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
 class FilledRoundedPinPut extends StatefulWidget {
-  const FilledRoundedPinPut({Key? key}) : super(key: key);
+  const FilledRoundedPinPut({Key? key, required this.onSubmit}) : super(key: key);
+  final Function(String) onSubmit;
 
   @override
   _FilledRoundedPinPutState createState() => _FilledRoundedPinPutState();
@@ -15,6 +16,7 @@ class FilledRoundedPinPut extends StatefulWidget {
 class _FilledRoundedPinPutState extends State<FilledRoundedPinPut> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
+
 
   @override
   void dispose() {
@@ -52,9 +54,7 @@ class _FilledRoundedPinPutState extends State<FilledRoundedPinPut> {
         controller: controller,
         focusNode: focusNode,
         defaultPinTheme: defaultPinTheme,
-        onCompleted: (pin) {
-          setState(() => showError = pin != '5555');
-        },
+        onCompleted: widget.onSubmit,
         focusedPinTheme: defaultPinTheme.copyWith(
           height: 68,
           width: 64,

@@ -58,7 +58,7 @@ class FirebaseAuthApi {
                         final loanStatementModel = Provider.of<ServiceProvider>(context, listen: false);
                         return AlertDialog(
                             title: const Text('Enter SMS Code'),
-                            content: Container(
+                            content: SizedBox(
                                 height: 300,
                                 child: Form(
                                     key: _form_key,
@@ -148,6 +148,24 @@ class FirebaseAuthApi {
             timeout: const Duration(seconds: 60));
 
         return _userFromFirebase(authCredential.user);
+    }
+    
+    Future<UserCredential?> verifyPhoneNumber(String ? phoneNumber, String ? verificationCode) async {
+        _auth.verifyPhoneNumber(
+            phoneNumber: phoneNumber,
+            verificationCompleted: (PhoneAuthCredential credential) async {
+               authCredential = await _auth.signInWithCredential(credential);
+            },
+            verificationFailed: (FirebaseAuthException e){
+                print(e);
+            },
+            codeSent: (String verificationId, int ? resendToken){
+
+            },
+            codeAutoRetrievalTimeout: (String verificationId){
+
+            });
+        return authCredential;
     }
 
     FirebaseUserEntity _userFromFirebase(User ? user){

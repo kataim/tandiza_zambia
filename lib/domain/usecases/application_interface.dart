@@ -30,5 +30,6 @@ abstract class IUserInterface {
   bool checkAffordabilityRatio1(int loanRepayment, int disposableIncome);
   bool checkAffordabilityRatio2(int loanRepayment, int netIncome);
   Future<void> loanStatement (String loanId);
+  Future<void> verifyPhoneNumber(String ? phoneNumber, String ? verificationCode);
   Future<void> saveClientFinancials(TandizaClientFinancialsModel financialsModel);
 }

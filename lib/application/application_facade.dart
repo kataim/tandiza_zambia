@@ -138,4 +138,9 @@ class ApplicationFacade implements IUserInterface{
   Future<TandizaLoanStatementModel?> getLoanStatement(int? loanId) {
     return userRepository.getLoanStatement(loanId);
   }
+
+  @override
+  Future<void> verifyPhoneNumber(String? phoneNumber, String ? verificationCode) async {
+    userRepository.verifyPhoneNumber(phoneNumber, verificationCode);
+  }
 }

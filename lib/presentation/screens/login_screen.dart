@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final focusNodeNrc3 = FocusNode();
 
   late String phoneIsoCode;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late ServiceProvider _serviceProvider;
 
@@ -104,199 +105,152 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20,),
-              const Text('Welcome Back!', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30),),
-              const SizedBox(height: 10,),
-              const Text('Kindly fill in the details below', style: TextStyle( fontSize: 15),),
-              const SizedBox(
-                height: 50,
-              ),
-              const Text('Identity Card Number', style: TextStyle(fontWeight: FontWeight.bold),),
-              const SizedBox(height: 10,),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: TextFormField(
-                      focusNode: focusNodeNrc1,
-                      controller: _nrcNumberController1,
-                      textInputAction: TextInputAction.next,
-                      maxLength: 6,
-                      validator: _validation.validateNrc1,
-                      onChanged: (value) {
-                        if(value.length == 6){
-                          FocusScope.of(context).requestFocus(focusNodeNrc2);
-                        }
-                      },
-                      textCapitalization: TextCapitalization.words,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColour,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'NRC Number',
-                          labelText: 'NRC Number',
-                          prefixIcon: Icon(
-                            Icons.account_circle,
-                            color: Theme.of(context).primaryColorDark,
-                          )),
-                    ),
-                  ),
-                  const SizedBox(width: 10,),
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      controller: _nrcNumberController2,
-                      maxLength: 2,
-                      focusNode: focusNodeNrc2,
-                      validator: _validation.validateNrc2,
-                      onChanged: (value) {
-                        if(value.length == 2){
-                          FocusScope.of(context).requestFocus(focusNodeNrc3);
-                        }
-                      },
-                      textCapitalization: TextCapitalization.words,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColour,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: '',
-                          labelText: ''
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20,),
+                const Text('Welcome Back!', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30),),
+                const SizedBox(height: 10,),
+                const Text('Kindly fill in the details below', style: TextStyle( fontSize: 15),),
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text('Identity Card Number', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                        focusNode: focusNodeNrc1,
+                        controller: _nrcNumberController1,
+                        textInputAction: TextInputAction.next,
+                        maxLength: 6,
+                        validator: _validation.validateNrc1,
+                        onChanged: (value) {
+                          if(value.length == 6){
+                            FocusScope.of(context).requestFocus(focusNodeNrc2);
+                          }
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        cursorColor: kPrimaryColour,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'NRC Number',
+                            labelText: 'NRC Number',
+                            prefixIcon: Icon(
+                              Icons.account_circle,
+                              color: Theme.of(context).primaryColorDark,
+                            )),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10,),
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      focusNode: focusNodeNrc3,
-                      controller: _nrcNumberController3,
-                      maxLength: 1,
-                      validator: _validation.validateNrc3,
-                      onChanged: (value) {
-                        if(value.length == 1){
-                          FocusScope.of(context).requestFocus(focusNodePhone);
-                        }
-                      },
-                      textCapitalization: TextCapitalization.words,
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColour,
-                      textInputAction: TextInputAction.done,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: '',
-                          labelText: ''
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: _nrcNumberController2,
+                        maxLength: 2,
+                        focusNode: focusNodeNrc2,
+                        validator: _validation.validateNrc2,
+                        onChanged: (value) {
+                          if(value.length == 2){
+                            FocusScope.of(context).requestFocus(focusNodeNrc3);
+                          }
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        cursorColor: kPrimaryColour,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: '',
+                            labelText: ''
+                        ),
                       ),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 10,),
-              const Text('Phone Number', style: TextStyle(fontWeight: FontWeight.bold),),
-              const SizedBox(height: 10,),
-              IntlPhoneField(
-                controller: _phoneController,
-                textInputAction: TextInputAction.done,
-                focusNode: focusNodePhone,
-                onChanged: (phone) {
-                  setState(() {
-                    phoneNumber = phone.completeNumber;
-                  });
-                },
-                initialCountryCode: 'ZM',
-                decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter Phone Number',
-                    labelText: 'Phone Number',
-                    prefixIcon: const Icon(
-                      Icons.phone,
-                      color: kSecondaryColour,
-                    )),
-              ),
-              const SizedBox(height: 30,),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50)
-                  ),
-                  onPressed: () async {
-                    focusNodePhone.unfocus();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Processing! Please Wait...', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        duration: Duration(days: 3),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        focusNode: focusNodeNrc3,
+                        controller: _nrcNumberController3,
+                        maxLength: 1,
+                        validator: _validation.validateNrc3,
+                        onChanged: (value) {
+                          if(value.length == 1){
+                            FocusScope.of(context).requestFocus(focusNodePhone);
+                          }
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        cursorColor: kPrimaryColour,
+                        textInputAction: TextInputAction.done,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: '',
+                            labelText: ''
+                        ),
                       ),
-                    );
-                    nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
-                    final tandiza = await getClientData(nrcnumber);
-
-                    if(tandiza?.result == 'Found'){
-                      final clientFinancialsModel = await getClientFinancialData(tandiza?.clientId);
-                      if(!context.mounted){
-                        return;
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10,),
+                const Text('Phone Number', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
+                IntlPhoneField(
+                  controller: _phoneController,
+                  textInputAction: TextInputAction.done,
+                  focusNode: focusNodePhone,
+                  onChanged: (phone) {
+                    setState(() {
+                      phoneNumber = phone.completeNumber;
+                    });
+                  },
+                  initialCountryCode: 'ZM',
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter Phone Number',
+                      labelText: 'Phone Number',
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: kSecondaryColour,
+                      )),
+                ),
+                const SizedBox(height: 30,),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 50)
+                    ),
+                    onPressed: () async {
+                      focusNodePhone.unfocus();
+                      if(_formKey.currentState!.validate()){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                          return OtpScreen(
+                              phoneNumber: phoneNumber,
+                              clientFinancialData: null,
+                              clientId: null,
+                              firstName: null,
+                              surname: null,
+                              result: null,
+                              nrcNumber: null,
+                              dateOfBirth: null
+                          );
+                        }));
                       }
-                      signInWithPhone(
-                          phoneNumber: phoneNumber,
-                          context:context,
-                          tandizaClientFinancials: clientFinancialsModel,
-                          clientId: tandiza?.clientId,
-                          firstName: tandiza?.firstName,
-                          surname: tandiza?.surname ,
-                          result: tandiza?.result,
-                          nrcNumber: tandiza?.nrcNumber,
-                          dateOfBirth: tandiza?.dateOfBirth);
-                    /*Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                      return OtpScreen(
-                          phoneNumber: phoneNumber,
-                          clientFinancialData: clientFinancialsModel,
-                          clientId: tandiza?.clientId,
-                          firstName: tandiza?.firstName,
-                          surname: tandiza?.surname ,
-                          result: tandiza?.result,
-                          nrcNumber: tandiza?.nrcNumber,
-                          dateOfBirth: tandiza?.dateOfBirth
-                      );
-                    }));*/
-                    }else{
-                      if(!mounted)
-                        return;
-                      showDialog<void>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('User not register'),
-                              content: const Text('The user is not present on the system. Please register!'),
-                              actions: [
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, WelcomeScreen.id);
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    }
 
-
-                  }, child: const Text('Sign In', style: TextStyle(fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: kWhiteColour),)),
-              Center(
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, WelcomeScreen.id);
-                    },
-                child: const Text("Don't have an account? Register.", style: TextStyle(fontWeight: FontWeight.bold),)),
-              ),
-            ],
+                    }, child: const Text('Sign In', style: TextStyle(fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: kWhiteColour),)),
+                Center(
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, WelcomeScreen.id);
+                      },
+                  child: const Text("Don't have an account? Register.", style: TextStyle(fontWeight: FontWeight.bold),)),
+                ),
+              ],
+            ),
           ),
         ),
       ),

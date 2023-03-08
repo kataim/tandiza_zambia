@@ -230,6 +230,14 @@ class Validation  {
     }
   }
 
+  String ? validatePhone(String ? arg){
+    if (arg!.length < 9) {
+      return 'Number is too short';
+    } else {
+      return null;
+    }
+  }
+
   String ? validateNrc3(String ? arg){
     if (arg!.isEmpty) {
       return 'Number is too short';

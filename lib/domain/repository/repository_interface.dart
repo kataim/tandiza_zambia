@@ -27,4 +27,5 @@ abstract class IRepository {
   Future<void> saveClientFinancials(TandizaClientFinancialsModel financialsModel);
   Future<TandizaClientFinancialsModel?> getClientFinancials(int ? clientId);
   Future<TandizaLoanStatementModel?> getLoanStatement(int ? loanId);
+  Future<void> verifyPhoneNumber(String ? phoneNumber, String ? verificationCode);
 }

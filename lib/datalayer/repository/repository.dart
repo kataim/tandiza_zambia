@@ -123,4 +123,9 @@ class Repository implements IRepository {
     // TODO: implement loanStatement
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> verifyPhoneNumber(String? phoneNumber, String ? verificationCode) async{
+   firebaseAuthApi.verifyPhoneNumber(phoneNumber, verificationCode);
+  }
 }
