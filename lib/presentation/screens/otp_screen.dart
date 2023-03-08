@@ -36,6 +36,7 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
   late UserCredential authCredential;
   final _auth = FirebaseAuth.instance;
   late String verificationCode;
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar(); // Dismiss any open snackbar
     return Scaffold(
+      key: _scaffoldkey,
       appBar: AppBar(title: const Text('Phone Verification'),
       centerTitle: true,),
       body: SingleChildScrollView(
@@ -90,9 +92,22 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
                 }
                 }catch(e){
                   print(e);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Incorrect Pin Code'))
-                  );
+                  Future.delayed(Duration.zero, (){
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Invalid Sms Code'),
+                            content: Text(e.toString()),
+                            actions: [
+                              TextButton(onPressed: (){
+                                Navigator.pop(context);
+                              }, child: const Text('Dismiss'))
+                            ],
+                          );
+                        });
+                  });
+
                   FocusScope.of(context).unfocus();
                 }
 
