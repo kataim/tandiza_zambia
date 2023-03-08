@@ -55,10 +55,12 @@ class _DashBoardState extends State<DashBoard> {
     // TODO: implement initState
     initialise();
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     return Scaffold(
         body: Stack(
                 fit: StackFit.loose,
@@ -104,7 +106,7 @@ class _DashBoardState extends State<DashBoard> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Text('Loan Amount', style: TextStyle(fontSize: 15),),
+                                const Text('Balance', style: TextStyle(fontSize: 15),),
                                 FutureBuilder<TandizaClientFinancialsModel?>(
                                   future: clientFinancials,
                                     builder: (context, snapshot){

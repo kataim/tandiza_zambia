@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
+import 'package:tandiza/presentation/screens/otp_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
@@ -32,7 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final Validation _validation = Validation();
 
+  final scaffoldMessenger = GlobalKey<ScaffoldMessengerState>();
+
   late String phoneNumber;
+
+  final focusNodePhone = FocusNode();
+  final focusNodeNrc1 = FocusNode();
+  final focusNodeNrc2 = FocusNode();
+  final focusNodeNrc3 = FocusNode();
 
   late String phoneIsoCode;
 
@@ -113,11 +121,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(
                     flex: 3,
                     child: TextFormField(
+                      focusNode: focusNodeNrc1,
                       controller: _nrcNumberController1,
                       textInputAction: TextInputAction.next,
                       maxLength: 6,
-                      validator: null,
-                      onChanged: (value) {},
+                      validator: _validation.validateNrc1,
+                      onChanged: (value) {
+                        if(value.length == 6){
+                          FocusScope.of(context).requestFocus(focusNodeNrc2);
+                        }
+                      },
                       textCapitalization: TextCapitalization.words,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
@@ -137,8 +150,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextFormField(
                       controller: _nrcNumberController2,
                       maxLength: 2,
+                      focusNode: focusNodeNrc2,
                       validator: _validation.validateNrc2,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        if(value.length == 2){
+                          FocusScope.of(context).requestFocus(focusNodeNrc3);
+                        }
+                      },
                       textCapitalization: TextCapitalization.words,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
@@ -153,14 +171,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(
                     flex: 1,
                     child: TextFormField(
+                      focusNode: focusNodeNrc3,
                       controller: _nrcNumberController3,
                       maxLength: 1,
                       validator: _validation.validateNrc3,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        if(value.length == 1){
+                          FocusScope.of(context).requestFocus(focusNodePhone);
+                        }
+                      },
                       textCapitalization: TextCapitalization.words,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       cursorColor: kPrimaryColour,
+                      textInputAction: TextInputAction.done,
                       decoration: kTextFieldDecoration.copyWith(
                           hintText: '',
                           labelText: ''
@@ -174,6 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 10,),
               IntlPhoneField(
                 controller: _phoneController,
+                textInputAction: TextInputAction.done,
+                focusNode: focusNodePhone,
                 onChanged: (phone) {
                   setState(() {
                     phoneNumber = phone.completeNumber;
@@ -194,6 +220,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       minimumSize: const Size(double.infinity, 50)
                   ),
                   onPressed: () async {
+                    focusNodePhone.unfocus();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Processing! Please Wait...', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        duration: Duration(days: 3),
+                      ),
+                    );
                     nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
                     final tandiza = await getClientData(nrcnumber);
 
@@ -212,8 +245,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           result: tandiza?.result,
                           nrcNumber: tandiza?.nrcNumber,
                           dateOfBirth: tandiza?.dateOfBirth);
-
+                    /*Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                      return OtpScreen(
+                          phoneNumber: phoneNumber,
+                          clientFinancialData: clientFinancialsModel,
+                          clientId: tandiza?.clientId,
+                          firstName: tandiza?.firstName,
+                          surname: tandiza?.surname ,
+                          result: tandiza?.result,
+                          nrcNumber: tandiza?.nrcNumber,
+                          dateOfBirth: tandiza?.dateOfBirth
+                      );
+                    }));*/
                     }else{
+                      if(!mounted)
+                        return;
                       showDialog<void>(
                           context: context,
                           barrierDismissible: false,

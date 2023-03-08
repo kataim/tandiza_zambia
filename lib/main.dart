@@ -10,14 +10,14 @@ import 'package:tandiza/datalayer/models/firebase_user_model.dart';
 import 'package:tandiza/datalayer/repository/repository.dart';
 import 'package:tandiza/presentation/screens/application_complete_screen.dart';
 import 'package:tandiza/presentation/screens/employment_screen.dart';
-import 'package:tandiza/presentation/screens/existing_client_registration_screen.dart';
+import 'package:tandiza/presentation/screens/otp_screen.dart';
+import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/presentation/screens/family_information_screen.dart';
 import 'package:tandiza/presentation/screens/home_address_screen.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
 import 'package:tandiza/presentation/screens/loan_statement_screen.dart';
 import 'package:tandiza/presentation/screens/login_screen.dart';
 import 'package:tandiza/presentation/screens/personal_information_screen.dart';
-import 'package:tandiza/presentation/screens/registration_screen.dart';
 import 'package:tandiza/presentation/screens/start_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
 import 'package:tandiza/presentation/state-management/service_provider.dart';
@@ -69,13 +69,13 @@ class MyApp extends StatelessWidget {
         LoginScreen.id : (context) => const LoginScreen(),
         HomeAddressScreen.id : (context) => const HomeAddressScreen(),
         WelcomeScreen.id : (context) => const WelcomeScreen(),
-        RegistrationScreen.id : (context) => RegistrationScreen(),
-        ExistingClientRegistrationScreen.id: (context) => const ExistingClientRegistrationScreen(),
+        RegistrationScreen.id: (context) => const RegistrationScreen(),
         HomeScreen.id: (context) => const HomeScreen(),
         PersonalInformationScreen.id : (context) => const PersonalInformationScreen(),
         EmploymentScreen.id : (context) => const EmploymentScreen(),
         FamilyInformationScreen.id : (context) => const FamilyInformationScreen(),
         ApplicationComplete.id : (context) => const ApplicationComplete(),
+        OtpScreen.id : (context) => const OtpScreen(),
       },
     );
   }

@@ -90,6 +90,7 @@ class FirebaseAuthApi {
                                 TextButton(
                                     child: const Text('Submit'),
                                     onPressed: () async {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                         final credential = PhoneAuthProvider.credential(
                                             verificationId: verificationId,
                                             smsCode: controller.text.trim());
