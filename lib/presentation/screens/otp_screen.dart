@@ -1,32 +1,29 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/presentation/screens/home_screen.dart';
+import 'package:tandiza/presentation/screens/start_screen.dart';
 import 'package:tandiza/widgets/pin_put_widget.dart';
 
+import '../../datalayer/datasources/firebase_database_api.dart';
+import '../../datalayer/models/firebase_user_model.dart';
+import '../../datalayer/models/tandiza_loan_statement_model.dart';
+import '../../domain/models/tandiza_client_entity.dart';
 import '../../widgets/otp_header_widget.dart';
+import '../state-management/service_provider.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, this.phoneNumber,
-  this.clientFinancialData,
-  this.clientId,
-  this.firstName,
-  this.surname,
-    this.result,
-  this.nrcNumber,
-  this.dateOfBirth});
+  const OtpScreen({super.key, this.phoneNumber, required this.nrcNumber});
 
   static const String id = 'otp_screen';
   final String ? phoneNumber;
-  final TandizaClientFinancialsModel ? clientFinancialData;
-  final int ? clientId;
-  final String ? firstName;
-  final String ? surname;
-  final String ? nrcNumber;
-  final String ? dateOfBirth;
-  final String ? result;
+  final String nrcNumber;
+
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -36,10 +33,25 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
   late UserCredential authCredential;
   final _auth = FirebaseAuth.instance;
   late String verificationCode;
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late ServiceProvider _serviceProvider;
+
+  Future<TandizaClient?> getClientData (String id) async {
+    return _serviceProvider.getClientData(id);
+  }
+
+  Future<TandizaClientFinancialsModel?> getClientFinancialData(int ? clientId) async {
+    return _serviceProvider.getClientFinancials(clientId);
+  }
+
+  Future<TandizaLoanStatementModel?> getLoanStatement(int ? loanId) async {
+    return _serviceProvider.getLoanStatement(loanId);
+  }
 
   @override
   void initState() {
+    _serviceProvider = Provider.of<ServiceProvider>(context, listen: false);
+
     verifyPhoneNumber();
     super.initState();
   }
@@ -48,9 +60,35 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
     _auth.verifyPhoneNumber(
         phoneNumber: widget.phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _auth.signInWithCredential(credential).then((value) =>
-          print(value.user?.uid)
-          );
+          final tandiza = await getClientData(widget.nrcNumber);
+          final tandizaClientFinancials = await getClientFinancialData(tandiza?.clientId);
+          final statement = await getLoanStatement(tandizaClientFinancials?.loans?[0].loanId);
+          if(tandiza?.result !=null){
+
+            final authCredential = await _auth.signInWithCredential(credential);
+            FirebaseDatabaseService(uid: authCredential.user?.uid).
+            saveUserData(FirebaseUserModel(
+              uid: authCredential.user?.uid,
+              phoneNumber: authCredential.user?.phoneNumber,
+              clientId: tandiza?.clientId,
+              firstName: tandiza?.firstName,
+              surname: tandiza?.surname,
+              result: tandiza?.result,
+              nrcNumber: tandiza?.nrcNumber,
+              dateOfBirth: tandiza?.dateOfBirth,
+            ));
+            FirebaseDatabaseService(uid: authCredential.user?.uid).
+            saveClientFinancialData(TandizaClientFinancialsModel(
+                loans: tandizaClientFinancials?.loans,
+                applications: tandizaClientFinancials?.applications
+            ));
+            FirebaseDatabaseService(uid: authCredential.user?.uid).
+            saveLoanStatement(TandizaLoanStatementModel(
+                pdf: statement?.pdf
+            ));
+          }else{
+
+          }
         },
         verificationFailed: (FirebaseAuthException e){
           print(e);
@@ -69,7 +107,7 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar(); // Dismiss any open snackbar
     return Scaffold(
-      key: _scaffoldkey,
+      key: _scaffoldKey,
       appBar: AppBar(title: const Text('Phone Verification'),
       centerTitle: true,),
       body: SingleChildScrollView(
@@ -80,16 +118,34 @@ class _OtpScreenState extends State<OtpScreen> with AutomaticKeepAliveClientMixi
             FilledRoundedPinPut(
               onSubmit: (pin) async{
                 try{
-                final credential = await FirebaseAuth.instance.signInWithCredential(
+                  final tandiza = await getClientData(widget.nrcNumber);
+                  final tandizaClientFinancials = await getClientFinancialData(tandiza?.clientId);
+                  final statement = await getLoanStatement(tandizaClientFinancials?.loans?[0].loanId);
+                  final credential = await FirebaseAuth.instance.signInWithCredential(
                       PhoneAuthProvider.credential(
                           verificationId: verificationCode, smsCode: pin)
                   );
-                if(credential.user?.uid != null){
-                  if(!mounted)
-                    return;
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(HomeScreen.id, (Route<dynamic> route) => false);
-                }
+
+                  FirebaseDatabaseService(uid: credential.user?.uid).
+                  saveUserData(FirebaseUserModel(
+                    uid: credential.user?.uid,
+                    phoneNumber: credential.user?.phoneNumber,
+                    clientId: tandiza?.clientId,
+                    firstName: tandiza?.firstName,
+                    surname: tandiza?.surname,
+                    result: tandiza?.result,
+                    nrcNumber: tandiza?.nrcNumber,
+                    dateOfBirth: tandiza?.dateOfBirth,
+                  ));
+                  FirebaseDatabaseService(uid: credential.user?.uid).
+                  saveClientFinancialData(TandizaClientFinancialsModel(
+                      loans: tandizaClientFinancials?.loans,
+                      applications: tandizaClientFinancials?.applications
+                  ));
+                  FirebaseDatabaseService(uid: credential.user?.uid).
+                  saveLoanStatement(TandizaLoanStatementModel(
+                      pdf: statement?.pdf
+                  ));
                 }catch(e){
                   print(e);
                   Future.delayed(Duration.zero, (){

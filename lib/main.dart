@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                textStyle: TextStyle(color: Colors.white),
+                textStyle: const TextStyle(color: Colors.white),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   backgroundColor: kSecondaryColour,
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
           )),
       home: const StartScreen(),
       routes: {
-        LoanStatementScreen.id : (context) => LoanStatementScreen(),
+        LoanStatementScreen.id : (context) => const LoanStatementScreen(),
         LoginScreen.id : (context) => const LoginScreen(),
         HomeAddressScreen.id : (context) => const HomeAddressScreen(),
         WelcomeScreen.id : (context) => const WelcomeScreen(),
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         EmploymentScreen.id : (context) => const EmploymentScreen(),
         FamilyInformationScreen.id : (context) => const FamilyInformationScreen(),
         ApplicationComplete.id : (context) => const ApplicationComplete(),
-        OtpScreen.id : (context) => const OtpScreen(),
+        OtpScreen.id : (context) => const OtpScreen(nrcNumber: '',),
       },
     );
   }

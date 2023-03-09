@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:tandiza/presentation/screens/otp_screen.dart';
+import 'package:tandiza/presentation/screens/start_screen.dart';
 import 'package:tandiza/presentation/screens/welcome_screen.dart';
 
 import '../../datalayer/models/firebase_user_model.dart';
@@ -36,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final scaffoldMessenger = GlobalKey<ScaffoldMessengerState>();
 
   late String phoneNumber;
+
+  late String nrcNumber;
 
   final focusNodePhone = FocusNode();
   final focusNodeNrc1 = FocusNode();
@@ -225,18 +228,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       focusNodePhone.unfocus();
                       if(_formKey.currentState!.validate()){
+                        nrcNumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+                        final tandiza = await getClientData(nrcNumber);
+
+                        if(tandiza?.result != null){
+                          if(!mounted)
+                            return;
                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
                           return OtpScreen(
                               phoneNumber: phoneNumber,
-                              clientFinancialData: null,
-                              clientId: null,
-                              firstName: null,
-                              surname: null,
-                              result: null,
-                              nrcNumber: null,
-                              dateOfBirth: null
+                              nrcNumber : nrcNumber
                           );
                         }));
+                      }else{
+                          Future.delayed(Duration.zero, (){
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('User does not exist'),
+                                    content: const Text('Please register your account to access Tandiza Finance services'),
+                                    actions: [
+                                      TextButton(onPressed: (){
+                                        Navigator.pushNamedAndRemoveUntil(context, WelcomeScreen.id, (route) => false);
+                                      }, child: const Text('Dismiss'))
+                                    ],
+                                  );
+                                });
+                          });
+                        }
                       }
 
                     }, child: const Text('Sign In', style: TextStyle(fontSize: 20,

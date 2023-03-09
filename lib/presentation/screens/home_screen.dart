@@ -24,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _children = [
-    DashBoard(),
-    LearnScreen(),
-    ProfileScreen()
+    const DashBoard(),
+    const LearnScreen(),
+    const ProfileScreen()
   ];
 
   @override
@@ -44,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _pageIndex,
         selectedItemColor: kSecondaryColour,
         unselectedItemColor: kPrimaryColour,
-        unselectedLabelStyle: TextStyle(color: kSecondaryColour),
-        selectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(color: kSecondaryColour),
+        selectedLabelStyle: const TextStyle(
           color: kSecondaryColour,
         ),
         items: const <BottomNavigationBarItem>[
