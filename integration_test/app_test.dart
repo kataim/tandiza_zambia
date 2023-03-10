@@ -25,7 +25,7 @@ void main() {
 
        await tester.pumpAndSettle(const Duration(seconds: 3));
 
-      // Verify the counter starts at 0.
+      
       expect(find.text('Tandiza Finance'), findsOneWidget);
       sleep(const Duration(seconds: 2));
 
