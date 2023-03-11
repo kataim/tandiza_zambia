@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late String phoneNumber;
 
   late String nrcNumber;
+  bool _isLoading = false;
 
   final focusNodePhone = FocusNode();
   final focusNodeNrc1 = FocusNode();
@@ -225,12 +226,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50)
                     ),
-                    onPressed: () async {
+                    onPressed: _isLoading ? null : () async {
                       focusNodePhone.unfocus();
                       if(_formKey.currentState!.validate()){
                         nrcNumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+                        setState(() {
+                          _isLoading = true;
+                        });
                         final tandiza = await getClientData(nrcNumber);
-
+                        setState(() {
+                          _isLoading = false;
+                        });
                         if(tandiza?.result != null){
                           if(!mounted)
                             return;
@@ -259,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       }
 
-                    }, child: const Text('Sign In', style: TextStyle(fontSize: 20,
+                    }, child: _isLoading ? const Center(child: CircularProgressIndicator(),) : const Text('Sign In', style: TextStyle(fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: kWhiteColour),)),
                 Center(

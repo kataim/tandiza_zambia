@@ -169,6 +169,41 @@ map<DropdownMenuItem<String>>((String value) {
   );
 }).toList();
 
+List<DropdownMenuItem<Object>> addressTypes = <String>['Home', 'Work', 'Other'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+List<DropdownMenuItem<Object>> relationshipTypes = <String>['Wife', 'Brother', 'Sister', 'Husband', 'Other'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+List<DropdownMenuItem<Object>> phoneProviderTypes = <String>['','Airtel Mobile', 'MTN Mobile', 'Zamtel Mobile'].
+map<DropdownMenuItem<String>>((String value) {
+  return DropdownMenuItem<String>(
+    value: value,
+    child: Text(
+      value,
+      style: const TextStyle(fontSize: 20),
+    ),
+  );
+}).toList();
+
+
+
 List<DropdownMenuItem<Object>> contractDuration = <String>['6 Months', '1 Year', '2 Years', '5 Years', '10 Years'].
 map<DropdownMenuItem<String>>((String value) {
   return DropdownMenuItem<String>(
@@ -241,6 +276,21 @@ class Validation  {
   String ? validateNrc3(String ? arg){
     if (arg!.isEmpty) {
       return 'Number is too short';
+    } else {
+      return null;
+    }
+  }
+  String ? validateDob(String ? arg){
+    if (arg!.isEmpty) {
+      return 'Please add a date';
+    } else {
+      return null;
+    }
+  }
+
+  String ? validateIsEmpty(String ? arg){
+    if (arg!.isEmpty) {
+      return 'Field is empty';
     } else {
       return null;
     }

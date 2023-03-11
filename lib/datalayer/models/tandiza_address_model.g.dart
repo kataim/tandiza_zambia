@@ -8,14 +8,14 @@ part of 'tandiza_address_model.dart';
 
 TandizaAddressModel _$TandizaAddressModelFromJson(Map<String, dynamic> json) =>
     TandizaAddressModel(
-      addressType: json['address_type'] as String,
-      addressLine1: json['address_line_1'] as String,
-      addressLine2: json['address_line_2'] as String,
-      addressLine3: json['address_line_3'] as String,
-      addressLine4: json['address_line_4'] as String,
-      postalCode: json['postal_code'] as String,
-      owned: json['owned'] as String,
-      monthsResided: json['months_resided'] as String,
+      addressType: json['address_type'] as String?,
+      addressLine1: json['address_line_1'] as String?,
+      addressLine2: json['address_line_2'] as String?,
+      addressLine3: json['address_line_3'] as String?,
+      addressLine4: json['address_line_4'] as String?,
+      postalCode: json['postal_code'] as String?,
+      owned: json['owned'] as String?,
+      monthsResided: json['months_resided'] as String?,
     );
 
 Map<String, dynamic> _$TandizaAddressModelToJson(

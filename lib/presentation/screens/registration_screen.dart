@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tandiza/datalayer/models/firebase_user_model.dart';
+import 'package:tandiza/datalayer/models/tandiza_client_created_model.dart';
 import 'package:tandiza/datalayer/models/tandiza_client_financials_model.dart';
 import 'package:tandiza/domain/models/firebase_user_entity.dart';
 import 'package:tandiza/domain/models/tandiza_client_entity.dart';
+import 'package:tandiza/presentation/screens/welcome_screen.dart';
 import 'package:tandiza/utilities/settings.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import '../../datalayer/models/tandiza_address_model.dart';
+import '../../datalayer/models/tandiza_contacts_model.dart';
 import '../state-management/service_provider.dart';
+import 'otp_screen.dart';
 
 
 
@@ -23,42 +28,154 @@ class RegistrationScreen extends StatefulWidget {
 class _RegistrationScreenState
     extends State<RegistrationScreen> {
   int currentStep = 0;
+
   bool _isChecked = false;
+
   bool _isResident = false;
+
+  bool _isOwnerOfHouse = false;
+
   late String nrcnumber;
+
   final Validation _validation = Validation();
-  final focusNodePhone = FocusNode();
+
+  final focusRegNodePhone = FocusNode();
+
   final focusNodeNrc1 = FocusNode();
+
   final focusNodeNrc2 = FocusNode();
+
   final focusNodeNrc3 = FocusNode();
 
+  final focusNodeFirstName = FocusNode();
+
+  final focusNodeSurname = FocusNode();
+
+  final focusNodeDateOfBirth = FocusNode();
+
   final GlobalKey<FormState> _formKeyIdentity = GlobalKey<FormState>();
+
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
+
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKeyAddress = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKeyEmployment = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKeyNextOfKin = GlobalKey<FormState>();
+
   late String phoneNumber;
+
+  late String phoneSupervisor;
+
   late ServiceProvider _serviceProvider;
+
   late String phoneIsoCode;
+
   String title = 'Mr';
+
+  String addressType = 'Home';
+
   String gender = 'Male';
+
   String maritalStatus = 'Married';
+
   bool visible = false;
+
   String confirmedNumber = '';
+
   DateTime firstDate = DateTime(1940, 01, 01);
+
   DateTime lastDate = DateTime(2004, 1, 1);
+
   DateTime initialDate = DateTime(1986, 1, 1);
+
   final TextEditingController _firstNameController = TextEditingController();
+
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+
+  final TextEditingController _phoneNumberController = TextEditingController();
+
   final TextEditingController _nrcNumberController1 = TextEditingController();
+
   final TextEditingController _nrcNumberController2 = TextEditingController();
+
   final TextEditingController _nrcNumberController3 = TextEditingController();
+
   final TextEditingController _dateOfBirthController = TextEditingController();
+
   final TextEditingController _cityController = TextEditingController();
+
+  final TextEditingController _phoneProviderController = TextEditingController();
+
+  final TextEditingController _employerController = TextEditingController();
+
+  final TextEditingController _employmentDateController = TextEditingController();
+
+  final TextEditingController _occupationController = TextEditingController();
+
+  final TextEditingController _employeeNumberController = TextEditingController();
+
+  final TextEditingController _phoneSupervisorController = TextEditingController();
+
+  final TextEditingController _supervisorNameController = TextEditingController();
+
+  String contractTypeDropDown = 'Contract';
+
+  String phoneProviderType = '';
+
+  String relationshipType = 'Wife';
+
+  String contractDurationDropDown = '1 Year';
+
+  late String phoneKinNumber;
+
+  bool _isLoading = false;
+
+  DateTime firstKinDate = DateTime(1940, 01, 01);
+
+  DateTime lastKinDate = DateTime(2004, 1, 1);
+
+  DateTime initialKinDate = DateTime(1986, 1, 1);
+
+  final TextEditingController _firstNameKinController = TextEditingController();
+
+  final TextEditingController _lastNameKinController = TextEditingController();
+
+  final TextEditingController _phoneKinController = TextEditingController();
+
+  final TextEditingController _plotNumberController = TextEditingController();
+
+  final TextEditingController _streetAddressController = TextEditingController();
+
+  final TextEditingController _monthsResidedController = TextEditingController();
+
+
+
 
   @override
   void initState() {
     _serviceProvider = Provider.of<ServiceProvider>(context, listen: false);
     super.initState();
+  }
+
+  @override
+  void dispose(){
+    focusRegNodePhone.dispose();
+
+    focusNodeNrc1.dispose();
+
+    focusNodeNrc2.dispose();
+
+    focusNodeNrc3.dispose();
+
+    focusNodeFirstName.dispose();
+
+    focusNodeSurname.dispose();
+    super.dispose();
+
+
   }
 
   Future<TandizaClient?> getClientData (String id) async {
@@ -67,6 +184,36 @@ class _RegistrationScreenState
 
   Future<TandizaClientFinancialsModel?> getClientFinancialData(int ? clientId) async {
     return _serviceProvider.getClientFinancials(clientId);
+  }
+
+  Future<TandizaClientCreatedModel?> createClient({String? nrcnumber, String? firstName,
+  String? surname, String? dateOfBirth,
+  String? phoneNumber, String? phoneProvider,
+  String? title, String? gender, String? addressType,
+  String? nokFullNames, String? nokRelationship, String? nokPhoneNumber,
+  String? maritalStatus, List<TandizaContactModel>? contacts,
+  List<TandizaAddressModel>? address, String? plotNumber,
+  String? streetAddress, String? monthsResided,
+  String? city, bool? isOwned, bool? isResident, String ? employerName,
+  String ? employmentType,
+  String ? occupation, String ? contactNumber,
+  String ? employeeNumber, String ? engagementDate,}) async {
+    return _serviceProvider.createClient(
+
+        nrcnumber: nrcnumber, firstName: firstName,
+        surname: surname, dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber, phoneProvider: phoneProvider,
+        title: title, gender: gender, addressType: addressType,
+        nokFullNames: nokFullNames, nokRelationship: nokRelationship,
+        nokPhoneNumber: nokPhoneNumber, maritalStatus: maritalStatus,
+        contacts: [TandizaContactModel(contactNumber: phoneNumber, contactType: phoneProvider)],
+        address: [TandizaAddressModel(addressType: addressType,
+            addressLine1: plotNumber, addressLine2: streetAddress, addressLine3: city,
+            addressLine4: null, postalCode: null, owned: isOwned! ? 'Yes': 'No', monthsResided: monthsResided)],
+        employerName : employerName, employmentType : employmentType,
+        occupation : occupation, contactNumber : contactNumber ,
+        employeeNumber : employeeNumber, engagementDate : engagementDate
+    );
   }
 
   Future<FirebaseUserEntity?> signInWithPhone({String ? phoneNumber,
@@ -136,8 +283,8 @@ class _RegistrationScreenState
               children: [
                 Expanded(
                     child: ElevatedButton(
-                  onPressed: controlsDetails.onStepContinue,
-                  child: Text(
+                  onPressed: _isLoading ? null : controlsDetails.onStepContinue,
+                  child: _isLoading ? const Center(child: CircularProgressIndicator()) : Text(
                     isLastStep ? 'Confirm' : 'Continue',
                     style: const TextStyle(
                         color: kWhiteColour,
@@ -171,58 +318,125 @@ class _RegistrationScreenState
           final isLastStep =
               currentStep == getSteps(currentStep, context).length - 1;
 
-          if (isLastStep && _isChecked) {
+          if (isLastStep && _isChecked && _formKeyAccount.currentState!.validate() &&
+              _formKeyIdentity.currentState!.validate() &&
+          _formKeyAddress.currentState!.validate() &&
+          _formKeyEmployment.currentState!.validate() &&
+          _formKeyNextOfKin.currentState!.validate()) {
             //TODO register the user and navigate to the dashboard
            nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
-           signInWithPhone(
-               phoneNumber: phoneNumber,
-               context:context,
-                firstName: _firstNameController.text,
-                surname: _lastNameController.text,
-                nrcNumber: nrcnumber,
-                dateOfBirth: _dateOfBirthController.text);
+           setState(() {
+             _isLoading = true;
+           });
+          final tandizaClient = await createClient(
+
+              nrcnumber: nrcnumber, firstName: _firstNameController.text,
+              surname: _lastNameController.text, dateOfBirth: _dateOfBirthController.text,
+              title: title, gender: gender, addressType: addressType,
+              nokFullNames: '${_firstNameKinController.text} ${_lastNameKinController.text} ', nokRelationship: relationshipType,
+              nokPhoneNumber: phoneKinNumber, maritalStatus: maritalStatus,
+              contacts: [TandizaContactModel(contactNumber: phoneNumber, contactType: _phoneProviderController.text)],
+              address: [TandizaAddressModel(addressType: addressType,
+                  addressLine1: _plotNumberController.text, addressLine2: _streetAddressController.text, addressLine3: _cityController.text,
+                  addressLine4: null, postalCode: null, owned: _isOwnerOfHouse! ? 'Yes': 'No', monthsResided: _monthsResidedController.text)],
+              employerName : _employerController.text, employmentType : contractTypeDropDown,
+              occupation : _occupationController.text, contactNumber : _phoneSupervisorController.text ,
+              employeeNumber : _employeeNumberController.text, engagementDate : _employmentDateController.text
+          );
+           setState(() {
+             _isLoading = false;
+           });
+
+           if(tandizaClient?.clientId != null){
+             if(!mounted)
+               return;
+             Navigator.of(context).push(MaterialPageRoute(builder: (context){
+               return OtpScreen(
+                   phoneNumber: phoneNumber,
+                   nrcNumber : nrcnumber
+               );
+             }));
+           }else{
+             Future.delayed(Duration.zero, (){
+               showDialog(
+                   context: context,
+                   builder: (BuildContext context) {
+                     return AlertDialog(
+                       title: const Text('User does not exist'),
+                       content: const Text('Please register your account to access Tandiza Finance services'),
+                       actions: [
+                         TextButton(onPressed: (){
+                           Navigator.pushNamedAndRemoveUntil(context, WelcomeScreen.id, (route) => false);
+                         }, child: const Text('Dismiss'))
+                       ],
+                     );
+                   });
+             });
+           }
 
 
-          } else if(_formKeyIdentity.currentState!.validate() && currentStep == 0){
+          } else if(currentStep == 0 && _formKeyIdentity.currentState!.validate()){
             nrcnumber = '${_nrcNumberController1.text}/${_nrcNumberController2.text}/${_nrcNumberController3.text}';
+            setState(() {
+              _isLoading = true;
+            });
             final tandiza = await getClientData(nrcnumber);
-            if(tandiza?.result == 'Found'){
+            setState(() {
+              _isLoading = false;
+            });
 
-              final clientFinancialData = await getClientFinancialData(tandiza?.clientId);
-              if(!context.mounted){
+            if(tandiza?.result == 'Found'){
+              if(!mounted){
                 return;
               }
-              signInWithPhone(
-                  phoneNumber: phoneNumber,
-                  context:context,
-                  tandizaClientFinancials: clientFinancialData,
-                  clientId: tandiza?.clientId,
-                  firstName: tandiza?.firstName,
-                  surname: tandiza?.surname,
-                  result: tandiza?.result,
-                  nrcNumber: tandiza?.nrcNumber,
-                  dateOfBirth: tandiza?.dateOfBirth);
+
+              Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                return OtpScreen(
+                    phoneNumber: phoneNumber,
+                    nrcNumber : nrcnumber
+                );
+              }));
             }else{
               setState(() {
                 currentStep = currentStep + 1;
               });
             }
-              }
-          else if(_formKeyAccount.currentState!.validate() && currentStep == 1){
-                setState(() {
-                  currentStep = currentStep + 1;
-                });
-              } else if(isLastStep && !_isChecked){
+              }else if(isLastStep && !_isChecked){
             const snackBar = SnackBar(
               content: Text('Confirm Tandiza Terms & Conditions!'),
             );
 
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }else if(isLastStep && (!_formKeyAccount.currentState!.validate() ||
+              !_formKeyIdentity.currentState!.validate() ||
+              !_formKeyAddress.currentState!.validate() ||
+              !_formKeyEmployment.currentState!.validate() ||
+              !_formKeyNextOfKin.currentState!.validate())){
+            const snackBarValidate = SnackBar(
+              content: Text('Please ensure that all fields are complete!'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBarValidate);
+          }else if(_formKeyAccount.currentState!.validate() && currentStep == 1){
+            setState(() {
+              currentStep = currentStep + 1;
+            });
+
+          }else if(_formKeyAddress.currentState!.validate() && currentStep == 2){
+            setState(() {
+              currentStep = currentStep + 1;
+            });
+
+          }else if(_formKeyEmployment.currentState!.validate() && currentStep == 3){
+            setState(() {
+              currentStep = currentStep + 1;
+            });
+
           }
         },
         currentStep: currentStep,
         elevation: 0,
-        type: StepperType.horizontal,
+        type: StepperType.vertical,
         steps: getSteps(currentStep, context),
       ),
     );
@@ -257,7 +471,6 @@ class _RegistrationScreenState
                           }
                         },
                         textCapitalization: TextCapitalization.words,
-                        textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         cursorColor: kPrimaryColour,
                         decoration: kTextFieldDecoration.copyWith(
@@ -283,7 +496,6 @@ class _RegistrationScreenState
                           }
                         },
                         textCapitalization: TextCapitalization.words,
-                        textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         cursorColor: kPrimaryColour,
                         decoration: kTextFieldDecoration.copyWith(
@@ -302,11 +514,10 @@ class _RegistrationScreenState
                         validator: _validation.validateNrc3,
                         onChanged: (value) {
                           if(value.length == 1){
-                            FocusScope.of(context).requestFocus(focusNodePhone);
+                            FocusScope.of(context).requestFocus(focusRegNodePhone);
                           }
                         },
                         textCapitalization: TextCapitalization.words,
-                        textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         cursorColor: kPrimaryColour,
                         textInputAction: TextInputAction.done,
@@ -319,16 +530,44 @@ class _RegistrationScreenState
                   ],
                 ),
                 const SizedBox(height: 10,),
+                const Text('Phone Provider', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 10,),
+                TextFormField(
+                  enabled: false,
+                  controller: _phoneProviderController,
+                  validator: null,
+                  //_validateName,
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  textInputAction: TextInputAction.done,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Phone Provider',
+                      labelText: 'Phone Provider',
+                      prefixIcon: Icon(Icons.phone,
+                        color: Theme.of(context).primaryColorDark,)),
+                ),
+                const SizedBox(height: 10,),
                 const Text('Phone Number', style: TextStyle(fontWeight: FontWeight.bold),),
                 const SizedBox(height: 10,),
                 IntlPhoneField(
-                  controller: _phoneController,
+                  controller: _phoneNumberController,
                   textInputAction: TextInputAction.done,
-                  focusNode: focusNodePhone,
+                  focusNode: focusRegNodePhone,
                   onChanged: (phone) {
                     setState(() {
                       phoneNumber = phone.completeNumber;
                     });
+                    if(phoneNumber.length >= 6){
+                      print(phoneNumber.length);
+                      if(phoneNumber.substring(5,6).contains('7')){
+                        _phoneProviderController.text = 'Airtel Mobile';
+                      }else if(phoneNumber.substring(5,6).contains('6')){
+                        _phoneProviderController.text = 'MTN Mobile';
+                      }else if(phoneNumber.substring(5,6).contains('5')){
+                        _phoneProviderController.text = 'Zamtel Mobile';
+                      }
+                    }
                   },
                   initialCountryCode: 'ZM',
                   decoration: kTextFieldDecoration.copyWith(
@@ -339,6 +578,7 @@ class _RegistrationScreenState
                         color: kSecondaryColour,
                       )),
                 ),
+                const SizedBox(height: 10,),
               ],
             ),
           )),
@@ -356,7 +596,6 @@ class _RegistrationScreenState
                   onChanged: (value) {
                     setState(() {
                       title = value.toString();
-                      print(title);
                     });
                   },
                   decoration: kTextFieldDecoration.copyWith(
@@ -369,12 +608,13 @@ class _RegistrationScreenState
                 ),
                 const SizedBox(height: 15,),
                 TextFormField(
+                  focusNode: focusNodeFirstName,
                   controller: _firstNameController,
                   validator: _validation.validateName,
                   //_validateName,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                     },
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -389,12 +629,13 @@ class _RegistrationScreenState
                   height: 15,
                 ),
                 TextFormField(
+                  focusNode: focusNodeSurname,
                   controller: _lastNameController,
                   validator: _validation.validateName,
                   //_validateName,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    },
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -412,7 +653,6 @@ class _RegistrationScreenState
                   onChanged: (value) {
                     setState(() {
                       gender = value.toString();
-                      print(gender);
                     });
                   },
                   decoration: kTextFieldDecoration.copyWith(
@@ -426,7 +666,7 @@ class _RegistrationScreenState
                 const SizedBox(height: 15,),
                 TextFormField(
                   controller: _dateOfBirthController,
-                  validator: null,
+                  validator: _validation.validateDob,
                   //_validateName,
                   onChanged: (value) {},
                   onTap: () async {
@@ -441,7 +681,6 @@ class _RegistrationScreenState
 
                   },
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   textInputAction: TextInputAction.done,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -459,7 +698,6 @@ class _RegistrationScreenState
                   onChanged: (value) {
                     setState(() {
                       maritalStatus = value.toString();
-                      print(maritalStatus);
                     });
                   },
                   decoration: kTextFieldDecoration.copyWith(
@@ -478,15 +716,32 @@ class _RegistrationScreenState
           isActive: currentStep >= 2,
           title: const Text('Address'),
           content: Form(
-            key: _formKeyTandiza,
+            key: _formKeyAddress,
             child: Column(
               children: [
+                DropdownButtonFormField(
+                  value: addressType,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      addressType = value.toString();
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Address Type',
+                      labelText: 'Address Type',
+                      prefixIcon: Icon(
+                        Icons.home,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: addressTypes,
+                ),
+                const SizedBox(height: 20,),
                 TextFormField(
+                  controller: _plotNumberController,
                   validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -498,14 +753,14 @@ class _RegistrationScreenState
                       )),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 TextFormField(
+                  controller: _streetAddressController,
                   validator: _validation.validateName,
                   //_validateName,
                   onChanged: (value) {},
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   keyboardType: TextInputType.text,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -516,7 +771,7 @@ class _RegistrationScreenState
                         color: Theme.of(context).primaryColorDark,
                       )),
                 ),
-                const SizedBox(height: 25,),
+                const SizedBox(height: 20,),
                 Autocomplete<String>(
                   optionsBuilder: (TextEditingValue textEditingValue) {
                     if (textEditingValue.text == '') {
@@ -539,6 +794,7 @@ class _RegistrationScreenState
                           return null;
                         }
                       },
+                      keyboardType: TextInputType.name,
                       controller: textEditingController,
                       focusNode: focusNode,
                       onFieldSubmitted: (str) => onFieldSubmitted(),
@@ -556,7 +812,35 @@ class _RegistrationScreenState
                     debugPrint('You just selected $selection');
                   },
                 ),
-                const SizedBox(height: 25,),
+                const SizedBox(height: 20,),
+                TextFormField(
+                  controller: _monthsResidedController,
+                  validator: _validation.validateDob,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.number,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Months Resided',
+                      labelText: 'Months Resided',
+                      prefixIcon: Icon(
+                        Icons.history,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(height: 20,),
+                Row(
+                  children: [
+                    Checkbox(value: _isOwnerOfHouse, onChanged: (value){
+                      setState(() {
+                        _isOwnerOfHouse = value!;
+                      });
+                    }),
+                    const SizedBox(width: 10,),
+                    const Expanded(child: Text('Owns The House', style: TextStyle(fontSize: 18),))
+                  ],
+                ),
                 Row(
                   children: [
                     Checkbox(value: _isResident, onChanged: (value){
@@ -568,7 +852,273 @@ class _RegistrationScreenState
                     const Expanded(child: Text('Resident', style: TextStyle(fontSize: 18),))
                   ],
                 ),
+
+
+              ],
+            ),
+          )),
+      Step(title: const Text('Employment'),
+          state: currentStep > 3 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 3,
+          content: Form(
+            key: _formKeyEmployment,
+            child: Column(
+              children: [
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    if (textEditingValue.text == '') {
+                      return const Iterable<String>.empty();
+                    }
+                    return employers.where((String option) {
+                      return option
+                          .contains(textEditingValue.text);
+                    });
+                  },
+                  fieldViewBuilder: (BuildContext context,
+                      TextEditingController textEditingController,
+                      FocusNode focusNode,
+                      VoidCallback onFieldSubmitted) {
+                    return TextFormField(
+                      textCapitalization: TextCapitalization.words,
+                      validator: _validation.validateIsEmpty,
+                      controller: textEditingController,
+                      focusNode: focusNode,
+                      keyboardType: TextInputType.name,
+                      onFieldSubmitted: (str) => onFieldSubmitted(),
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Employer',
+                          labelText: 'Employer',
+                          prefixIcon: Icon(
+                            Icons.account_circle,
+                            color: Theme.of(context).primaryColorDark,
+                          )),
+                    );
+                  },
+                  onSelected: (String selection) {
+                    _employerController.text = selection;
+                    debugPrint('You just selected $selection');
+                  },
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                TextFormField(
+                  onTap: () async{
+                    final dateSelected = await pickDate();
+
+                    if(dateSelected == null) return;
+
+                    setState(() {
+                      _employmentDateController.text = DateFormat('yyyy-MM-dd')
+                          .format(dateSelected);
+                    });
+                  },
+                  controller: _employmentDateController,
+                  validator: _validation.validateIsEmpty,
+                  //_validateName,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.done,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Employment start date',
+                      labelText: 'Employment start date',
+                      suffixIcon: IconButton(
+                        color: Theme.of(context).primaryColorDark, onPressed: () async {
+                        final dateSelected = await pickDate();
+
+                        if(dateSelected == null) return;
+
+                        setState(() {
+                          _employmentDateController.text = DateFormat('yyyy-MM-dd')
+                              .format(dateSelected);
+                        });
+                      },
+                        icon: const Icon(Icons.calendar_month_sharp)  ,
+                      )),
+                ),
                 const SizedBox(height: 25,),
+                DropdownButtonFormField(
+                  value: contractTypeDropDown,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      contractTypeDropDown = value.toString();
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Contract Type',
+                      labelText: 'Contract Type',
+                      prefixIcon: Icon(
+                        Icons.history,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: contractType,
+                ),
+                const SizedBox(height: 25,),
+                Visibility(
+                  visible: contractTypeDropDown.contains('Contract'),
+                  child: DropdownButtonFormField(
+                    //_validateName,
+                    value: contractDurationDropDown,
+                    onChanged: (value) {
+                      setState(() {
+                        contractDurationDropDown = value.toString();
+                      });
+                    },
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Contract Duration',
+                        labelText: 'Contract Duration',
+                        prefixIcon: Icon(
+                          Icons.history,
+                          color: Theme.of(context).primaryColorDark,
+                        )), items: contractDuration,
+                  ),
+                ),
+                const SizedBox(height: 25,),
+                TextFormField(
+                  controller: _occupationController,
+                  validator: _validation.validateIsEmpty,
+                  //_validateName,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.done,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Occupation',
+                      labelText: 'Occupation',
+                      prefixIcon: Icon(Icons.account_tree_sharp,
+                        color: Theme.of(context).primaryColorDark,)),
+                ),
+                const SizedBox(height: 25,),
+                TextFormField(
+                  controller: _employeeNumberController,
+                  validator: _validation.validateIsEmpty,
+                  //_validateName,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Employee Number',
+                      labelText: 'Employee Number',
+                      prefixIcon: Icon(Icons.numbers,
+                        color: Theme.of(context).primaryColorDark,)),
+                ),
+                const SizedBox(height: 25,),
+                TextFormField(
+                  controller: _supervisorNameController,
+                  validator: _validation.validateIsEmpty,
+                  //_validateName,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Supervisor Name',
+                      labelText: 'Supervisor Name',
+                      prefixIcon: Icon(Icons.task_alt,
+                        color: Theme.of(context).primaryColorDark,)),
+                ),
+                const SizedBox(height: 25,),
+                IntlPhoneField(
+                  controller: _phoneSupervisorController,
+                  textInputAction: TextInputAction.done,
+                  onChanged: (phone) {
+                    setState(() {
+                      phoneSupervisor = phone.completeNumber;
+
+                    });
+                  },
+                  initialCountryCode: 'ZM',
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Supervisor Phone Number',
+                      labelText: 'Supervisor Phone Number',
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: kSecondaryColour,
+                      )),
+                ),
+              ],
+            ),
+          ),),
+      Step(title: const Text('Next Of Kin'),
+          state: currentStep > 3 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 3,
+          content: Form(
+            key: _formKeyNextOfKin,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _firstNameKinController,
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'First Name',
+                      labelText: 'First Name',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  controller: _lastNameKinController,
+                  validator: _validation.validateName,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.text,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Last Name',
+                      labelText: 'Last Name',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                DropdownButtonFormField(
+                  value: relationshipType,
+                  //_validateName,
+                  onChanged: (value) {
+                    setState(() {
+                      relationshipType = value.toString();
+                    });
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Relationship',
+                      labelText: 'Relationship',
+                      prefixIcon: Icon(
+                        Icons.people,
+                        color: Theme.of(context).primaryColorDark,
+                      )), items: relationshipTypes,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                IntlPhoneField(
+                  controller: _phoneKinController,
+                  onChanged: (phone) {
+                    setState(() {
+                      phoneKinNumber = phone.completeNumber;
+                    });
+                  },
+                  initialCountryCode: 'ZM',
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter Phone Number',
+                      labelText: 'Phone Number',
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: kSecondaryColour,
+                      )),
+                ),
                 Row(
                   children: [
                     Checkbox(
@@ -586,7 +1136,7 @@ class _RegistrationScreenState
                 ),
               ],
             ),
-          )),
+          ),),
     ];
   }
 }

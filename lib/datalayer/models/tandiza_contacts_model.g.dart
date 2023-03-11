@@ -8,8 +8,8 @@ part of 'tandiza_contacts_model.dart';
 
 TandizaContactModel _$TandizaContactModelFromJson(Map<String, dynamic> json) =>
     TandizaContactModel(
-      contactType: json['contact_type'] as String,
-      contactNumber: json['contact_number'] as String,
+      contactType: json['contact_type'] as String?,
+      contactNumber: json['contact_number'] as String?,
     );
 
 Map<String, dynamic> _$TandizaContactModelToJson(

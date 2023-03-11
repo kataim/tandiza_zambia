@@ -30,20 +30,20 @@ class TandizaClientExtendedModel {
   @JsonKey(name: 'employee_number')
   final String ? employeeNumber;
   @JsonKey(name: 'supervisor_name')
-  final String supervisorName;
+  final String ? supervisorName;
   @JsonKey(name: 'nok_fullnames')
   final String ? fullNames;
   final String ? relationship;
   @JsonKey(name: 'nok_contact_number')
   final String ? contactNumber;
 
-  TandizaClientExtendedModel(this.nrcNumber, this.dateOfBirth,
+  TandizaClientExtendedModel({this.nrcNumber, this.dateOfBirth,
       this.surname, this.firstName, this.maritalStatus,
       this.gender, this.title, this.addresses,
       this.contacts, this.employerName, this.employmentType,
       this.occupation, this.resident, this.contactNumber,
       this.employeeNumber, this.engagementDate, this.fullNames,
-      this.relationship, this.supervisorName);
+      this.relationship, this.supervisorName});
 
   factory TandizaClientExtendedModel.fromJson(Map<String, dynamic> json){
     return _$TandizaClientExtendedModelFromJson(json);

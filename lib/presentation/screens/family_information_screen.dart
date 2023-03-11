@@ -29,7 +29,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
 
   final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
 
-  late String phoneNumber;
+  late String phoneKinNumber;
 
   late ServiceProvider _serviceProvider;
 
@@ -39,25 +39,25 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
 
   String confirmedNumber = '';
 
-  DateTime firstDate = DateTime(1940, 01, 01);
+  DateTime firstKinDate = DateTime(1940, 01, 01);
 
-  DateTime lastDate = DateTime(2004, 1, 1);
+  DateTime lastKinDate = DateTime(2004, 1, 1);
 
-  DateTime initialDate = DateTime(1986, 1, 1);
+  DateTime initialKinDate = DateTime(1986, 1, 1);
 
-  final TextEditingController _plotNumberController = TextEditingController();
+  final TextEditingController _plotNumberKinController = TextEditingController();
 
-  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _cityKinController = TextEditingController();
 
-  final TextEditingController _provinceContoller = TextEditingController();
+  final TextEditingController _provinceKinContoller = TextEditingController();
 
-  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _streetKinController = TextEditingController();
 
-  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _firstNameKinController = TextEditingController();
 
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _lastNameKinController = TextEditingController();
 
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneKinController = TextEditingController();
 
   late Future<FirebaseUserModel> getUsers;
   late FirebaseUserModel userModel;
@@ -96,7 +96,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              controller: _firstNameController,
+                              controller: _firstNameKinController,
                               validator: _validation.validateName,
                               //_validateName,
                               onChanged: (value) {},
@@ -116,7 +116,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                               height: 15,
                             ),
                             TextFormField(
-                              controller: _lastNameController,
+                              controller: _lastNameKinController,
                               validator: _validation.validateName,
                               //_validateName,
                               onChanged: (value) {},
@@ -136,10 +136,10 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                               height: 15,
                             ),
                             IntlPhoneField(
-                              controller: _phoneController,
+                              controller: _phoneKinController,
                               onChanged: (phone) {
                                 setState(() {
-                                  phoneNumber = phone.completeNumber;
+                                  phoneKinNumber = phone.completeNumber;
                                 });
                               },
                               initialCountryCode: 'ZM',
@@ -155,7 +155,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                               height: 15,
                             ),
                             TextFormField(
-                              controller: _plotNumberController,
+                              controller: _plotNumberKinController,
                               validator: _validation.validateName,
                               //_validateName,
                               onChanged: (value) {},
@@ -175,7 +175,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                               height: 25,
                             ),
                             TextFormField(
-                              controller: _streetController,
+                              controller: _streetKinController,
                               validator: _validation.validateName,
                               //_validateName,
                               onChanged: (value) {},
@@ -227,7 +227,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                                 );
                               },
                               onSelected: (String selection) {
-                                _cityController.text = selection;
+                                _cityKinController.text = selection;
                                 debugPrint('You just selected $selection');
                               },
                             ),
@@ -267,7 +267,7 @@ class _FamilyInformationScreenState extends State<FamilyInformationScreen> {
                                 );
                               },
                               onSelected: (String selection) {
-                                _provinceContoller.text = selection;
+                                _provinceKinContoller.text = selection;
                                 debugPrint('You just selected $selection');
                               },
                             ),

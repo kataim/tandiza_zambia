@@ -5,14 +5,14 @@ part 'tandiza_contacts_model.g.dart';
 @JsonSerializable()
 class TandizaContactModel {
   @JsonKey(name: 'contact_type')
-  final String contactType;
+  final String ? contactType;
 
   @JsonKey(name: 'contact_number')
-  final String contactNumber;
+  final String ? contactNumber;
 
   TandizaContactModel({
-    required this.contactType,
-    required this.contactNumber,
+    this.contactType,
+    this.contactNumber,
   });
 
   factory TandizaContactModel.fromJson(Map<String, dynamic> json) =>

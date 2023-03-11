@@ -9,29 +9,29 @@ part of 'tandiza_client_extended_model.dart';
 TandizaClientExtendedModel _$TandizaClientExtendedModelFromJson(
         Map<String, dynamic> json) =>
     TandizaClientExtendedModel(
-      json['nrcnumber'] as String?,
-      json['date_of_birth'] as String?,
-      json['surname'] as String?,
-      json['firstnames'] as String?,
-      json['marital_status'] as String?,
-      json['gender'] as String?,
-      json['title'] as String?,
-      (json['addresses'] as List<dynamic>?)
+      nrcNumber: json['nrcnumber'] as String?,
+      dateOfBirth: json['date_of_birth'] as String?,
+      surname: json['surname'] as String?,
+      firstName: json['firstnames'] as String?,
+      maritalStatus: json['marital_status'] as String?,
+      gender: json['gender'] as String?,
+      title: json['title'] as String?,
+      addresses: (json['addresses'] as List<dynamic>?)
           ?.map((e) => TandizaAddressModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['contacts'] as List<dynamic>?)
+      contacts: (json['contacts'] as List<dynamic>?)
           ?.map((e) => TandizaContactModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      json['employer_name'] as String?,
-      json['employment_type'] as String?,
-      json['occupation'] as String?,
-      json['resident'] as String?,
-      json['nok_contact_number'] as String?,
-      json['employee_number'] as String?,
-      json['engagement_date'] as String?,
-      json['nok_fullnames'] as String?,
-      json['relationship'] as String?,
-      json['supervisor_name'] as String,
+      employerName: json['employer_name'] as String?,
+      employmentType: json['employment_type'] as String?,
+      occupation: json['occupation'] as String?,
+      resident: json['resident'] as String?,
+      contactNumber: json['nok_contact_number'] as String?,
+      employeeNumber: json['employee_number'] as String?,
+      engagementDate: json['engagement_date'] as String?,
+      fullNames: json['nok_fullnames'] as String?,
+      relationship: json['relationship'] as String?,
+      supervisorName: json['supervisor_name'] as String?,
     );
 
 Map<String, dynamic> _$TandizaClientExtendedModelToJson(
