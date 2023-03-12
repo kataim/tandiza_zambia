@@ -20,7 +20,7 @@ class TandizaAddressModel {
   final String ? addressLine4;
 
   @JsonKey(name: 'postal_code')
-  final String ? postalCode;
+  final String postalCode;
 
   @JsonKey(name: 'owned')
   final String ? owned;
@@ -34,7 +34,7 @@ class TandizaAddressModel {
     this.addressLine2,
     this.addressLine3,
     this.addressLine4,
-    this.postalCode,
+    required this.postalCode,
     this.owned,
     this.monthsResided,
   });

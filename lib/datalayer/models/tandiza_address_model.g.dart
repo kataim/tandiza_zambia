@@ -13,7 +13,7 @@ TandizaAddressModel _$TandizaAddressModelFromJson(Map<String, dynamic> json) =>
       addressLine2: json['address_line_2'] as String?,
       addressLine3: json['address_line_3'] as String?,
       addressLine4: json['address_line_4'] as String?,
-      postalCode: json['postal_code'] as String?,
+      postalCode: json['postal_code'] as String,
       owned: json['owned'] as String?,
       monthsResided: json['months_resided'] as String?,
     );

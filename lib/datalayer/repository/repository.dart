@@ -133,29 +133,32 @@ class Repository implements IRepository {
   }
 
   @override
-  Future<TandizaClientCreatedModel?> createTandizaClient({String? nrcnumber,
-    String? firstName,
-    String? surname, String? dateOfBirth, String? phoneNumber,
-    String? phoneProvider, String? title, String? gender,
-    String? addressType, String? nokFullNames, String? nokRelationship,
-    String? nokPhoneNumber, String? maritalStatus,
-    List<TandizaContactModel>? contacts, List<TandizaAddressModel>? address,
-    String ? plotNumber, String ? streetAddress, String ? monthsResided, String ? city,
-    bool ? isOwned, bool ? isResident, String ? employerName, String ? employmentType,
-    String ? occupation, String ? contactNumber,
-    String ? employeeNumber, String ? engagementDate,}) async {
+  Future<TandizaClientCreatedModel?> createTandizaClient({
+    required String nrcnumber, required String firstName, required String phoneNumber,
+    required String surname, required String dateOfBirth, required String supervisorName,
+    required String title, required String gender, required String addressType,
+    required String nokFullNames, required String nokRelationship, required String nokPhoneNumber, required String  phoneProvider,
+    required String maritalStatus, required String postCode,
+    required String plotNumber,
+    required String streetAddress, required String monthsResided,
+    required String city, required bool isOwned, required bool isResident, required String  employerName,
+    required String employmentType,
+    required String  occupation, required String  contactNumber,
+    required String employeeNumber, required String  engagementDate,
+}) async {
     try{
       final newTandizaClient = await loanManagementApi.createTandizaClient(
+        postCode : postCode,
           employerName : employerName, employmentType : employmentType,
           occupation : occupation, contactNumber : contactNumber ,
           employeeNumber : employeeNumber, engagementDate : engagementDate,
           firstName: firstName, nrcnumber: nrcnumber,
           surname: surname, dateOfBirth: dateOfBirth,
-          contacts: [TandizaContactModel(contactType: phoneProvider, contactNumber: phoneNumber)],
-          title: title, gender: gender,
-          address: [TandizaAddressModel(addressType: addressType,
-              addressLine1: plotNumber, addressLine2: streetAddress, addressLine3: city,
-              addressLine4: null, postalCode: null, owned: isOwned! ? 'Yes': 'No', monthsResided: monthsResided)]
+          title: title, gender: gender, addressType: addressType, nokFullNames: nokFullNames,
+        nokRelationship: nokRelationship, nokPhoneNumber: nokPhoneNumber, phoneProvider: phoneProvider,
+        maritalStatus: maritalStatus, plotNumber: plotNumber, streetAddress: streetAddress, monthsResided: monthsResided,
+        city: city, isOwned: isOwned, isResident: isResident, phoneNumber: phoneNumber, supervisorName: supervisorName,
+
 
       );
       return newTandizaClient;

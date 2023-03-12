@@ -53,11 +53,15 @@ class _RegistrationScreenState
 
   final focusNodeDateOfBirth = FocusNode();
 
+  final focusNodeMonthsResided = FocusNode();
+
+  final focusNodeSupervisorPhoneNumber = FocusNode();
+
+  final focusNodeNokPhoneNumber = FocusNode();
+
   final GlobalKey<FormState> _formKeyIdentity = GlobalKey<FormState>();
 
   final GlobalKey<FormState> _formKeyAccount = GlobalKey<FormState>();
-
-  final GlobalKey<FormState> _formKeyTandiza = GlobalKey<FormState>();
 
   final GlobalKey<FormState> _formKeyAddress = GlobalKey<FormState>();
 
@@ -151,6 +155,8 @@ class _RegistrationScreenState
 
   final TextEditingController _monthsResidedController = TextEditingController();
 
+  final TextEditingController _postCodeController = TextEditingController(text: '10101');
+
 
 
 
@@ -186,33 +192,32 @@ class _RegistrationScreenState
     return _serviceProvider.getClientFinancials(clientId);
   }
 
-  Future<TandizaClientCreatedModel?> createClient({String? nrcnumber, String? firstName,
-  String? surname, String? dateOfBirth,
-  String? phoneNumber, String? phoneProvider,
-  String? title, String? gender, String? addressType,
-  String? nokFullNames, String? nokRelationship, String? nokPhoneNumber,
-  String? maritalStatus, List<TandizaContactModel>? contacts,
-  List<TandizaAddressModel>? address, String? plotNumber,
-  String? streetAddress, String? monthsResided,
-  String? city, bool? isOwned, bool? isResident, String ? employerName,
-  String ? employmentType,
-  String ? occupation, String ? contactNumber,
-  String ? employeeNumber, String ? engagementDate,}) async {
+  Future<TandizaClientCreatedModel?> createClientData({
+    required String nrcnumber, required String firstName, required String phoneNumber,
+    required String surname, required String dateOfBirth, required String supervisorName,
+    required String title, required String gender, required String addressType,
+    required String nokFullNames, required String nokRelationship, required String nokPhoneNumber, required String  phoneProvider,
+    required String maritalStatus, required String postCode,
+    required String plotNumber,
+    required String streetAddress, required String monthsResided,
+    required String city, required bool isOwned, required bool isResident, required String  employerName,
+    required String employmentType,
+    required String  occupation, required String  contactNumber,
+    required String employeeNumber, required String  engagementDate,}) async {
     return _serviceProvider.createClient(
-
         nrcnumber: nrcnumber, firstName: firstName,
         surname: surname, dateOfBirth: dateOfBirth,
-        phoneNumber: phoneNumber, phoneProvider: phoneProvider,
         title: title, gender: gender, addressType: addressType,
         nokFullNames: nokFullNames, nokRelationship: nokRelationship,
         nokPhoneNumber: nokPhoneNumber, maritalStatus: maritalStatus,
-        contacts: [TandizaContactModel(contactNumber: phoneNumber, contactType: phoneProvider)],
-        address: [TandizaAddressModel(addressType: addressType,
-            addressLine1: plotNumber, addressLine2: streetAddress, addressLine3: city,
-            addressLine4: null, postalCode: null, owned: isOwned! ? 'Yes': 'No', monthsResided: monthsResided)],
         employerName : employerName, employmentType : employmentType,
         occupation : occupation, contactNumber : contactNumber ,
-        employeeNumber : employeeNumber, engagementDate : engagementDate
+        employeeNumber : employeeNumber,
+        engagementDate : engagementDate,
+      phoneProvider: phoneProvider, plotNumber: plotNumber, streetAddress: streetAddress,
+      monthsResided: monthsResided, city: city, isOwned: isOwned ,
+      isResident: isResident, phoneNumber: phoneNumber, supervisorName: supervisorName, postCode: postCode,
+
     );
   }
 
@@ -247,6 +252,24 @@ class _RegistrationScreenState
       phoneIsoCode = isoCode;
     });
   }
+
+  void onPhoneNumberSupervisorChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phoneSupervisor = internationalizedPhoneNumber;
+      phoneIsoCode = isoCode;
+    });
+  }
+
+  void onphoneKinNumberChange(
+      String number, String internationalizedPhoneNumber, String isoCode) {
+    setState(() {
+      phoneKinNumber = internationalizedPhoneNumber;
+      phoneIsoCode = isoCode;
+    });
+  }
+
+
 
   Future<DateTime?> pickDate() async {
     return showDatePicker(context: context,
@@ -328,20 +351,19 @@ class _RegistrationScreenState
            setState(() {
              _isLoading = true;
            });
-          final tandizaClient = await createClient(
-
+          final tandizaClient = await createClientData(
               nrcnumber: nrcnumber, firstName: _firstNameController.text,
               surname: _lastNameController.text, dateOfBirth: _dateOfBirthController.text,
               title: title, gender: gender, addressType: addressType,
               nokFullNames: '${_firstNameKinController.text} ${_lastNameKinController.text} ', nokRelationship: relationshipType,
               nokPhoneNumber: phoneKinNumber, maritalStatus: maritalStatus,
-              contacts: [TandizaContactModel(contactNumber: phoneNumber, contactType: _phoneProviderController.text)],
-              address: [TandizaAddressModel(addressType: addressType,
-                  addressLine1: _plotNumberController.text, addressLine2: _streetAddressController.text, addressLine3: _cityController.text,
-                  addressLine4: null, postalCode: null, owned: _isOwnerOfHouse! ? 'Yes': 'No', monthsResided: _monthsResidedController.text)],
               employerName : _employerController.text, employmentType : contractTypeDropDown,
-              occupation : _occupationController.text, contactNumber : _phoneSupervisorController.text ,
-              employeeNumber : _employeeNumberController.text, engagementDate : _employmentDateController.text
+              occupation : _occupationController.text, contactNumber : phoneSupervisor,
+              employeeNumber : _employeeNumberController.text, engagementDate : _employmentDateController.text, 
+              phoneProvider: _phoneProviderController.text, plotNumber: _plotNumberController.text,
+              streetAddress: _streetAddressController.text, monthsResided: _monthsResidedController.text, 
+            city: _cityController.text, isOwned: _isOwnerOfHouse, isResident: _isResident, phoneNumber: phoneNumber,
+            supervisorName: _supervisorNameController.text, postCode: _postCodeController.text,
           );
            setState(() {
              _isLoading = false;
@@ -362,7 +384,7 @@ class _RegistrationScreenState
                    context: context,
                    builder: (BuildContext context) {
                      return AlertDialog(
-                       title: const Text('User does not exist'),
+                       title: const Text('User already exists'),
                        content: const Text('Please register your account to access Tandiza Finance services'),
                        actions: [
                          TextButton(onPressed: (){
@@ -417,21 +439,27 @@ class _RegistrationScreenState
             );
 
             ScaffoldMessenger.of(context).showSnackBar(snackBarValidate);
-          }else if(_formKeyAccount.currentState!.validate() && currentStep == 1){
-            setState(() {
-              currentStep = currentStep + 1;
-            });
+          }else if(currentStep == 1){
+            if(_formKeyAccount.currentState!.validate()){
+              setState(() {
+                currentStep = currentStep + 1;
+              });
+            }
 
-          }else if(_formKeyAddress.currentState!.validate() && currentStep == 2){
-            setState(() {
-              currentStep = currentStep + 1;
-            });
 
-          }else if(_formKeyEmployment.currentState!.validate() && currentStep == 3){
-            setState(() {
-              currentStep = currentStep + 1;
-            });
+          }else if(currentStep == 2){
+            if(_formKeyAddress.currentState!.validate()){
+              setState(() {
+                currentStep = currentStep + 1;
+              });
+            }
 
+          }else if(currentStep == 3){
+            if(_formKeyEmployment.currentState!.validate()){
+              setState(() {
+                currentStep = currentStep + 1;
+              });
+            }
           }
         },
         currentStep: currentStep,
@@ -538,7 +566,6 @@ class _RegistrationScreenState
                   validator: null,
                   //_validateName,
                   textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
                   textInputAction: TextInputAction.done,
                   cursorColor: kPrimaryColour,
                   decoration: kTextFieldDecoration.copyWith(
@@ -567,6 +594,10 @@ class _RegistrationScreenState
                       }else if(phoneNumber.substring(5,6).contains('5')){
                         _phoneProviderController.text = 'Zamtel Mobile';
                       }
+                    }
+
+                    if(phoneNumber.length == 13){
+                      focusRegNodePhone.unfocus();
                     }
                   },
                   initialCountryCode: 'ZM',
@@ -665,10 +696,13 @@ class _RegistrationScreenState
                 ),
                 const SizedBox(height: 15,),
                 TextFormField(
+                  focusNode: focusNodeDateOfBirth,
                   controller: _dateOfBirthController,
                   validator: _validation.validateDob,
                   //_validateName,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    focusNodeDateOfBirth.unfocus();
+                  },
                   onTap: () async {
                     final dateSelected = await pickDate();
 
@@ -677,6 +711,7 @@ class _RegistrationScreenState
                     setState(() {
                       _dateOfBirthController.text = DateFormat('yyyy-MM-dd')
                           .format(dateSelected);
+                      focusNodeDateOfBirth.unfocus();
                     });
 
                   },
@@ -814,6 +849,7 @@ class _RegistrationScreenState
                 ),
                 const SizedBox(height: 20,),
                 TextFormField(
+                  focusNode: focusNodeMonthsResided,
                   controller: _monthsResidedController,
                   validator: _validation.validateDob,
                   //_validateName,
@@ -830,12 +866,31 @@ class _RegistrationScreenState
                       )),
                 ),
                 const SizedBox(height: 20,),
+                TextFormField(
+                  focusNode: null,
+                  controller: _postCodeController,
+                  validator: _validation.validateDob,
+                  //_validateName,
+                  onChanged: (value) {},
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.number,
+                  cursorColor: kPrimaryColour,
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Post Code',
+                      labelText: 'Post Code',
+                      prefixIcon: Icon(
+                        Icons.history,
+                        color: Theme.of(context).primaryColorDark,
+                      )),
+                ),
+                const SizedBox(height: 20,),
                 Row(
                   children: [
                     Checkbox(value: _isOwnerOfHouse, onChanged: (value){
                       setState(() {
                         _isOwnerOfHouse = value!;
                       });
+                      focusNodeMonthsResided.unfocus();
                     }),
                     const SizedBox(width: 10,),
                     const Expanded(child: Text('Owns The House', style: TextStyle(fontSize: 18),))
@@ -1022,10 +1077,13 @@ class _RegistrationScreenState
                   controller: _phoneSupervisorController,
                   textInputAction: TextInputAction.done,
                   onChanged: (phone) {
+
                     setState(() {
                       phoneSupervisor = phone.completeNumber;
-
                     });
+                    if(phoneSupervisor.length == 13){
+                      focusNodeSupervisorPhoneNumber.unfocus();
+                    }
                   },
                   initialCountryCode: 'ZM',
                   decoration: kTextFieldDecoration.copyWith(
@@ -1047,6 +1105,7 @@ class _RegistrationScreenState
             child: Column(
               children: [
                 TextFormField(
+                  focusNode: null,
                   controller: _firstNameKinController,
                   validator: _validation.validateName,
                   //_validateName,

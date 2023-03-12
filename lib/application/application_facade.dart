@@ -149,18 +149,17 @@ class ApplicationFacade implements IUserInterface{
 
   @override
   Future<TandizaClientCreatedModel?> createTandizaClient(
-      {String? nrcnumber, String? firstName,
-        String? surname, String? dateOfBirth,
-        String? phoneNumber, String? phoneProvider,
-        String? title, String? gender, String? addressType,
-        String? nokFullNames, String? nokRelationship, String? nokPhoneNumber,
-        String? maritalStatus, List<TandizaContactModel>? contacts,
-        List<TandizaAddressModel>? address, String? plotNumber,
-        String? streetAddress, String? monthsResided,
-        String? city, bool? isOwned, bool? isResident, String ? employerName,
-        String ? employmentType,
-        String ? occupation, String ? contactNumber,
-        String ? employeeNumber, String ? engagementDate,}) async {
+      {required String nrcnumber, required String firstName, required String phoneNumber,
+        required String surname, required String dateOfBirth, required String supervisorName,
+        required String title, required String gender, required String addressType,
+        required String nokFullNames, required String nokRelationship, required String nokPhoneNumber, required String  phoneProvider,
+        required String maritalStatus, required String postCode,
+        required String plotNumber,
+        required String streetAddress, required String monthsResided,
+        required String city, required bool isOwned, required bool isResident, required String  employerName,
+        required String employmentType,
+        required String  occupation, required String  contactNumber,
+        required String employeeNumber, required String  engagementDate,}) async {
     return userRepository.createTandizaClient(
       nrcnumber: nrcnumber, firstName: firstName,
       surname: surname, dateOfBirth: dateOfBirth,
@@ -168,13 +167,12 @@ class ApplicationFacade implements IUserInterface{
       title: title, gender: gender, addressType: addressType,
       nokFullNames: nokFullNames, nokRelationship: nokRelationship,
       nokPhoneNumber: nokPhoneNumber, maritalStatus: maritalStatus,
-      contacts: [TandizaContactModel(contactNumber: phoneNumber, contactType: phoneProvider)],
-      address: [TandizaAddressModel(addressType: addressType,
-          addressLine1: plotNumber, addressLine2: streetAddress, addressLine3: city,
-          addressLine4: null, postalCode: null, owned: isOwned! ? 'Yes': 'No', monthsResided: monthsResided)],
         employerName : employerName, employmentType : employmentType,
         occupation : occupation, contactNumber : contactNumber ,
-        employeeNumber : employeeNumber, engagementDate : engagementDate
+        employeeNumber : employeeNumber, engagementDate : engagementDate,
+        plotNumber: plotNumber, streetAddress: streetAddress,
+      monthsResided: monthsResided, city: city, isOwned: isOwned, isResident: isResident, supervisorName: supervisorName,
+      postCode: postCode,
     );
   }
 }
