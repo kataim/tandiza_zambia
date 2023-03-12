@@ -101,6 +101,7 @@ class LoanManagementApi {
     if(response.statusCode == 200){
       return TandizaClientCreatedModel.fromJson(jsonDecode(response.body));
     }else{
+      print(createClient.toJson());
       print(jsonDecode(response.body));
       throw Exception('Failed to get data');
     }
